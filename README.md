@@ -1,1 +1,1 @@
-# hub-shared
+[![Build Status](https://roarsmagicstuff.visualstudio.com/Hub/_apis/build/status/rhe89.hub-shared?branchName=main)](https://roarsmagicstuff.visualstudio.com/Hub/_build/latest?definitionId=11&branchName=main)
