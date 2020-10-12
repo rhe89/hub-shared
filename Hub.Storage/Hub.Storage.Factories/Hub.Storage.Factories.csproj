@@ -4,7 +4,7 @@
         <PackageId>Hub.Storage.Factories</PackageId>
         <Version>1.0.0</Version>
         <Authors>rhe89</Authors>
-        <RepositoryUrl>https://github.com/rhe89/Hub</RepositoryUrl>
+        <RepositoryUrl>https://github.com/rhe89/hub-shared</RepositoryUrl>
         <TargetFramework>netstandard2.1</TargetFramework>
         <Dependencies>
             <Group targetFramework="netstandard2.1">

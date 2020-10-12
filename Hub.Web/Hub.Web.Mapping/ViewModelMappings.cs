@@ -1,4 +1,4 @@
-﻿using Hub.Http;
+﻿using Hub.Web.Http;
 using Hub.Web.ViewModels;
 
 namespace Hub.Web.Mapping
