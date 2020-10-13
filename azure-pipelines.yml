@@ -13,6 +13,7 @@ variables:
   buildConfiguration: 'Release'
 
 steps:
+- script: dotnet nuget remove source nuget
 - script: dotnet nuget add source https://nuget.pkg.github.com/rhe89/index.json -n nuget -u rhe89 -p $(nugetAccessToken) --store-password-in-clear-text
 - script: dotnet build --configuration $(buildConfiguration)
   displayName: 'dotnet build $(buildConfiguration)'
