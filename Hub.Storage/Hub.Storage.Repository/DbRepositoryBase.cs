@@ -40,17 +40,27 @@ namespace Hub.Storage.Repository
             return await query.FirstOrDefaultAsync(filter);
         }
     
-        public IEnumerable<TEntity> GetMany<TEntity>(Expression<Func<TEntity, bool>> filter = null, params string[] includes) where TEntity : EntityBase
+        public IEnumerable<TEntity> GetMany<TEntity>(params string[] includes) where TEntity : EntityBase
+        {
+            return GetMany<TEntity>(null, includes);
+        }
+        
+        public IEnumerable<TEntity> GetMany<TEntity>(Expression<Func<TEntity, bool>> filter, params string[] includes) where TEntity : EntityBase
         {
             IQueryable<TEntity> query = DbContext.Set<TEntity>();
 
             if (includes != null && includes.Any())
                 query = includes.Aggregate(query, (queryable, path) => queryable.Include(path));
             
-            return filter == null ? query : query.Where(filter);
+            return filter == null ? query : query.Where(filter); 
         }
-        
-        public async Task<IList<TEntity>> GetManyAsync<TEntity>(Expression<Func<TEntity, bool>> filter = null, params string[] includes) where TEntity : EntityBase
+
+        public async Task<IList<TEntity>> GetManyAsync<TEntity>(params string[] includes) where TEntity : EntityBase
+        {
+            return await GetManyAsync<TEntity>(null, includes);
+        }
+
+        public async Task<IList<TEntity>> GetManyAsync<TEntity>(Expression<Func<TEntity, bool>> filter, params string[] includes) where TEntity : EntityBase
         {
             IQueryable<TEntity> query = DbContext.Set<TEntity>();
 
@@ -59,8 +69,13 @@ namespace Hub.Storage.Repository
             
             return filter == null ? await query.ToListAsync() : await query.Where(filter).ToListAsync();
         }
-        
-        public TEntity Add<TEntity>(TEntity entity, bool saveChanges = false)  where TEntity : EntityBase
+
+        public TEntity Add<TEntity>(TEntity entity) where TEntity : EntityBase
+        {
+            return Add(entity, false);
+        }
+
+        public TEntity Add<TEntity>(TEntity entity, bool saveChanges)  where TEntity : EntityBase
         {
             var now = DateTime.Now;
 
@@ -69,13 +84,18 @@ namespace Hub.Storage.Repository
             
             DbContext.Add(entity);
 
-            if (saveChanges) 
-                SaveChanges();
+            SaveChanges(saveChanges);
 
             return entity;
         }
 
-        public async Task<TEntity> AddAsync<TEntity>(TEntity entity, bool saveChanges = false)  where TEntity : EntityBase
+        public async Task<TEntity> AddAsync<TEntity>(TEntity entity)
+            where TEntity : EntityBase
+        {
+            return await AddAsync(entity, false);
+        }
+
+        public async Task<TEntity> AddAsync<TEntity>(TEntity entity, bool saveChanges)  where TEntity : EntityBase
         {
             var now = DateTime.Now;
 
@@ -84,13 +104,17 @@ namespace Hub.Storage.Repository
             
             DbContext.Add(entity);
 
-            if (saveChanges)
-                await SaveChangesAsync();
+            await SaveChangesAsync(saveChanges);
 
             return entity;
         }
-        
-        public void BulkAdd<TEntity>(ICollection<TEntity> entities, bool saveChanges = false)  where TEntity : EntityBase
+
+        public void BulkAdd<TEntity>(ICollection<TEntity> entities) where TEntity : EntityBase
+        {
+            BulkAdd(entities, false);
+        }
+
+        public void BulkAdd<TEntity>(ICollection<TEntity> entities, bool saveChanges)  where TEntity : EntityBase
         {
             var now = DateTime.Now;
 
@@ -102,11 +126,15 @@ namespace Hub.Storage.Repository
             
             DbContext.AddRange(entities);
 
-            if (saveChanges)
-                SaveChanges();
+            SaveChanges(saveChanges);
         }
-        
-        public async Task BulkAddAsync<TEntity>(ICollection<TEntity> entities, bool saveChanges = false)  where TEntity : EntityBase
+
+        public async Task BulkAddAsync<TEntity>(ICollection<TEntity> entities) where TEntity : EntityBase
+        {
+            await BulkAddAsync(entities, false);
+        }
+
+        public async Task BulkAddAsync<TEntity>(ICollection<TEntity> entities, bool saveChanges)  where TEntity : EntityBase
         {
             var now = DateTime.Now;
 
@@ -119,31 +147,43 @@ namespace Hub.Storage.Repository
             // ReSharper disable once MethodHasAsyncOverload
             DbContext.AddRange(entities);
 
-            if (saveChanges)
-                await SaveChangesAsync();
+            await SaveChangesAsync(saveChanges);
         }
-        
-        public void Update<TEntity>(TEntity entity, bool saveChanges = false) where TEntity : EntityBase
+
+        public void Update<TEntity>(TEntity entity) where TEntity : EntityBase
+        {
+            Update(entity, false);
+        }
+
+        public void Update<TEntity>(TEntity entity, bool saveChanges) where TEntity : EntityBase
         {
             entity.UpdatedDate = DateTime.Now;
             
             DbContext.Update(entity);
 
-            if (saveChanges)
-                SaveChanges();
+            SaveChanges(saveChanges);
         }
-        
-        public async Task UpdateAsync<TEntity>(TEntity entity, bool saveChanges = false) where TEntity : EntityBase
+
+        public async Task UpdateAsync<TEntity>(TEntity entity) where TEntity : EntityBase
+        {
+            await UpdateAsync(entity, false);
+        }
+
+        public async Task UpdateAsync<TEntity>(TEntity entity, bool saveChanges) where TEntity : EntityBase
         {
             entity.UpdatedDate = DateTime.Now;
 
             DbContext.Update(entity);
 
-            if (saveChanges)
-                await SaveChangesAsync();
+            await SaveChangesAsync(saveChanges);
         }
-        
-        public void BulkUpdate<TEntity>(ICollection<TEntity> entities, bool saveChanges = false) where TEntity : EntityBase
+
+        public void BulkUpdate<TEntity>(ICollection<TEntity> entities) where TEntity : EntityBase
+        {
+            BulkUpdate(entities, false);
+        }
+
+        public void BulkUpdate<TEntity>(ICollection<TEntity> entities, bool saveChanges) where TEntity : EntityBase
         {
             var now = DateTime.Now;
             
@@ -154,11 +194,15 @@ namespace Hub.Storage.Repository
             
             DbContext.UpdateRange(entities);
 
-            if (saveChanges)
-                SaveChanges();
+            SaveChanges(saveChanges);
         }
-        
-        public async Task BulkUpdateAsync<TEntity>(ICollection<TEntity> entities, bool saveChanges = false) where TEntity : EntityBase
+
+        public async Task BulkUpdateAsync<TEntity>(ICollection<TEntity> entities) where TEntity : EntityBase
+        {
+            await BulkUpdateAsync(entities, false);
+        }
+
+        public async Task BulkUpdateAsync<TEntity>(ICollection<TEntity> entities, bool saveChanges) where TEntity : EntityBase
         {
             var now = DateTime.Now;
             
@@ -169,42 +213,72 @@ namespace Hub.Storage.Repository
             
             DbContext.UpdateRange(entities);
 
-            if (saveChanges)
-                await SaveChangesAsync();
+            await SaveChangesAsync(saveChanges);
         }
-        
-        public void Remove<TEntity>(TEntity entity, bool saveChanges = false) where TEntity : EntityBase
+
+        public void Remove<TEntity>(TEntity entity) where TEntity : EntityBase
+        {
+            Remove(entity, false);
+        }
+
+        public void Remove<TEntity>(TEntity entity, bool saveChanges) where TEntity : EntityBase
         {
             DbContext.Remove(entity);
 
-            if (saveChanges)
-                SaveChanges();
+            SaveChanges(saveChanges);
         }
-        
-        public async Task RemoveAsync<TEntity>(TEntity entity, bool saveChanges = false) where TEntity : EntityBase
+
+        public async Task RemoveAsync<TEntity>(TEntity entity) where TEntity : EntityBase
+        {
+            await RemoveAsync(entity, false);
+        }
+
+        public async Task RemoveAsync<TEntity>(TEntity entity, bool saveChanges) where TEntity : EntityBase
         {
             DbContext.Remove(entity);
 
-            if (saveChanges)
-                await SaveChangesAsync();
+            await SaveChangesAsync(saveChanges);
         }
-        
-        public void BulkRemove<TEntity>(IEnumerable<TEntity> entities, bool saveChanges = false) where TEntity : EntityBase
+
+        public void BulkRemove<TEntity>(IEnumerable<TEntity> entities) where TEntity : EntityBase
+        {
+            BulkRemove(entities, false);
+        }
+
+        public void BulkRemove<TEntity>(IEnumerable<TEntity> entities, bool saveChanges) where TEntity : EntityBase
         {
             DbContext.RemoveRange(entities);
-
-            if (saveChanges)
-                SaveChanges();
+            SaveChanges(saveChanges);
         }
 
         public void SaveChanges()
         {
-            DbContext.ChangeTracker.DetectChanges();
-            DbContext.SaveChanges();
+            SaveChanges(true);
         }
         
         public async Task SaveChangesAsync()
         {
+            await SaveChangesAsync(true);
+        }
+
+        public void SaveChanges(bool saveChanges)
+        {
+            if (!saveChanges)
+            {
+                return;
+            }
+            
+            DbContext.ChangeTracker.DetectChanges();
+            DbContext.SaveChanges();
+        }
+        
+        public async Task SaveChangesAsync(bool saveChanges)
+        {
+            if (!saveChanges)
+            {
+                return;
+            }
+            
             DbContext.ChangeTracker.DetectChanges();
             await DbContext.SaveChangesAsync();
         }

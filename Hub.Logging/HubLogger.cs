@@ -26,28 +26,28 @@ namespace Hub.Logging
 
         public void Log<TState>(LogLevel logLevel, EventId eventId, TState state, Exception exception, Func<TState, Exception, string> formatter)
         {
-            if (!IsEnabled(logLevel)
-               || Ignore(logLevel, _name))
+            if (!IsEnabled(logLevel) || Ignore(logLevel, _name))
+            {
                 return;
+            }
 
             lock (Lock)
             {
-                if (_config.EventId == 0 || _config.EventId == eventId.Id)
-                {
-                    var color = Console.ForegroundColor;
+                if (_config.EventId != 0 && _config.EventId != eventId.Id) return;
+                
+                var color = Console.ForegroundColor;
 
-                    Console.ForegroundColor = GetColor(logLevel);
+                Console.ForegroundColor = GetColor(logLevel);
 
-                    var msg = GetMessage(logLevel, state, exception, formatter);
-                    Console.WriteLine(msg);
+                var msg = GetMessage(logLevel, state, exception, formatter);
+                
+                Console.WriteLine(msg);
 
-                    Console.ForegroundColor = color;
-                }
+                Console.ForegroundColor = color;
             }
         }
-
         
-        private bool Ignore(LogLevel logLevel, string name)
+        private static bool Ignore(LogLevel logLevel, string name)
             => (name, logLevel) switch
             {
                 ("Microsoft.EntityFrameworkCore.Hub.Storage.Command", LogLevel.Information) => true,
@@ -65,20 +65,18 @@ namespace Hub.Logging
                 _ => _config.Color
             };
 
-        private string GetMessage<TState>(LogLevel logLevel, TState state, Exception exception, Func<TState, Exception, string> formatter)
-            => exception switch
-            {
-                null => GetStandardMessage(logLevel, state, null, formatter),
-                _ => GetExceptionMessage(logLevel, state, exception, formatter)
-            };
-        
-        private string GetStandardMessage<TState>(LogLevel logLevel, TState state, Exception exception, Func<TState, Exception, string> formatter)
-            => $"[{DateTime.Now:dd.MM.yyyy HH:mm:ss}] [{logLevel.ToString().ToUpper()}] [{_name}] {formatter(state, exception)}";
-        
+        private string GetMessage<TState>(LogLevel logLevel, TState state, Exception exception,
+            Func<TState, Exception, string> formatter)
+            => exception == null
+                ? GetStandardMessage(logLevel, state, null, formatter)
+                : GetExceptionMessage(logLevel, state, exception, formatter);
 
+        private string GetStandardMessage<TState>(LogLevel logLevel, TState state, Exception exception, Func<TState, Exception, string> formatter)
+            => $"[{DateTime.Now:dd.MM.yyyy HH:mm:ss}] [{logLevel.ToString().ToUpperInvariant()}] [{_name}] {formatter(state, exception)}";
+        
         private string GetExceptionMessage<TState>(LogLevel logLevel, TState state, Exception exception, Func<TState, Exception, string> formatter)
             =>
-                $"[{DateTime.Now:dd.MM.yyyy HH:mm:ss}] [{logLevel.ToString().ToUpper()}] [{_name}]" +
+                $"[{DateTime.Now:dd.MM.yyyy HH:mm:ss}] [{logLevel.ToString().ToUpperInvariant()}] [{_name}]" +
                 $"\n[EXCEPTION]       {exception.Message}" +
                 $"\n[INNER EXCEPTION] {(exception.InnerException is null ? "(none)" : formatter(state, exception.InnerException))}" +
                 $"\n[STACKTRACE]   {exception.StackTrace}";

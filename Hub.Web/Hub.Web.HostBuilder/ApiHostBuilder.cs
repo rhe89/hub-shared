@@ -11,13 +11,12 @@ using Microsoft.Extensions.Logging;
 
 namespace Hub.Web.HostBuilder
 {
-    public static class ApiHostBuilder
+    public class ApiHostBuilder<TStartup, TApiAppServiceCollectionBuilder, TDbContext>
+        where TApiAppServiceCollectionBuilder : ApiWithQueueHostedServiceDependencyRegistrationFactory<TDbContext>, new()
+        where TStartup : ApiStartup<TDbContext, TApiAppServiceCollectionBuilder>
+        where TDbContext : DbContext 
     {
-        public static IHostBuilder
-           CreateHostBuilder<TStartup, TApiAppServiceCollectionBuilder, TDbContext> (string[] args) 
-            where TApiAppServiceCollectionBuilder : ApiWithQueueHostedServiceDependencyRegistrationFactory<TDbContext>, new()
-            where TStartup : ApiStartup<TDbContext, TApiAppServiceCollectionBuilder>
-            where TDbContext : DbContext 
+        public IHostBuilder CreateHostBuilder (string[] args) 
         { 
             var configPath = $"{Directory.GetCurrentDirectory()}/../..";
 

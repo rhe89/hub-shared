@@ -27,10 +27,7 @@ namespace Hub.Storage.Providers
             var backgroundTaskConfiguration = scopedDbRepository
                 .GetSingle<BackgroundTaskConfiguration>(bt => bt.Name == name);
 
-            if (backgroundTaskConfiguration == null)
-                return null;
-            
-            return EntityToDtoMapper.Map(backgroundTaskConfiguration);
+            return backgroundTaskConfiguration == null ? null : EntityToDtoMapper.Map(backgroundTaskConfiguration);
         }
 
         public async Task<IList<BackgroundTaskConfigurationDto>> GetBackgroundTaskConfigurations()

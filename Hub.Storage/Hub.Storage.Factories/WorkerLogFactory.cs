@@ -50,7 +50,10 @@ namespace Hub.Storage.Factories
             
             _logger.LogInformation($"Found {workerLogsToDelete.Count} log items to delete");
 
-            if (!workerLogsToDelete.Any()) return;
+            if (!workerLogsToDelete.Any())
+            {
+                return;
+            }
 
             dbRepository.BulkRemove(workerLogsToDelete);
 

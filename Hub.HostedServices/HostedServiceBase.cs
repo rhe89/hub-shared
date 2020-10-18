@@ -41,7 +41,9 @@ namespace Hub.HostedServices
             Logger.LogInformation($"{backgroundTask.Name} finished.");
 
             if (backgroundTask.ManualExecution)
+            {
                 return;
+            }
             
             await backgroundTask.UpdateLastRun(DateTime.Now);
             

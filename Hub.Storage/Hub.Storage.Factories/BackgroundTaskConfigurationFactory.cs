@@ -44,7 +44,9 @@ namespace Hub.Storage.Factories
                 scopedDbRepository.GetSingle<BackgroundTaskConfiguration>(x => x.Name == name);
             
             if (backgroundTaskConfiguration == null)
+            {
                 return;
+            }
 
             backgroundTaskConfiguration.LastRun = lastRun;
             
@@ -60,7 +62,9 @@ namespace Hub.Storage.Factories
                 scopedDbRepository.GetSingle<BackgroundTaskConfiguration>(x => x.Name == name);
             
             if (backgroundTaskConfiguration == null)
+            {
                 return;
+            }
 
             backgroundTaskConfiguration.RunIntervalType = (int)runIntervalType;
             

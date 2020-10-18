@@ -38,7 +38,10 @@ namespace Hub.Storage.Providers
 
             var setting = dbRepository.GetSingle<Setting>(x => x.Key == key);
             
-            if (setting == null) throw new ArgumentException($"Invalid settings key: {key}");
+            if (setting == null)
+            {
+                throw new ArgumentException($"Invalid settings key: {key}");
+            }
 
             var value = setting.Value;
 
