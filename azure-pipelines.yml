@@ -1,10 +1,11 @@
 steps:
 - task: DotNetCoreCLI@2
   inputs:
-    command: 'custom'
+    command: 'restore'
     projects: '**/*.csproj'
-    custom: 'restore'
-    arguments: '--configfile NuGet.Config'
+    feedsToUse: 'config'
+    nugetConfigPath: './s'
+    externalFeedCredentials: 'Nuget Github'
 - task: DotNetCoreCLI@2
   displayName: 'dotnet pack $(buildConfiguration)'
   inputs:
