@@ -6,6 +6,11 @@ steps:
     feedsToUse: 'select'
     vstsFeed: 'a9ebd0d9-61ca-407b-bd4f-cf5e1f59a5c6'
 - task: DotNetCoreCLI@2
+  inputs:
+    command: 'build'
+    projects: '**/*.csproj'
+    arguments: '--no-restore'
+- task: DotNetCoreCLI@2
   displayName: 'dotnet pack $(buildConfiguration)'
   inputs:
     command: 'pack'
