@@ -2,7 +2,7 @@
 
     <PropertyGroup>
         <PackageId>Hub.Web.DependencyRegistration</PackageId>
-        <Version>1.0.1</Version>
+        <Version>1.0.2</Version>
         <Authors>rhe89</Authors>
         <RepositoryUrl>https://github.com/rhe89/hub-shared</RepositoryUrl>
         <TargetFramework>netcoreapp3.1</TargetFramework>
@@ -21,6 +21,6 @@
 
     <ItemGroup>
         <PackageReference Include="Microsoft.EntityFrameworkCore" Version="3.1.8" />
-        <PackageReference Include="Hub.HostedServices" Version="1.0.1" />
+        <PackageReference Include="Hub.HostedServices" Version="1.0.3" />
     </ItemGroup>
 </Project>

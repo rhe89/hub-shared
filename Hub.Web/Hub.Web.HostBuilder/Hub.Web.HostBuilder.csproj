@@ -2,7 +2,7 @@
 
     <PropertyGroup>
         <PackageId>Hub.Web.HostBuilder</PackageId>
-        <Version>1.0.1</Version>
+        <Version>1.0.2</Version>
         <Authors>rhe89</Authors>
         <RepositoryUrl>https://github.com/rhe89/hub-shared</RepositoryUrl>
         <TargetFramework>netcoreapp3.1</TargetFramework>
@@ -19,7 +19,7 @@
     </ItemGroup>
 
     <ItemGroup>
-        <PackageReference Include="Hub.Web.Startup" Version="1.0.0" />
+        <PackageReference Include="Hub.Web.Startup" Version="1.0.1" />
     </ItemGroup>
 
 </Project>

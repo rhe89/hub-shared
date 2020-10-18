@@ -2,7 +2,7 @@
 
     <PropertyGroup>
         <PackageId>Hub.Storage.Factories</PackageId>
-        <Version>1.0.2</Version>
+        <Version>1.0.3</Version>
         <Authors>rhe89</Authors>
         <RepositoryUrl>https://github.com/rhe89/hub-shared</RepositoryUrl>
         <TargetFramework>netstandard2.1</TargetFramework>
@@ -16,7 +16,7 @@
 
     <ItemGroup>
         <PackageReference Include="Hub.Storage.Mapping" Version="1.0.0" />
-        <PackageReference Include="Hub.Storage.Repository" Version="1.0.1" />
+        <PackageReference Include="Hub.Storage.Repository" Version="1.0.2" />
     </ItemGroup>
 
 </Project>
