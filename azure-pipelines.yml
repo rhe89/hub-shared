@@ -4,7 +4,6 @@ steps:
     command: 'restore'
     projects: '**/*.csproj'
     feedsToUse: 'config'
-    nugetConfigPath: '/'
     externalFeedCredentials: 'Nuget Github'
 - task: DotNetCoreCLI@2
   displayName: 'dotnet pack $(buildConfiguration)'
