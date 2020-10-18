@@ -10,9 +10,16 @@ steps:
     arguments: 'sources add -source https://nuget.pkg.github.com/rhe89/index.json -StorePasswordInClearText -Name github -UserName rhe89 -Password $(nugetAccessToken)'
 
 - task: DotNetCoreCLI@2
+  inputs:
+    command: 'restore'
+    projects: '**/*.csproj'
+    feedsToUse: 'select'
+  
+- task: DotNetCoreCLI@2
   displayName: 'dotnet pack $(buildConfiguration)'
   inputs:
     command: pack
+    arguments: --no-restore
 - task: NuGetAuthenticate@0
   displayName: 'NuGet Authenticate'
 - task: NuGetCommand@2
