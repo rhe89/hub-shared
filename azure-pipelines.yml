@@ -2,6 +2,11 @@ steps:
 - task: NuGetCommand@2
   inputs:
     command: 'custom'
+    arguments: 'sources remove -Name github'
+
+- task: NuGetCommand@2
+  inputs:
+    command: 'custom'
     arguments: 'sources add -source https://nuget.pkg.github.com/rhe89/index.json -StorePasswordInClearText -Name github -UserName rhe89 -Password $(nugetAccessToken)'
 
 - task: DotNetCoreCLI@2
