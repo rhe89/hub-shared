@@ -33,7 +33,10 @@ namespace Hub.Logging
 
             lock (Lock)
             {
-                if (_config.EventId != 0 && _config.EventId != eventId.Id) return;
+                if (_config.EventId != 0 && _config.EventId != eventId.Id)
+                {
+                    return;
+                }
                 
                 var color = Console.ForegroundColor;
 

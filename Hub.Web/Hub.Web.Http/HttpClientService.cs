@@ -66,7 +66,9 @@ namespace Hub.Web.Http
         private static string BuildGetRequest(string requestUri, string[] requestParameters)
         {
             if (requestParameters == null || !requestParameters.Any())
+            {
                 return requestUri;
+            }
 
             var flattenedRequestParameters = string.Join("&", requestParameters);
 
@@ -76,10 +78,12 @@ namespace Hub.Web.Http
         private Response<TResponseObject> HandlePostResponse<TResponseObject>(HttpResponseMessage responseMessage)
         {
             if (responseMessage.IsSuccessStatusCode)
+            {
                 return new Response<TResponseObject>
                 {
                     StatusCode = responseMessage.StatusCode
                 };
+            }
             
             _logger.LogError(
                 $@"{_friendlyApiName} returned status code: {responseMessage.StatusCode}.
@@ -95,11 +99,13 @@ namespace Hub.Web.Http
         private async Task<Response<TResponseObject>> HandleResponse<TResponseObject>(HttpResponseMessage responseMessage)
         {
             if (responseMessage.IsSuccessStatusCode)
+            {
                 return new Response<TResponseObject>
                 {
                     Data = await responseMessage.Content.ReadFromJsonAsync<TResponseObject>(),
                     StatusCode = responseMessage.StatusCode
                 };
+            }
             
             _logger.LogError(
                 $@"{_friendlyApiName} returned status code: {responseMessage.StatusCode}.

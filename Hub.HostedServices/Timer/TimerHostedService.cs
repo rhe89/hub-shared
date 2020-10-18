@@ -26,7 +26,9 @@ namespace Hub.HostedServices.Timer
             while (!cancellationToken.IsCancellationRequested)
             {
                 if (!_backgroundTaskCollection.Any())
-                    throw new Exception("No background tasks registered in backgroundTaskCollection");
+                {
+                    throw new HostedServicesException("No background tasks registered in backgroundTaskCollection");
+                }
                 foreach (var backgroundTask in _backgroundTaskCollection)
                 {
                     if (!backgroundTask.IsDue)

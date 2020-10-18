@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace Hub.HostedServices.Tasks
 {
-    public class BackgroundTaskQueue : IBackgroundTaskQueue
+    public class BackgroundTaskQueue : IBackgroundTaskQueue, IDisposable
     {
         private readonly ConcurrentQueue<IBackgroundTask> _workItems;
         private readonly SemaphoreSlim _signal;
@@ -38,6 +38,11 @@ namespace Hub.HostedServices.Tasks
             _workItems.TryDequeue(out var workItem);
 
             return workItem;
+        }
+
+        public void Dispose()
+        {
+            _signal?.Dispose();
         }
     }
 }

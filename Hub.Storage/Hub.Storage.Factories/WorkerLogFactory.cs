@@ -37,6 +37,11 @@ namespace Hub.Storage.Factories
             await dbRepository.SaveChangesAsync();
         }
         
+        public async Task DeleteDueWorkerLogs()
+        {
+            await DeleteDueWorkerLogs(30);
+        }
+        
         public async Task DeleteDueWorkerLogs(int ageInDaysOfLogsToDelete)
         {
             using var scope = _serviceScopeFactory.CreateScope();

@@ -25,7 +25,9 @@ namespace Hub.Storage.Repository
             IQueryable<TEntity> query = DbContext.Set<TEntity>();
 
             if (includes != null && includes.Any())
+            {
                 query = includes.Aggregate(query, (queryable, path) => queryable.Include(path));
+            }
 
             return query.FirstOrDefault(filter);
         }
@@ -35,7 +37,9 @@ namespace Hub.Storage.Repository
             IQueryable<TEntity> query = DbContext.Set<TEntity>();
 
             if (includes != null && includes.Any())
+            {
                 query = includes.Aggregate(query, (queryable, path) => queryable.Include(path));
+            }
 
             return await query.FirstOrDefaultAsync(filter);
         }
@@ -50,7 +54,9 @@ namespace Hub.Storage.Repository
             IQueryable<TEntity> query = DbContext.Set<TEntity>();
 
             if (includes != null && includes.Any())
+            {
                 query = includes.Aggregate(query, (queryable, path) => queryable.Include(path));
+            }
             
             return filter == null ? query : query.Where(filter); 
         }
@@ -65,7 +71,9 @@ namespace Hub.Storage.Repository
             IQueryable<TEntity> query = DbContext.Set<TEntity>();
 
             if (includes != null && includes.Any())
+            {
                 query = includes.Aggregate(query, (queryable, path) => queryable.Include(path));
+            }
             
             return filter == null ? await query.ToListAsync() : await query.Where(filter).ToListAsync();
         }
@@ -261,9 +269,9 @@ namespace Hub.Storage.Repository
             await SaveChangesAsync(true);
         }
 
-        public void SaveChanges(bool saveChanges)
+        public void SaveChanges(bool doSaveChanges)
         {
-            if (!saveChanges)
+            if (!doSaveChanges)
             {
                 return;
             }
@@ -272,9 +280,9 @@ namespace Hub.Storage.Repository
             DbContext.SaveChanges();
         }
         
-        public async Task SaveChangesAsync(bool saveChanges)
+        public async Task SaveChangesAsync(bool doSaveChanges)
         {
-            if (!saveChanges)
+            if (!doSaveChanges)
             {
                 return;
             }

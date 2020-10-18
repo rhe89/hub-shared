@@ -43,7 +43,7 @@ namespace Hub.HostedServices.Timer
              configurationBuilder.AddConfiguration(_config);
         }
 
-        private void RegisterServices(HostBuilderContext hostBuilderContext, IServiceCollection serviceCollection)
+        private void RegisterServices(IServiceCollection serviceCollection)
         {
             serviceCollection.AddTimerHostedService<TDbContext>(_config, _connectionStringKey);
             

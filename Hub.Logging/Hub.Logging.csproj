@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <PackageId>Hub.Logging</PackageId>
-    <Version>1.0.1</Version>
+    <Version>1.0.2</Version>
     <Authors>rhe89</Authors>
     <Company></Company>
     <RepositoryUrl>https://github.com/rhe89/hub-shared</RepositoryUrl>

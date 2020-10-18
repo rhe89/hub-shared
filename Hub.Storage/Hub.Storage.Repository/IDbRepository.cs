@@ -43,7 +43,7 @@ namespace Hub.Storage.Repository
         void BulkRemove<TEntity>(IEnumerable<TEntity> entities, bool saveChanges) where TEntity : EntityBase;
         void SaveChanges();
         Task SaveChangesAsync();
-        void SaveChanges(bool saveChanges);
-        Task SaveChangesAsync(bool saveChanges);
+        void SaveChanges(bool doSaveChanges);
+        Task SaveChangesAsync(bool doSaveChanges);
     }
 }

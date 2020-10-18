@@ -35,9 +35,7 @@ namespace Hub.Web.Startup
             UpdateDatabase(app);
             
             app.UseRouting();
-
-            // app.UseAuthorization();
-
+            
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
