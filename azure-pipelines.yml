@@ -1,5 +1,12 @@
 steps:
 - task: DotNetCoreCLI@2
+  inputs:
+    command: 'custom'
+    projects: '**/*.csproj'
+    custom: 'dotnet nuget add source'
+    arguments: 'https://nuget.pkg.github.com/rhe89/index.json  --store-password-in-clear-text -n github -u rhe89 -p $(nugetAccessToken)'
+
+- task: DotNetCoreCLI@2
   displayName: 'dotnet pack $(buildConfiguration)'
   inputs:
     command: pack
