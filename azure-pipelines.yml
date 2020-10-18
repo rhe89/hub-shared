@@ -1,26 +1,28 @@
 steps:
 - task: DotNetCoreCLI@2
+  displayName: restore
   inputs:
     command: 'restore'
     projects: '**/*.csproj'
     feedsToUse: 'select'
     vstsFeed: 'a9ebd0d9-61ca-407b-bd4f-cf5e1f59a5c6'
 - task: DotNetCoreCLI@2
+  displayName: build
   inputs:
     command: 'build'
     projects: '**/*.csproj'
     arguments: '--no-restore'
 - task: DotNetCoreCLI@2
-  displayName: 'dotnet pack $(buildConfiguration)'
+  displayName: 'pack'
   inputs:
     command: 'pack'
     packagesToPack: '**/*.csproj'
     nobuild: true
     versioningScheme: 'off'
 - task: NuGetAuthenticate@0
-  displayName: 'NuGet Authenticate'
+  displayName: 'authenticate'
 - task: NuGetCommand@2
-  displayName: 'NuGet push'
+  displayName: 'push'
   inputs:
     command: 'push'
     packagesToPush: '$(Build.ArtifactStagingDirectory)/**/*.nupkg;!$(Build.ArtifactStagingDirectory)/**/*.symbols.nupkg'
