@@ -3,9 +3,8 @@ steps:
   inputs:
     command: 'restore'
     projects: '**/*.csproj'
-    feedsToUse: 'config'
-    nugetConfigPath: './NuGet.Config'
-    externalFeedCredentials: 'Nuget Github'
+    feedsToUse: 'select'
+    vstsFeed: 'a9ebd0d9-61ca-407b-bd4f-cf5e1f59a5c6'
 - task: DotNetCoreCLI@2
   displayName: 'dotnet pack $(buildConfiguration)'
   inputs:
@@ -18,5 +17,6 @@ steps:
   inputs:
     command: 'push'
     packagesToPush: '$(Build.ArtifactStagingDirectory)/**/*.nupkg;!$(Build.ArtifactStagingDirectory)/**/*.symbols.nupkg'
-    nuGetFeedType: 'external'
-    publishFeedCredentials: 'Nuget Github'
+    nuGetFeedType: 'internal'
+    publishVstsFeed: 'a9ebd0d9-61ca-407b-bd4f-cf5e1f59a5c6'
+    allowPackageConflicts: true
