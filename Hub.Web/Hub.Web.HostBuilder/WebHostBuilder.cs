@@ -11,7 +11,7 @@ namespace Hub.Web.HostBuilder
         where TStartup : WebStartup<TWebAppServiceCollectionBuilder>
         where TWebAppServiceCollectionBuilder : WebDependencyRegistrationFactory, new()
     {
-        protected static IHostBuilder CreateHostBuilder(string[] args)
+        public IHostBuilder CreateHostBuilder(string[] args)
         {
             var configPath = $"{Directory.GetCurrentDirectory()}/../..";
             
