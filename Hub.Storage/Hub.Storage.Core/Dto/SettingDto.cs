@@ -1,6 +1,6 @@
-namespace Hub.Storage.Entities
+namespace Hub.Storage.Core.Dto
 {
-    public class Setting : EntityBase
+    public class SettingDto
     {
         public string Key { get; set; }
         public string Value { get; set; }

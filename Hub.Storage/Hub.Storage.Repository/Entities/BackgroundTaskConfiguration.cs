@@ -1,6 +1,7 @@
 using System;
+using Hub.Storage.Core;
 
-namespace Hub.Storage.Entities
+namespace Hub.Storage.Repository.Entities
 {
     public class BackgroundTaskConfiguration : EntityBase
     {

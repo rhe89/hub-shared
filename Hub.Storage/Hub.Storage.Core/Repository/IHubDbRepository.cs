@@ -1,24 +1,32 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
-using Hub.Storage.Entities;
 
-namespace Hub.Storage.Repository
+namespace Hub.Storage.Core.Repository
 {
-    public interface IDbRepository
+    public interface IHubDbRepository
     {
-        TEntity GetSingle<TEntity>(Expression<Func<TEntity, bool>> filter, params string[] includes)
+        public IList<TEntity> All<TEntity>() where TEntity : EntityBase;
+
+        public Task<List<TEntity>> AllAsync<TEntity>()
             where TEntity : EntityBase;
-        Task<TEntity> GetSingleAsync<TEntity>(Expression<Func<TEntity, bool>> filter, params string[] includes)
+
+        public IQueryable<TEntity> Where<TEntity>(Expression<Func<TEntity, bool>> predicate) where TEntity : EntityBase;
+        public TEntity First<TEntity>() where TEntity : EntityBase;
+        public TEntity First<TEntity>(Expression<Func<TEntity, bool>> predicate) where TEntity : EntityBase;
+        public Task<TEntity> FirstAsync<TEntity>() where TEntity : EntityBase;
+        public Task<TEntity> FirstAsync<TEntity>(Expression<Func<TEntity, bool>> predicate)  where TEntity : EntityBase;
+        public TEntity Single<TEntity>() where TEntity : EntityBase;
+        public TEntity Single<TEntity>(Expression<Func<TEntity, bool>> predicate) where TEntity : EntityBase;
+        public Task<TEntity> SingleAsync<TEntity>() where TEntity : EntityBase;
+        public Task<TEntity> SingleAsync<TEntity>(Expression<Func<TEntity, bool>> predicate) where TEntity : EntityBase;
+        public TEntity FirstOrDefault<TEntity>() where TEntity : EntityBase;
+        public TEntity FirstOrDefault<TEntity>(Expression<Func<TEntity, bool>> predicate) where TEntity : EntityBase;
+        public Task<TEntity> FirstOrDefaultAsync<TEntity>() where TEntity : EntityBase;
+        public Task<TEntity> FirstOrDefaultAsync<TEntity>(Expression<Func<TEntity, bool>> predicate)
             where TEntity : EntityBase;
-        IEnumerable<TEntity> GetMany<TEntity>(params string[] includes)
-            where TEntity : EntityBase;
-        IEnumerable<TEntity> GetMany<TEntity>(Expression<Func<TEntity, bool>> filter, params string[] includes)
-            where TEntity : EntityBase;
-        Task<IList<TEntity>> GetManyAsync<TEntity>(params string[] includes) where TEntity : EntityBase;
-        Task<IList<TEntity>> GetManyAsync<TEntity>(Expression<Func<TEntity, bool>> filter,
-            params string[] includes) where TEntity : EntityBase;
         TEntity Add<TEntity>(TEntity entity) where TEntity : EntityBase;
         TEntity Add<TEntity>(TEntity entity, bool saveChanges) where TEntity : EntityBase;
         Task<TEntity> AddAsync<TEntity>(TEntity entity) where TEntity : EntityBase;
