@@ -3,20 +3,20 @@ steps:
   displayName: restore
   inputs:
     command: 'restore'
-    projects: '**/${projectName}.csproj'
+    projects: '**/$(projectName).csproj'
     feedsToUse: 'select'
     vstsFeed: 'a9ebd0d9-61ca-407b-bd4f-cf5e1f59a5c6'
 - task: DotNetCoreCLI@2
   displayName: build
   inputs:
     command: 'build'
-    projects: '**/${projectName}.csproj'
+    projects: '**/$(projectName).csproj'
     arguments: '--no-restore'
 - task: DotNetCoreCLI@2
   displayName: 'pack'
   inputs:
     command: 'pack'
-    packagesToPack: '**/${projectName}.csproj'
+    packagesToPack: '**/$(projectName)}.csproj'
     nobuild: true
     versioningScheme: 'off'
 - task: NuGetAuthenticate@0
@@ -25,7 +25,7 @@ steps:
   displayName: 'push'
   inputs:
     command: 'push'
-    packagesToPush: '$(Build.ArtifactStagingDirectory)/**/${projectName}.nupkg;!$(Build.ArtifactStagingDirectory)/**/${projectName}.symbols.nupkg'
+    packagesToPush: '$(Build.ArtifactStagingDirectory)/**/$(projectName).nupkg;!$(Build.ArtifactStagingDirectory)/**/$(projectName).symbols.nupkg'
     nuGetFeedType: 'internal'
     publishVstsFeed: 'a9ebd0d9-61ca-407b-bd4f-cf5e1f59a5c6'
     allowPackageConflicts: true
