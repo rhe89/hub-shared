@@ -16,7 +16,7 @@ steps:
   displayName: 'pack'
   inputs:
     command: 'pack'
-    packagesToPack: '**/$(projectName)}.csproj'
+    packagesToPack: '**/$(projectName).csproj'
     nobuild: true
     versioningScheme: 'off'
 - task: NuGetAuthenticate@0
