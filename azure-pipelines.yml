@@ -25,7 +25,7 @@ steps:
   displayName: 'push'
   inputs:
     command: 'push'
-    packagesToPush: '$(Build.ArtifactStagingDirectory)/**/$(projectName).nupkg;!$(Build.ArtifactStagingDirectory)/**/$(projectName).symbols.nupkg'
+    packagesToPush: '$(Build.ArtifactStagingDirectory)/**/*.nupkg;!$(Build.ArtifactStagingDirectory)/**/*.symbols.nupkg'
     nuGetFeedType: 'internal'
     publishVstsFeed: 'a9ebd0d9-61ca-407b-bd4f-cf5e1f59a5c6'
     allowPackageConflicts: true
