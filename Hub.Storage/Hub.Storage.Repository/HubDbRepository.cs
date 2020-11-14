@@ -10,12 +10,12 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Hub.Storage.Repository
 {
-    public abstract class HubHubDbRepository<TDbContext> : IHubDbRepository
+    public abstract class HubDbRepository<TDbContext> : IHubDbRepository
         where TDbContext : HubDbContext
     {
         protected readonly TDbContext DbContext;
 
-        protected HubHubDbRepository(TDbContext dbContext)
+        protected HubDbRepository(TDbContext dbContext)
         {
             DbContext = dbContext;
         }

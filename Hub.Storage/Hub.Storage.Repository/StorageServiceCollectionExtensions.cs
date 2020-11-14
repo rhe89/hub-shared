@@ -27,13 +27,13 @@ namespace Hub.Storage.Repository
         public static void TryAddTransientDbRepository<TDbContext>(this IServiceCollection serviceCollection)
             where TDbContext : HubDbContext
         {
-            serviceCollection.TryAddTransient<IHubDbRepository, HubHubDbRepository<TDbContext>>();
+            serviceCollection.TryAddTransient<IHubDbRepository, HubDbRepository<TDbContext>>();
         }
         
         public static void TryAddScopedDbRepository<TDbContext>(this IServiceCollection serviceCollection)
             where TDbContext : HubDbContext
         {
-            serviceCollection.TryAddScoped<IScopedHubHubDbRepository, ScopedHubHubHubHubDbRepository<TDbContext>>();
+            serviceCollection.TryAddScoped<IScopedHubDbRepository, ScopedHubDbRepository<TDbContext>>();
         }
     }
 }
