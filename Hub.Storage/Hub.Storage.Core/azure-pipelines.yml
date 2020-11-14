@@ -1,0 +1,31 @@
+steps:
+- task: DotNetCoreCLI@2
+  displayName: restore
+  inputs:
+    command: 'restore'
+    projects: '**/Hub.Storage.Core.csproj'
+    feedsToUse: 'select'
+    vstsFeed: 'a9ebd0d9-61ca-407b-bd4f-cf5e1f59a5c6'
+- task: DotNetCoreCLI@2
+  displayName: build
+  inputs:
+    command: 'build'
+    projects: '**/Hub.Storage.Core.csproj'
+    arguments: '--no-restore'
+- task: DotNetCoreCLI@2
+  displayName: 'pack'
+  inputs:
+    command: 'pack'
+    packagesToPack: '**/Hub.Storage.Core.csproj'
+    nobuild: true
+    versioningScheme: 'off'
+- task: NuGetAuthenticate@0
+  displayName: 'authenticate'
+- task: NuGetCommand@2
+  displayName: 'push'
+  inputs:
+    command: 'push'
+    packagesToPush: '$(Build.ArtifactStagingDirectory)/**/*.nupkg;!$(Build.ArtifactStagingDirectory)/**/*.symbols.nupkg'
+    nuGetFeedType: 'internal'
+    publishVstsFeed: 'a9ebd0d9-61ca-407b-bd4f-cf5e1f59a5c6'
+    allowPackageConflicts: true
