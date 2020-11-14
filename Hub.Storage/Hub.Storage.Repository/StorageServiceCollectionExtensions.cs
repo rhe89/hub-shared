@@ -1,3 +1,4 @@
+using Hub.Storage.Core.Repository;
 using Hub.Storage.Repository.DatabaseContext;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
