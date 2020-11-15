@@ -1,14 +1,12 @@
 using Microsoft.EntityFrameworkCore;
-using Setting = Hub.Storage.Repository.Entities.Setting;
+using Setting = Hub.Storage.Core.Entities.Setting;
 
 namespace Hub.Storage.Repository.DatabaseContext
 {
     public class HubDbContext : DbContext
     {
-        public HubDbContext(DbContextOptions<HubDbContext> options) : base(options) { }
-
-        public DbSet<Setting> Settings { get; set; }
-
+        public HubDbContext(DbContextOptions options) : base(options) { }
+        
         protected override void OnModelCreating(ModelBuilder builder)
         {
             builder.Entity<Setting>()

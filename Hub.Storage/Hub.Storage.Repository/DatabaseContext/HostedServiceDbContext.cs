@@ -1,11 +1,11 @@
-using Hub.Storage.Repository.Entities;
+using Hub.Storage.Core.Entities;
 using Microsoft.EntityFrameworkCore;
 
 namespace Hub.Storage.Repository.DatabaseContext
 {
     public class HostedServiceDbContext : HubDbContext
     {
-        public HostedServiceDbContext(DbContextOptions<HubDbContext> options) : base(options) { }
+        public HostedServiceDbContext(DbContextOptions options) : base(options) { }
         
         protected override void OnModelCreating(ModelBuilder builder)
         {
