@@ -1,9 +1,5 @@
-using AutoMapper;
-using Hub.Storage.Core.Entities;
-
 namespace Hub.Storage.Core.Dto
 {
-    [AutoMap(typeof(WorkerLog))]
     public class WorkerLogDto : EntityDtoBase
     {
         public string Name { get; set; }
