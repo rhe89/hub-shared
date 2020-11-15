@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace Hub.Storage.Core.Dto
 {
-    public class BackgroundTaskConfigurationDto : EntityDtoBase
+    public class BackgroundTaskConfigurationDto
     {
         public string Name { get; set; }
         public DateTime LastRun { get; set; }

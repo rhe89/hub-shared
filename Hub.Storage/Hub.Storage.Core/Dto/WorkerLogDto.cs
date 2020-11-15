@@ -1,14 +1,14 @@
-using AutoMapper;
-using Hub.Storage.Core.Entities;
+using System;
 
 namespace Hub.Storage.Core.Dto
 {
-    [AutoMap(typeof(WorkerLog))]
-    public class WorkerLogDto : EntityDtoBase
+    public class WorkerLogDto
     {
         public string Name { get; set; }
+
         public bool Success { get; set; }
+
         public string ErrorMessage { get; set; }
-        public string InitiatedBy { get; set; }
+        public DateTime CreatedDate { get; set; }
     }
 }

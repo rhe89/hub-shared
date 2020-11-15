@@ -1,7 +1,7 @@
 using System;
 using System.Threading;
 using System.Threading.Tasks;
-using Hub.Storage.Core.Dto;
+using Hub.Storage.Dto;
 
 namespace Hub.HostedServices.Tasks
 {

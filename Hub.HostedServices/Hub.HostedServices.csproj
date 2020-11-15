@@ -22,12 +22,7 @@
     <ItemGroup>
         <PackageReference Include="Microsoft.Extensions.Hosting" Version="3.1.8" />
         <PackageReference Include="Hub.Logging" Version="1.0.2" />
-    </ItemGroup>
-    
-    <ItemGroup>
-      <ProjectReference Include="..\Hub.Storage\Hub.Storage.Factories\Hub.Storage.Factories.csproj" />
-      <ProjectReference Include="..\Hub.Storage\Hub.Storage.Providers\Hub.Storage.Providers.csproj" />
-      <ProjectReference Include="..\Hub.Storage\Hub.Storage.Repository\Hub.Storage.Repository.csproj" />
+        <PackageReference Include="Hub.Storage.DependencyRegistration" Version="1.0.3" />
     </ItemGroup>
 
 </Project>
