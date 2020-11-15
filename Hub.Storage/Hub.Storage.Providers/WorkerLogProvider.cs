@@ -1,11 +1,10 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
-using Hub.Storage.Dto;
-using Hub.Storage.Entities;
-using Hub.Storage.Repository;
-using Hub.Storage.Mapping;
+using Hub.Storage.Core.Dto;
+using Hub.Storage.Core.Entities;
+using Hub.Storage.Core.Providers;
+using Hub.Storage.Core.Repository;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Hub.Storage.Providers
@@ -21,13 +20,14 @@ namespace Hub.Storage.Providers
         
         public async Task<IEnumerable<WorkerLogDto>> GetLogs(int days)
         {
-            var scope = _serviceScopeFactory.CreateScope();
+            using var scope = _serviceScopeFactory.CreateScope();
 
-            var scopedDbRepository = scope.ServiceProvider.GetService<IScopedDbRepository>();
-            
-            var workerLogs = await scopedDbRepository.GetManyAsync<WorkerLog>(workerLog => workerLog.CreatedDate > DateTime.Now.AddDays(-days));
+            using var scopedDbRepository = scope.ServiceProvider.GetService<IScopedHubDbRepository>();
 
-            return workerLogs.Select(EntityToDtoMapper.Map);
+            var workerLogs = scopedDbRepository
+                .Where<WorkerLog>(workerLog => workerLog.CreatedDate > DateTime.Now.AddDays(-days));
+
+            return await scopedDbRepository.ProjectAsync<WorkerLog, WorkerLogDto>(workerLogs);
         }
     }
 }

@@ -1,10 +1,9 @@
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
-using Hub.Storage.Dto;
-using Hub.Storage.Entities;
-using Hub.Storage.Mapping;
-using Hub.Storage.Repository;
+using Hub.Storage.Core.Dto;
+using Hub.Storage.Core.Entities;
+using Hub.Storage.Core.Providers;
+using Hub.Storage.Core.Repository;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Hub.Storage.Providers
@@ -22,24 +21,24 @@ namespace Hub.Storage.Providers
         {
             var scope = _serviceScopeFactory.CreateScope();
 
-            var scopedDbRepository = scope.ServiceProvider.GetService<IScopedDbRepository>();
+            var scopedDbRepository = scope.ServiceProvider.GetService<IScopedHubDbRepository>();
             
             var backgroundTaskConfiguration = scopedDbRepository
-                .GetSingle<BackgroundTaskConfiguration>(bt => bt.Name == name);
+                .Single<BackgroundTaskConfiguration, BackgroundTaskConfigurationDto>(bt => bt.Name == name);
 
-            return backgroundTaskConfiguration == null ? null : EntityToDtoMapper.Map(backgroundTaskConfiguration);
+            return backgroundTaskConfiguration;
         }
 
         public async Task<IList<BackgroundTaskConfigurationDto>> GetBackgroundTaskConfigurations()
         {
             var scope = _serviceScopeFactory.CreateScope();
 
-            var scopedDbRepository = scope.ServiceProvider.GetService<IScopedDbRepository>();
-            
-            var backgroundTaskConfigurations = await scopedDbRepository
-                .GetManyAsync<BackgroundTaskConfiguration>();
+            var scopedDbRepository = scope.ServiceProvider.GetService<IScopedHubDbRepository>();
 
-            return backgroundTaskConfigurations.Select(EntityToDtoMapper.Map).ToList();
+            var backgroundTaskConfigurations = await scopedDbRepository
+                .AllAsync<BackgroundTaskConfiguration, BackgroundTaskConfigurationDto>();
+
+            return backgroundTaskConfigurations;
         }
     }
 }

@@ -1,11 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
-using Hub.Storage.Dto;
-using Hub.Storage.Entities;
-using Hub.Storage.Mapping;
-using Hub.Storage.Repository;
+using Hub.Storage.Core.Dto;
+using Hub.Storage.Core.Entities;
+using Hub.Storage.Core.Providers;
+using Hub.Storage.Core.Repository;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Hub.Storage.Providers
@@ -23,20 +22,20 @@ namespace Hub.Storage.Providers
         {
             using var scope = _serviceScopeFactory.CreateScope();
 
-            using var dbRepository = scope.ServiceProvider.GetService<IScopedDbRepository>();
+            using var dbRepository = scope.ServiceProvider.GetService<IScopedHubDbRepository>();
 
-            var settings = await dbRepository.GetManyAsync<Setting>();
+            var settings = await dbRepository.AllAsync<Setting, SettingDto>();
 
-            return settings.Select(EntityToDtoMapper.Map).ToList();
+            return settings;
         }
         
         public T GetSetting<T>(string key)
         {
             using var scope = _serviceScopeFactory.CreateScope();
 
-            using var dbRepository = scope.ServiceProvider.GetService<IScopedDbRepository>();
+            using var dbRepository = scope.ServiceProvider.GetService<IScopedHubDbRepository>();
 
-            var setting = dbRepository.GetSingle<Setting>(x => x.Key == key);
+            var setting = dbRepository.Single<Setting, SettingDto>(x => x.Key == key);
             
             if (setting == null)
             {
@@ -50,7 +49,5 @@ namespace Hub.Storage.Providers
 
             return value == null ? default : (T)Convert.ChangeType(value, t);
         }
-        
-        
     }
 }
