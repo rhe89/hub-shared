@@ -21,6 +21,9 @@ namespace Hub.Storage.Core.Repository
         public IQueryable<TEntity> Where<TEntity>(Expression<Func<TEntity, bool>> predicate)
             where TEntity : EntityBase;
         
+        IQueryable<TEntity> Set<TEntity>() 
+            where TEntity : EntityBase;
+        
         public TDto First<TEntity, TDto>(Expression<Func<TEntity, bool>> predicate) 
             where TEntity : EntityBase
             where TDto : EntityDtoBase;
