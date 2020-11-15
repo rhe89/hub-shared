@@ -2,32 +2,26 @@
 
     <PropertyGroup>
         <PackageId>Hub.HostedServices</PackageId>
-        <Version>1.0.6</Version>
+        <Version>1.0.7</Version>
         <Authors>rhe89</Authors>
-        <RepositoryUrl>https://github.com/rhe89/hub-shared</RepositoryUrl>
         <TargetFramework>netstandard2.1</TargetFramework>
         <Dependencies>
             <Group targetFramework="netstandard2.1">
+                <PackageReference Include="Hub.Storage.Factories" Version="1.0.4" />
+                <PackageReference Include="Hub.Storage.Providers" Version="1.0.4" />
+                <PackageReference Include="Hub.Storage.Repository" Version="2.0.3" />
                 <PackageReference Include="Microsoft.Extensions.Hosting" Version="3.1.8" />
-                <PackageReference Include="Hub.Logging" Version="1.0.0" />
-                <PackageReference Include="Hub.Storage.DependencyRegistration" Version="1.0.0" />
+                <PackageReference Include="Hub.Logging" Version="1.0.2" />
             </Group>
         </Dependencies>
     </PropertyGroup>
     
     <ItemGroup>
-      <PackageReference Include="Microsoft.Extensions.Hosting" Version="3.1.8" />
-    </ItemGroup>
-    
-    <ItemGroup>
+        <PackageReference Include="Hub.Storage.Factories" Version="1.0.4" />
+        <PackageReference Include="Hub.Storage.Providers" Version="1.0.4" />
+        <PackageReference Include="Hub.Storage.Repository" Version="2.0.3" />
         <PackageReference Include="Microsoft.Extensions.Hosting" Version="3.1.8" />
         <PackageReference Include="Hub.Logging" Version="1.0.2" />
-    </ItemGroup>
-    
-    <ItemGroup>
-      <ProjectReference Include="..\Hub.Storage\Hub.Storage.Factories\Hub.Storage.Factories.csproj" />
-      <ProjectReference Include="..\Hub.Storage\Hub.Storage.Providers\Hub.Storage.Providers.csproj" />
-      <ProjectReference Include="..\Hub.Storage\Hub.Storage.Repository\Hub.Storage.Repository.csproj" />
     </ItemGroup>
 
 </Project>
