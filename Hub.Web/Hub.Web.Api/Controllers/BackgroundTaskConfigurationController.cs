@@ -1,17 +1,19 @@
 using System.Threading.Tasks;
-using Hub.Storage.Dto;
-using Hub.Storage.Factories;
-using Hub.Storage.Providers;
+using Hub.Storage.Core.Dto;
+using Hub.Storage.Core.Factories;
+using Hub.Storage.Core.Providers;
 using Microsoft.AspNetCore.Mvc;
 
-namespace Hub.Web.ApiControllers
+namespace Hub.Web.Api.Controllers
 {
-    public class BackgroundTaskConfigurationControllerBase : ControllerBase
+    [ApiController]
+    [Route("api/[controller]")]
+    public class BackgroundTaskConfigurationController : ControllerBase
     {
         protected readonly IBackgroundTaskConfigurationProvider BackgroundTaskConfigurationProvider;
         protected readonly IBackgroundTaskConfigurationFactory BackgroundTaskConfigurationFactory;
 
-        public BackgroundTaskConfigurationControllerBase(IBackgroundTaskConfigurationProvider backgroundTaskConfigurationProvider,
+        public BackgroundTaskConfigurationController(IBackgroundTaskConfigurationProvider backgroundTaskConfigurationProvider,
             IBackgroundTaskConfigurationFactory backgroundTaskConfigurationFactory)
         {
             BackgroundTaskConfigurationProvider = backgroundTaskConfigurationProvider;

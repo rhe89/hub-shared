@@ -1,6 +1,6 @@
 ﻿using Hub.Web.Http;
 
-namespace Hub.Web.ViewModels
+namespace Hub.Web.BlazorServer.ViewModels
 {
     public class ViewModelMappings
     {

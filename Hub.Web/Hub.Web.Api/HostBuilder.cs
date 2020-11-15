@@ -1,22 +1,19 @@
 using System;
 using System.IO;
 using Hub.Logging;
-using Hub.Web.DependencyRegistration;
-using Hub.Web.Startup;
+using Hub.Storage.Repository.DatabaseContext;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 
-namespace Hub.Web.HostBuilder
+namespace Hub.Web.Api
 {
-    public class ApiHostBuilder<TStartup, TApiAppServiceCollectionBuilder, TDbContext>
-        where TApiAppServiceCollectionBuilder : ApiWithQueueHostedServiceDependencyRegistrationFactory<TDbContext>, new()
-        where TStartup : ApiStartup<TDbContext, TApiAppServiceCollectionBuilder>
-        where TDbContext : DbContext 
+    public static class HostBuilder<TDependencyRegistrationFactory, TDbContext>
+        where TDependencyRegistrationFactory : DependencyRegistrationFactoryBase<TDbContext>, new()
+        where TDbContext : HubDbContext 
     {
-        public IHostBuilder CreateHostBuilder (string[] args) 
+        public static IHostBuilder Create(string[] args) 
         { 
             var configPath = $"{Directory.GetCurrentDirectory()}/../..";
 
@@ -29,7 +26,7 @@ namespace Hub.Web.HostBuilder
             return Host.CreateDefaultBuilder(args)
                 .ConfigureWebHostDefaults(webBuilder =>
                 {
-                    webBuilder.UseStartup<TStartup>();
+                    webBuilder.UseStartup<Startup<TDependencyRegistrationFactory, TDbContext>>();
                 })
                 .ConfigureAppConfiguration(b =>
                 {

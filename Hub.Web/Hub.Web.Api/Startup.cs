@@ -1,4 +1,5 @@
-using Hub.Web.DependencyRegistration;
+using System.Reflection;
+using Hub.Storage.Repository.DatabaseContext;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
@@ -6,22 +7,22 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 
-namespace Hub.Web.Startup
+namespace Hub.Web.Api
 {
-    public abstract class ApiStartup<TDbContext, TDependencyRegistrationFactory>
-        where TDbContext : DbContext
-        where TDependencyRegistrationFactory : ApiWithQueueHostedServiceDependencyRegistrationFactory<TDbContext>, new()
+    public class Startup<TDependencyRegistrationFactory, TDbContext>
+        where TDependencyRegistrationFactory : DependencyRegistrationFactoryBase<TDbContext>, new()
+        where TDbContext : HubDbContext
     {
         private readonly IConfiguration _configuration;
 
-        protected ApiStartup(IConfiguration configuration)
+        public Startup(IConfiguration configuration)
         {
             _configuration = configuration;
         }
         
         public void ConfigureServices(IServiceCollection serviceCollection)
         {
-            new TDependencyRegistrationFactory().BuildServiceCollection(serviceCollection, _configuration);
+            new TDependencyRegistrationFactory().AddBaseServices(serviceCollection, _configuration);
         }
         
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -31,7 +32,7 @@ namespace Hub.Web.Startup
             {
                 app.UseDeveloperExceptionPage();
             }
-
+            
             UpdateDatabase(app);
             
             app.UseRouting();

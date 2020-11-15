@@ -1,18 +1,18 @@
-using Hub.Web.DependencyRegistration;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 
-namespace Hub.Web.Startup
+namespace Hub.Web.BlazorServer
 {
-    public abstract class WebStartup<TDependencyRegistrationFactory> 
-        where TDependencyRegistrationFactory : WebDependencyRegistrationFactory, new()
+    public class Startup<TDependencyRegistrationFactory> 
+        where TDependencyRegistrationFactory : DependencyRegistrationFactoryBase, new()
     {
         private readonly IConfiguration _configuration;
 
-        protected WebStartup(IConfiguration configuration)
+        protected Startup(IConfiguration configuration)
         {
             _configuration = configuration;
         }
@@ -54,5 +54,30 @@ namespace Hub.Web.Startup
                 endpoints.MapFallbackToPage("/_Host");
             });
         }
+    }
+    
+    public class Startup<TDependencyRegistrationFactory, TDbContext> : Startup<TDependencyRegistrationFactory>
+        where TDependencyRegistrationFactory : DependencyRegistrationFactoryBase, new()
+        where TDbContext : DbContext
+    {
+        protected Startup(IConfiguration configuration) : base(configuration) { }
+        
+        protected new void ConfigureApp(IApplicationBuilder app, IWebHostEnvironment env)
+        {
+            base.ConfigureApp(app, env);
+            
+            UpdateDatabase(app);
+        }
+
+        private static void UpdateDatabase(IApplicationBuilder app)
+        {
+            using var serviceScope = app.ApplicationServices
+                .GetRequiredService<IServiceScopeFactory>()
+                .CreateScope();
+            
+            using var context = serviceScope.ServiceProvider.GetService<TDbContext>();
+            
+            context.Database.Migrate();
+        }    
     }
 }

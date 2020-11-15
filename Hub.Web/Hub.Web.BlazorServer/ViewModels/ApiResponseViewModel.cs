@@ -1,6 +1,6 @@
 using System.Net;
 
-namespace Hub.Web.ViewModels
+namespace Hub.Web.BlazorServer.ViewModels
 {
     public abstract class ApiResponseViewModel
     {

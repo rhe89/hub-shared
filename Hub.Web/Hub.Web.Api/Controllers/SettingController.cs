@@ -1,17 +1,19 @@
 using System.Threading.Tasks;
-using Hub.Storage.Dto;
-using Hub.Storage.Factories;
-using Hub.Storage.Providers;
+using Hub.Storage.Core.Dto;
+using Hub.Storage.Core.Factories;
+using Hub.Storage.Core.Providers;
 using Microsoft.AspNetCore.Mvc;
 
-namespace Hub.Web.ApiControllers
+namespace Hub.Web.Api.Controllers
 {
-    public class SettingControllerBase : ControllerBase
+    [ApiController]
+    [Route("api/[controller]")]
+    public class SettingController : ControllerBase
     {
         protected readonly ISettingProvider SettingProvider;
         protected readonly ISettingFactory SettingFactory;
 
-        public SettingControllerBase(ISettingProvider settingProvider, ISettingFactory settingFactory)
+        public SettingController(ISettingProvider settingProvider, ISettingFactory settingFactory)
         {
             SettingProvider = settingProvider;
             SettingFactory = settingFactory;

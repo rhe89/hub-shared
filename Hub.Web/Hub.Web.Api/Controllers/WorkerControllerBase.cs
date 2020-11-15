@@ -1,14 +1,15 @@
 using System.Threading.Tasks;
+using Hub.Storage.Core.Providers;
 using Hub.Storage.Providers;
 using Microsoft.AspNetCore.Mvc;
 
-namespace Hub.Web.ApiControllers
+namespace Hub.Web.Api.Controllers
 {
-    public class WorkerControllerBase : ControllerBase
+    public abstract class WorkerControllerBase : Controller
     {
         protected readonly IWorkerLogProvider WorkerLogProvider;
 
-        public WorkerControllerBase(IWorkerLogProvider workerLogProvider)
+        protected WorkerControllerBase(IWorkerLogProvider workerLogProvider)
         {
             WorkerLogProvider = workerLogProvider;
         }

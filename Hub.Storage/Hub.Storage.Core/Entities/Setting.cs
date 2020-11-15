@@ -1,4 +1,4 @@
-namespace Hub.Storage.Entities
+namespace Hub.Storage.Core.Entities
 {
     public class Setting : EntityBase
     {
