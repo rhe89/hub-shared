@@ -1,6 +1,4 @@
-using Hub.Storage.Core;
-
-namespace Hub.Storage.Repository.Entities
+namespace Hub.Storage.Core.Entities
 {
     public class WorkerLog : EntityBase
     {

@@ -2,7 +2,7 @@
 using System.Threading;
 using System.Threading.Tasks;
 using Hub.HostedServices.Tasks;
-using Hub.Storage.Factories;
+using Hub.Storage.Core.Factories;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 

@@ -2,17 +2,19 @@
 
     <PropertyGroup>
         <PackageId>Hub.Storage.Core</PackageId>
-        <Version>1.0.3</Version>
+        <Version>1.0.4</Version>
         <Authors>rhe89</Authors>
         <TargetFramework>netstandard2.1</TargetFramework>
         <Dependencies>
             <Group targetFramework="netstandard2.1">
+                <PackageReference Include="AutoMapper" Version="10.1.0" />
                 <PackageReference Include="System.ComponentModel.Annotations" Version="4.7.0" />
             </Group>
         </Dependencies>
     </PropertyGroup>
 
     <ItemGroup>
+      <PackageReference Include="AutoMapper" Version="10.1.0" />
       <PackageReference Include="System.ComponentModel.Annotations" Version="4.7.0" />
     </ItemGroup>
 

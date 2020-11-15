@@ -1,9 +1,9 @@
 using System;
 using System.Threading;
 using System.Threading.Tasks;
-using Hub.Storage.Dto;
-using Hub.Storage.Factories;
-using Hub.Storage.Providers;
+using Hub.Storage.Core.Dto;
+using Hub.Storage.Core.Factories;
+using Hub.Storage.Core.Providers;
 
 namespace Hub.HostedServices.Tasks
 {

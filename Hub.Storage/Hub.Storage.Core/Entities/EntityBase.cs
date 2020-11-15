@@ -2,7 +2,7 @@ using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace Hub.Storage.Core
+namespace Hub.Storage.Core.Entities
 {
     public abstract class EntityBase
     {

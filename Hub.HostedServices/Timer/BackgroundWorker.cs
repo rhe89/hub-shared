@@ -1,6 +1,6 @@
 using System.IO;
 using Hub.Logging;
-using Microsoft.EntityFrameworkCore;
+using Hub.Storage.Repository.DatabaseContext;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -8,26 +8,26 @@ using Microsoft.Extensions.Logging;
 
 namespace Hub.HostedServices.Timer
 {
-    public abstract class TimerHostBuilder<TDbContext>
-        where TDbContext : DbContext
+    public class BackgroundWorker<TDependencyRegistrationFactory, TDbContext>
+        where TDependencyRegistrationFactory : DependencyRegistrationFactoryBase<TDbContext>, new()
+        where TDbContext : HubDbContext
     {
         private readonly string[] _args;
         private readonly string _connectionStringKey;
         private IConfigurationRoot _config;
 
-        protected TimerHostBuilder(string [] args, string connectionStringKey)
+        public BackgroundWorker(string [] args, string connectionStringKey)
         {
             _args = args;
             _connectionStringKey = connectionStringKey;
         }
         
-        public IHost Build()
+        public IHostBuilder CreateHostBuilder()
         {
             return Host.CreateDefaultBuilder(_args)
                 .ConfigureHostConfiguration(AddConfiguration)
                 .ConfigureServices(RegisterServices)
-                .ConfigureLogging(AddLogging)
-                .Build();
+                .ConfigureLogging(AddLogging);
         }
         
         private void AddConfiguration(IConfigurationBuilder configurationBuilder)
@@ -45,13 +45,9 @@ namespace Hub.HostedServices.Timer
 
         private void RegisterServices(IServiceCollection serviceCollection)
         {
-            serviceCollection.AddTimerHostedService<TDbContext>(_config, _connectionStringKey);
-            
-            RegisterDomainDependencies(serviceCollection, _config);
+            new TDependencyRegistrationFactory().AddBaseServices(serviceCollection, _config, _connectionStringKey);
         }
-
-        protected abstract void RegisterDomainDependencies(IServiceCollection serviceCollection, IConfiguration configuration);
-
+        
         private static void AddLogging(ILoggingBuilder loggingBuilder)
         {
             loggingBuilder.AddHubLogger(new HubLoggerConfig
