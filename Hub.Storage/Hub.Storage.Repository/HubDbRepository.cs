@@ -50,6 +50,14 @@ namespace Hub.Storage.Repository
             return entities;
         }
         
+        public IQueryable<TEntity> Set<TEntity>() 
+            where TEntity : EntityBase
+        {
+            var entities = DbContext.Set<TEntity>();
+            
+            return entities;
+        }
+        
         public TDto First<TEntity, TDto>(Expression<Func<TEntity, bool>> predicate) 
             where TEntity : EntityBase
             where TDto : EntityDtoBase
