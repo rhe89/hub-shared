@@ -1,7 +1,9 @@
 using System;
 using System.Threading.Tasks;
-using Hub.Storage.Entities;
-using Hub.Storage.Repository;
+using Hub.Storage.Core.Dto;
+using Hub.Storage.Core.Entities;
+using Hub.Storage.Core.Factories;
+using Hub.Storage.Core.Repository;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Hub.Storage.Factories
@@ -19,13 +21,15 @@ namespace Hub.Storage.Factories
         {
             using var scope = _serviceScopeFactory.CreateScope();
 
-            using var dbRepository = scope.ServiceProvider.GetService<IScopedDbRepository>();
+            using var dbRepository = scope.ServiceProvider.GetService<IScopedHubDbRepository>();
 
-            var setting = dbRepository.GetSingle<Setting>(x => x.Key == key);
+            var setting = dbRepository.Single<Setting, SettingDto>(x => x.Key == key);
             
             if (setting == null) { throw new ArgumentException($"Invalid settings key: {key}");}
 
             setting.Value = value;
+
+            await dbRepository.UpdateAsync<Setting, SettingDto>(setting);
 
             await dbRepository.SaveChangesAsync();
         }

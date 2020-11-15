@@ -1,8 +1,11 @@
 using System;
 using System.Linq;
 using System.Threading.Tasks;
-using Hub.Storage.Entities;
-using Hub.Storage.Repository;
+using Hub.Storage.Core.Dto;
+using Hub.Storage.Core.Entities;
+using Hub.Storage.Core.Factories;
+using Hub.Storage.Core.Repository;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 
@@ -20,7 +23,7 @@ namespace Hub.Storage.Factories
         }
         public async Task AddWorkerLog(string name, bool success, string errorMessage, string initiatedBy)
         {
-            var workerLog = new WorkerLog
+            var workerLog = new WorkerLogDto
             {
                 Name = name,
                 Success = success,
@@ -30,9 +33,9 @@ namespace Hub.Storage.Factories
 
             using var scope = _serviceScopeFactory.CreateScope();
 
-            using var dbRepository = scope.ServiceProvider.GetService<IScopedDbRepository>();
+            using var dbRepository = scope.ServiceProvider.GetService<IScopedHubDbRepository>();
 
-            dbRepository.Add(workerLog);
+            dbRepository.Add<WorkerLog, WorkerLogDto>(workerLog);
 
             await dbRepository.SaveChangesAsync();
         }
@@ -46,14 +49,13 @@ namespace Hub.Storage.Factories
         {
             using var scope = _serviceScopeFactory.CreateScope();
 
-            using var dbRepository = scope.ServiceProvider.GetService<IScopedDbRepository>();
+            using var dbRepository = scope.ServiceProvider.GetService<IScopedHubDbRepository>();
 
-            var workerLogsToDelete =
-                dbRepository.GetMany<WorkerLog>(wl =>
-                        wl.CreatedDate < DateTime.Today.AddDays(-ageInDaysOfLogsToDelete))
-                    .ToList();
+            var workerLogsToDelete = await dbRepository
+                .Where<WorkerLog>(wl => wl.CreatedDate < DateTime.Today.AddDays(-ageInDaysOfLogsToDelete))
+                .ToListAsync();
             
-            _logger.LogInformation($"Found {workerLogsToDelete.Count} log items to delete");
+            _logger.LogInformation($"Found {workerLogsToDelete.Count()} log items to delete");
 
             if (!workerLogsToDelete.Any())
             {

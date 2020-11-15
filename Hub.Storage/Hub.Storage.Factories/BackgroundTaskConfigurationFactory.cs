@@ -1,9 +1,9 @@
 using System;
 using System.Threading.Tasks;
-using Hub.Storage.Dto;
-using Hub.Storage.Entities;
-using Hub.Storage.Mapping;
-using Hub.Storage.Repository;
+using Hub.Storage.Core.Dto;
+using Hub.Storage.Core.Entities;
+using Hub.Storage.Core.Factories;
+using Hub.Storage.Core.Repository;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Hub.Storage.Factories
@@ -19,29 +19,27 @@ namespace Hub.Storage.Factories
         
         public BackgroundTaskConfigurationDto CreateDefaultBackgroundTaskConfiguration(string name)
         {
-            var backgroundTaskConfiguration = new BackgroundTaskConfiguration
+            var backgroundTaskConfiguration = new BackgroundTaskConfigurationDto
             {
                 Name = name,
-                RunIntervalType = (int)RunIntervalType.Day,
+                RunIntervalType = RunIntervalType.Day,
                 LastRun = DateTime.MinValue
             };
             
             var scope = _serviceScopeFactory.CreateScope();
 
-            var scopedDbRepository = scope.ServiceProvider.GetService<IScopedDbRepository>();
+            var scopedDbRepository = scope.ServiceProvider.GetService<IScopedHubDbRepository>();
 
-            scopedDbRepository.Add(backgroundTaskConfiguration, true);
-
-            return EntityToDtoMapper.Map(backgroundTaskConfiguration);
+            return scopedDbRepository.Add<BackgroundTaskConfiguration, BackgroundTaskConfigurationDto>(backgroundTaskConfiguration, true);
         }   
         
         public async Task UpdateLastRun(string name, DateTime lastRun)
         {
             var scope = _serviceScopeFactory.CreateScope();
-            var scopedDbRepository = scope.ServiceProvider.GetService<IScopedDbRepository>();
+            var scopedDbRepository = scope.ServiceProvider.GetService<IScopedHubDbRepository>();
 
-            var backgroundTaskConfiguration =
-                scopedDbRepository.GetSingle<BackgroundTaskConfiguration>(x => x.Name == name);
+            var backgroundTaskConfiguration = scopedDbRepository
+                .FirstOrDefault<BackgroundTaskConfiguration, BackgroundTaskConfigurationDto>(x => x.Name == name);
             
             if (backgroundTaskConfiguration == null)
             {
@@ -56,28 +54,28 @@ namespace Hub.Storage.Factories
         public async Task UpdateRunIntervalType(string name, RunIntervalType runIntervalType)
         {
             var scope = _serviceScopeFactory.CreateScope();
-            var scopedDbRepository = scope.ServiceProvider.GetService<IScopedDbRepository>();
+            var scopedDbRepository = scope.ServiceProvider.GetService<IScopedHubDbRepository>();
 
-            var backgroundTaskConfiguration =
-                scopedDbRepository.GetSingle<BackgroundTaskConfiguration>(x => x.Name == name);
+            var backgroundTaskConfiguration = scopedDbRepository
+                .FirstOrDefault<BackgroundTaskConfiguration, BackgroundTaskConfigurationDto>(x => x.Name == name);
             
             if (backgroundTaskConfiguration == null)
             {
                 return;
             }
 
-            backgroundTaskConfiguration.RunIntervalType = (int)runIntervalType;
+            backgroundTaskConfiguration.RunIntervalType = runIntervalType;
             
             await Update(backgroundTaskConfiguration);
         }
 
-        private async Task Update(BackgroundTaskConfiguration backgroundTaskConfiguration)
+        private async Task Update(BackgroundTaskConfigurationDto backgroundTaskConfiguration)
         {
             var scope = _serviceScopeFactory.CreateScope();
 
-            var scopedDbRepository = scope.ServiceProvider.GetService<IScopedDbRepository>();
+            var scopedDbRepository = scope.ServiceProvider.GetService<IScopedHubDbRepository>();
 
-            await scopedDbRepository.UpdateAsync(backgroundTaskConfiguration, true);
+            await scopedDbRepository.UpdateAsync<BackgroundTaskConfiguration, BackgroundTaskConfigurationDto>(backgroundTaskConfiguration, true);
         }
     }
 }
