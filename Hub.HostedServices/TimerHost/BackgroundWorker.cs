@@ -6,7 +6,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 
-namespace Hub.HostedServices.Timer
+namespace Hub.HostedServices.TimerHost
 {
     public class BackgroundWorker<TDependencyRegistrationFactory, TDbContext>
         where TDependencyRegistrationFactory : DependencyRegistrationFactoryBase<TDbContext>, new()

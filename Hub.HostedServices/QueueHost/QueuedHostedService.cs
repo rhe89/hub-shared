@@ -4,7 +4,7 @@ using Hub.HostedServices.Tasks;
 using Hub.Storage.Core.Factories;
 using Microsoft.Extensions.Logging;
 
-namespace Hub.HostedServices.Queue
+namespace Hub.HostedServices.QueueHost
 {
     public class QueuedHostedService : HostedServiceBase
     {
