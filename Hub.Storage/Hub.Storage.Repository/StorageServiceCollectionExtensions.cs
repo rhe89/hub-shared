@@ -1,6 +1,4 @@
-using AutoMapper;
 using Hub.Storage.Core.Repository;
-using Hub.Storage.Repository.AutoMapperProfiles;
 using Hub.Storage.Repository.DatabaseContext;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -29,7 +27,7 @@ namespace Hub.Storage.Repository
         public static void TryAddTransientDbRepository<TDbContext>(this IServiceCollection serviceCollection)
             where TDbContext : HubDbContext
         {
-            serviceCollection.AddTransient<IHubDbRepository, HubDbRepository<TDbContext>>();
+            serviceCollection.TryAddTransient<IHubDbRepository, HubDbRepository<TDbContext>>();
         }
         
         public static void TryAddScopedDbRepository<TDbContext>(this IServiceCollection serviceCollection)

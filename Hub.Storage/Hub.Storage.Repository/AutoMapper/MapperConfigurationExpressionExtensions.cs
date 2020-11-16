@@ -1,5 +1,4 @@
 using AutoMapper;
-using Hub.Storage.Repository.AutoMapperProfiles;
 
 namespace Hub.Storage.Repository.AutoMapper
 {
