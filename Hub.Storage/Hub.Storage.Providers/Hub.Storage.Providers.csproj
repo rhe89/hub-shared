@@ -2,12 +2,12 @@
 
     <PropertyGroup>
         <PackageId>Hub.Storage.Providers</PackageId>
-        <Version>1.0.5</Version>
+        <Version>1.0.6</Version>
         <Authors>rhe89</Authors>
         <TargetFramework>netstandard2.1</TargetFramework>
         <Dependencies>
             <Group targetFramework="netstandard2.1">
-                <PackageReference Include="Hub.Storage.Core" Version="1.0.5" />
+                <PackageReference Include="Hub.Storage.Core" Version="1.0.6" />
                 <PackageReference Include="Microsoft.EntityFrameworkCore" Version="3.1.8" />
                 <PackageReference Include="Microsoft.EntityFrameworkCore" Version="3.1.8" />
             </Group>
@@ -15,7 +15,7 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <PackageReference Include="Hub.Storage.Core" Version="1.0.5" />
+      <PackageReference Include="Hub.Storage.Core" Version="1.0.6" />
       <PackageReference Include="Microsoft.EntityFrameworkCore" Version="3.1.8" />
       <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="3.1.8" />
     </ItemGroup>
