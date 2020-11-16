@@ -1,6 +1,7 @@
-using System;
 using System.Reflection;
-using Hub.HostedServices.Queue;
+using Hub.HostedServices.QueueHost;
+using Hub.Storage.Core.Factories;
+using Hub.Storage.Core.Providers;
 using Hub.Storage.Factories;
 using Hub.Storage.Providers;
 using Hub.Storage.Repository;
@@ -8,6 +9,7 @@ using Hub.Storage.Repository.DatabaseContext;
 using Microsoft.AspNetCore.Mvc.ApplicationParts;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.DependencyInjection.Extensions;
 
 namespace Hub.Web.Api
 {
@@ -46,8 +48,12 @@ namespace Hub.Web.Api
             
             serviceCollection.AddDbContext<TDbContext>(configuration, _connectionStringKey, _migrationAssembly);
             serviceCollection.TryAddTransientDbRepository<TDbContext>();
-            serviceCollection.TryAddHubFactoriesAsTransients();
-            serviceCollection.TryAddHubProvidersAsTransients();
+            serviceCollection.TryAddTransient<ISettingFactory, SettingFactory>();
+            serviceCollection.TryAddTransient<IBackgroundTaskConfigurationFactory, BackgroundTaskConfigurationFactory>();
+            serviceCollection.TryAddTransient<IWorkerLogFactory, WorkerLogFactory>();
+            serviceCollection.TryAddTransient<ISettingProvider, SettingProvider>();
+            serviceCollection.TryAddTransient<IBackgroundTaskConfigurationProvider, BackgroundTaskConfigurationProvider>();
+            serviceCollection.TryAddTransient<IWorkerLogProvider, WorkerLogProvider>();
             serviceCollection.AddQueueHostedService<TDbContext>();
         }
     }
