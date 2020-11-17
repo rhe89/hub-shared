@@ -12,7 +12,7 @@ namespace Hub.Web.BlazorServer
     {
         private readonly IConfiguration _configuration;
 
-        protected Startup(IConfiguration configuration)
+        public Startup(IConfiguration configuration)
         {
             _configuration = configuration;
         }
@@ -30,7 +30,7 @@ namespace Hub.Web.BlazorServer
             ConfigureApp(app, env);
         }
 
-        protected void ConfigureApp(IApplicationBuilder app, IWebHostEnvironment env)
+        protected virtual void ConfigureApp(IApplicationBuilder app, IWebHostEnvironment env)
         {
             if (env.IsDevelopment())
             {
@@ -60,9 +60,9 @@ namespace Hub.Web.BlazorServer
         where TDependencyRegistrationFactory : DependencyRegistrationFactoryBase, new()
         where TDbContext : DbContext
     {
-        protected Startup(IConfiguration configuration) : base(configuration) { }
+        public Startup(IConfiguration configuration) : base(configuration) { }
         
-        protected new void ConfigureApp(IApplicationBuilder app, IWebHostEnvironment env)
+        protected override void ConfigureApp(IApplicationBuilder app, IWebHostEnvironment env)
         {
             base.ConfigureApp(app, env);
             
