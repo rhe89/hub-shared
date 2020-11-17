@@ -9,12 +9,14 @@ namespace Hub.Web.BlazorServer
     {
         public void BuildServiceCollection(IServiceCollection serviceCollection, IConfiguration configuration)
         {
-            AddBlazor(serviceCollection, configuration);
+            serviceCollection.AddRazorPages();
+            serviceCollection.AddServerSideBlazor();
+            AddBlazorExtras(serviceCollection, configuration);
             AddHttpClients(serviceCollection, configuration);
             AddDomainDependencies(serviceCollection, configuration);
         }
         
-        protected abstract void AddBlazor(IServiceCollection serviceCollection, IConfiguration configuration);
+        protected abstract void AddBlazorExtras(IServiceCollection serviceCollection, IConfiguration configuration);
         protected abstract void AddHttpClients(IServiceCollection serviceCollection, IConfiguration configuration);
         protected abstract void AddDomainDependencies(IServiceCollection serviceCollection, IConfiguration configuration);
     }
