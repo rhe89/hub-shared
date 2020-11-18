@@ -12,15 +12,14 @@ using Microsoft.Extensions.DependencyInjection.Extensions;
 namespace Hub.HostedServices.TimerHost
 {
     public abstract class DependencyRegistrationFactoryBase<TDbContext>
-        where TDbContext : HubDbContext
+        where TDbContext : HostedServiceDbContext
     {
-        public void AddBaseServices(IServiceCollection serviceCollection, 
+        public void AddServices(IServiceCollection serviceCollection, 
             IConfiguration configuration, 
             string connectionStringKey)
         {
             serviceCollection.AddHostedService<TimerHostedService>();
             serviceCollection.AddDbContext<TDbContext>(configuration, connectionStringKey);
-            serviceCollection.TryAddScopedDbRepository<TDbContext>();
             serviceCollection.TryAddSingleton<IBackgroundTaskCollection, BackgroundTaskCollection>();
             serviceCollection.AddSingleton<IBackgroundTask, WorkerLogMaintenanceBackgroundTask>();
             serviceCollection.TryAddSingleton<ISettingFactory, SettingFactory>();
@@ -29,7 +28,6 @@ namespace Hub.HostedServices.TimerHost
             serviceCollection.TryAddSingleton<ISettingProvider, SettingProvider>();
             serviceCollection.TryAddSingleton<IBackgroundTaskConfigurationProvider, BackgroundTaskConfigurationProvider>();
             serviceCollection.TryAddSingleton<IWorkerLogProvider, WorkerLogProvider>();
-
             
             AddDomainDependencies(serviceCollection, configuration);
         }

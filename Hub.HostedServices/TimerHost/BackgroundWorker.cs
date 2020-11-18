@@ -45,7 +45,7 @@ namespace Hub.HostedServices.TimerHost
 
         private void RegisterServices(IServiceCollection serviceCollection)
         {
-            new TDependencyRegistrationFactory().AddBaseServices(serviceCollection, _config, _connectionStringKey);
+            new TDependencyRegistrationFactory().AddServices(serviceCollection, _config, _connectionStringKey);
         }
         
         private static void AddLogging(ILoggingBuilder loggingBuilder)
