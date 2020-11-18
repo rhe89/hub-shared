@@ -2,18 +2,18 @@
 
     <PropertyGroup>
         <PackageId>Hub.Storage.Providers</PackageId>
-        <Version>1.0.8</Version>
+        <Version>1.0.9</Version>
         <Authors>rhe89</Authors>
         <TargetFramework>netstandard2.1</TargetFramework>
         <Dependencies>
             <Group targetFramework="netstandard2.1">
-                <PackageReference Include="Hub.Storage.Core" Version="1.0.8" />
+                <PackageReference Include="Hub.Storage.Core" Version="1.0.9" />
             </Group>
         </Dependencies>
     </PropertyGroup>
 
     <ItemGroup>
-      <PackageReference Include="Hub.Storage.Core" Version="1.0.8" />
+      <PackageReference Include="Hub.Storage.Core" Version="1.0.9" />
     </ItemGroup>
 
 </Project>
