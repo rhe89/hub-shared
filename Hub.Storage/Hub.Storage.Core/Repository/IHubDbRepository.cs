@@ -8,7 +8,7 @@ using Hub.Storage.Core.Entities;
 
 namespace Hub.Storage.Core.Repository
 {
-    public interface IHubDbRepository
+    public interface IHubDbRepository : IDisposable
     {
         public IList<TDto> All<TEntity, TDto>()
             where TEntity : EntityBase
@@ -48,19 +48,7 @@ namespace Hub.Storage.Core.Repository
             where TEntity : EntityBase
             where TDto : EntityDtoBase;
 
-        TDto Add<TEntity, TDto>(TDto tDto) 
-            where TEntity : EntityBase
-            where TDto : EntityDtoBase;
-
-        TDto Add<TEntity, TDto>(TDto tDto, bool saveChanges) 
-            where TEntity : EntityBase
-            where TDto : EntityDtoBase;
-
-        Task<TDto> AddAsync<TEntity, TDto>(TDto tDto) 
-            where TEntity : EntityBase
-            where TDto : EntityDtoBase;
-
-        Task<TDto> AddAsync<TEntity, TDto>(TDto tDto, bool saveChanges) 
+        TEntity Add<TEntity, TDto>(TDto tDto) 
             where TEntity : EntityBase
             where TDto : EntityDtoBase;
 
@@ -68,15 +56,7 @@ namespace Hub.Storage.Core.Repository
             where TEntity : EntityBase
             where TDto : EntityDtoBase;
 
-        void BulkAdd<TEntity, TDto>(ICollection<TDto> tDtos, bool saveChanges) 
-            where TEntity : EntityBase
-            where TDto : EntityDtoBase;
-
         Task BulkAddAsync<TEntity, TDto>(ICollection<TDto> tDtos) 
-            where TEntity : EntityBase
-            where TDto : EntityDtoBase;
-
-        Task BulkAddAsync<TEntity, TDto>(ICollection<TDto> tDtos, bool saveChanges) 
             where TEntity : EntityBase
             where TDto : EntityDtoBase;
 
@@ -84,31 +64,7 @@ namespace Hub.Storage.Core.Repository
             where TEntity : EntityBase
             where TDto : EntityDtoBase;
 
-        void Update<TEntity, TDto>(TDto tDto, bool saveChanges) 
-            where TEntity : EntityBase
-            where TDto : EntityDtoBase;
-
-        Task UpdateAsync<TEntity, TDto>(TDto tDto) 
-            where TEntity : EntityBase
-            where TDto : EntityDtoBase;
-
-        Task UpdateAsync<TEntity, TDto>(TDto tDto, bool saveChanges) 
-            where TEntity : EntityBase
-            where TDto : EntityDtoBase;
-
         void BulkUpdate<TEntity, TDto>(ICollection<TDto> tDtos) 
-            where TEntity : EntityBase
-            where TDto : EntityDtoBase;
-
-        void BulkUpdate<TEntity, TDto>(ICollection<TDto> tDtos, bool saveChanges) 
-            where TEntity : EntityBase
-            where TDto : EntityDtoBase;
-        
-        Task BulkUpdateAsync<TEntity, TDto>(ICollection<TDto> tDtos) 
-            where TEntity : EntityBase
-            where TDto : EntityDtoBase;
-
-        Task BulkUpdateAsync<TEntity, TDto>(ICollection<TDto> tDtos, bool saveChanges) 
             where TEntity : EntityBase
             where TDto : EntityDtoBase;
 
@@ -116,36 +72,15 @@ namespace Hub.Storage.Core.Repository
             where TEntity : EntityBase
             where TDto : EntityDtoBase;
 
-        void Remove<TEntity, TDto>(TDto tDto, bool saveChanges) 
-            where TEntity : EntityBase
-            where TDto : EntityDtoBase;
-
-        Task RemoveAsync<TEntity, TDto>(TDto tDto) 
-            where TEntity : EntityBase
-            where TDto : EntityDtoBase;
-
-        Task RemoveAsync<TEntity, TDto>(TDto tDto, bool saveChanges) 
-            where TEntity : EntityBase
-            where TDto : EntityDtoBase;
-
         void BulkRemove<TEntity, TDto>(IEnumerable<TDto> tDtos) 
-            where TEntity : EntityBase
-            where TDto : EntityDtoBase;
-
-        void BulkRemove<TEntity, TDto>(IEnumerable<TDto> tDtos, bool saveChanges) 
             where TEntity : EntityBase
             where TDto : EntityDtoBase;
 
         void BulkRemove<TEntity>(IEnumerable<TEntity> entities)
             where TEntity : EntityBase;
 
-        void BulkRemove<TEntity>(IEnumerable<TEntity> entities, bool saveChanges)
-            where TEntity : EntityBase;
-        
         void SaveChanges();
         Task SaveChangesAsync();
-        void SaveChanges(bool doSaveChanges);
-        Task SaveChangesAsync(bool doSaveChanges);
         
         TDestination Map<TSource, TDestination>(TSource source) 
             where TDestination : class;
@@ -154,5 +89,6 @@ namespace Hub.Storage.Core.Repository
 
         Task<IList<TDestination>> ProjectAsync<TSource, TDestination>(IQueryable<TSource> source);
 
+        void ToggleDispose(bool dispose);
     }
 }
