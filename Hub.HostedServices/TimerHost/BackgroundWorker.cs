@@ -10,7 +10,7 @@ namespace Hub.HostedServices.TimerHost
 {
     public class BackgroundWorker<TDependencyRegistrationFactory, TDbContext>
         where TDependencyRegistrationFactory : DependencyRegistrationFactoryBase<TDbContext>, new()
-        where TDbContext : HubDbContext
+        where TDbContext : HostedServiceDbContext
     {
         private readonly string[] _args;
         private readonly string _connectionStringKey;
