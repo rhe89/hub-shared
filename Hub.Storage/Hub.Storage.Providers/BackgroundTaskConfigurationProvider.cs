@@ -4,26 +4,21 @@ using Hub.Storage.Core.Dto;
 using Hub.Storage.Core.Entities;
 using Hub.Storage.Core.Providers;
 using Hub.Storage.Core.Repository;
-using Microsoft.Extensions.DependencyInjection;
 
 namespace Hub.Storage.Providers
 {
     public class BackgroundTaskConfigurationProvider : IBackgroundTaskConfigurationProvider
     {
-        private readonly IServiceScopeFactory _serviceScopeFactory;
+        private readonly IHubDbRepository _dbRepository;
 
-        public BackgroundTaskConfigurationProvider(IServiceScopeFactory serviceScopeFactory)
+        public BackgroundTaskConfigurationProvider(IHubDbRepository dbRepository)
         {
-            _serviceScopeFactory = serviceScopeFactory;
+            _dbRepository = dbRepository;
         }
         
         public BackgroundTaskConfigurationDto Get(string name)
         {
-            var scope = _serviceScopeFactory.CreateScope();
-
-            var scopedDbRepository = scope.ServiceProvider.GetService<IScopedHubDbRepository>();
-            
-            var backgroundTaskConfiguration = scopedDbRepository
+            var backgroundTaskConfiguration = _dbRepository
                 .Single<BackgroundTaskConfiguration, BackgroundTaskConfigurationDto>(bt => bt.Name == name);
 
             return backgroundTaskConfiguration;
@@ -31,11 +26,7 @@ namespace Hub.Storage.Providers
 
         public async Task<IList<BackgroundTaskConfigurationDto>> GetBackgroundTaskConfigurations()
         {
-            var scope = _serviceScopeFactory.CreateScope();
-
-            var scopedDbRepository = scope.ServiceProvider.GetService<IScopedHubDbRepository>();
-
-            var backgroundTaskConfigurations = await scopedDbRepository
+            var backgroundTaskConfigurations = await _dbRepository
                 .AllAsync<BackgroundTaskConfiguration, BackgroundTaskConfigurationDto>();
 
             return backgroundTaskConfigurations;

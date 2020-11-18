@@ -2,24 +2,21 @@
 
     <PropertyGroup>
         <PackageId>Hub.Storage.Factories</PackageId>
-        <Version>1.0.7</Version>
+        <Version>1.0.8</Version>
         <Authors>rhe89</Authors>
-        <RepositoryUrl>https://github.com/rhe89/hub-shared</RepositoryUrl>
         <TargetFramework>netstandard2.1</TargetFramework>
         <Dependencies>
             <Group targetFramework="netstandard2.1">
-                <PackageReference Include="Hub.Storage.Core" Version="1.0.7" />
+                <PackageReference Include="Hub.Storage.Core" Version="1.0.8" />
                 <PackageReference Include="Microsoft.EntityFrameworkCore" Version="3.1.8" />
-                <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="3.1.8" />
                 <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="3.1.8" />
             </Group>
         </Dependencies>
     </PropertyGroup>
 
     <ItemGroup>
-      <PackageReference Include="Hub.Storage.Core" Version="1.0.7" />
+      <PackageReference Include="Hub.Storage.Core" Version="1.0.8" />
       <PackageReference Include="Microsoft.EntityFrameworkCore" Version="3.1.8" />
-      <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="3.1.8" />
       <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="3.1.8" />
     </ItemGroup>
 

@@ -5,29 +5,24 @@ using Hub.Storage.Core.Dto;
 using Hub.Storage.Core.Entities;
 using Hub.Storage.Core.Providers;
 using Hub.Storage.Core.Repository;
-using Microsoft.Extensions.DependencyInjection;
 
 namespace Hub.Storage.Providers
 {
     public class WorkerLogProvider : IWorkerLogProvider
     {
-        private readonly IServiceScopeFactory _serviceScopeFactory;
+        private readonly IHubDbRepository _dbRepository;
 
-        public WorkerLogProvider(IServiceScopeFactory serviceScopeFactory)
+        public WorkerLogProvider(IHubDbRepository dbRepository)
         {
-            _serviceScopeFactory = serviceScopeFactory;
+            _dbRepository = dbRepository;
         }
         
         public async Task<IEnumerable<WorkerLogDto>> GetLogs(int days)
         {
-            using var scope = _serviceScopeFactory.CreateScope();
-
-            using var scopedDbRepository = scope.ServiceProvider.GetService<IScopedHubDbRepository>();
-
-            var workerLogs = scopedDbRepository
+            var workerLogs = _dbRepository
                 .Where<WorkerLog>(workerLog => workerLog.CreatedDate > DateTime.Now.AddDays(-days));
 
-            return await scopedDbRepository.ProjectAsync<WorkerLog, WorkerLogDto>(workerLogs);
+            return await _dbRepository.ProjectAsync<WorkerLog, WorkerLogDto>(workerLogs);
         }
     }
 }

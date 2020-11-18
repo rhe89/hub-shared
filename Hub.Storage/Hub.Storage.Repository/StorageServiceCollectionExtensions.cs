@@ -15,6 +15,8 @@ namespace Hub.Storage.Repository
             serviceCollection.AddDbContext<TDbContext>(options => 
                 options.UseSqlServer(configuration.GetValue<string>(connectionStringKey), 
                     x => x.MigrationsAssembly(migrationAssembly)));
+            
+            serviceCollection.TryAddSingleton<IHubDbRepository, HubDbRepository<TDbContext>>();
         }
         
         public static void AddDbContext<TDbContext>(this IServiceCollection serviceCollection, IConfiguration configuration, string connectionStringKey)
@@ -22,19 +24,8 @@ namespace Hub.Storage.Repository
         {
             serviceCollection.AddDbContext<TDbContext>(options => 
                 options.UseSqlServer(configuration.GetValue<string>(connectionStringKey)));
-        }
-        
-        public static void TryAddTransientDbRepository<TDbContext>(this IServiceCollection serviceCollection)
-            where TDbContext : HubDbContext
-        {
-            serviceCollection.TryAddTransient<IHubDbRepository, HubDbRepository<TDbContext>>();
-        }
-        
-        public static void TryAddScopedDbRepository<TDbContext>(this IServiceCollection serviceCollection)
-            where TDbContext : HubDbContext
-        {
-            serviceCollection.TryAddScoped<IScopedHubDbRepository, ScopedHubDbRepository<TDbContext>>();
             
+            serviceCollection.TryAddSingleton<IHubDbRepository, HubDbRepository<TDbContext>>();
         }
     }
 }

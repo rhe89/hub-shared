@@ -4,34 +4,33 @@ using Hub.Storage.Core.Dto;
 using Hub.Storage.Core.Entities;
 using Hub.Storage.Core.Factories;
 using Hub.Storage.Core.Repository;
-using Microsoft.Extensions.DependencyInjection;
 
 namespace Hub.Storage.Factories
 {
     public class SettingFactory : ISettingFactory
     {
-        private readonly IServiceScopeFactory _serviceScopeFactory;
+        private readonly IHubDbRepository _dbRepository;
 
-        public SettingFactory(IServiceScopeFactory serviceScopeFactory)
+        public SettingFactory(IHubDbRepository dbRepository)
         {
-            _serviceScopeFactory = serviceScopeFactory;
+            _dbRepository = dbRepository;
         }
         
         public async Task UpdateSetting(string key, string value)
         {
-            using var scope = _serviceScopeFactory.CreateScope();
-
-            using var dbRepository = scope.ServiceProvider.GetService<IScopedHubDbRepository>();
-
-            var setting = dbRepository.Single<Setting, SettingDto>(x => x.Key == key);
+            _dbRepository.ToggleDispose(false);
+            
+            var setting = _dbRepository.Single<Setting, SettingDto>(x => x.Key == key);
             
             if (setting == null) { throw new ArgumentException($"Invalid settings key: {key}");}
 
             setting.Value = value;
 
-            await dbRepository.UpdateAsync<Setting, SettingDto>(setting);
+            _dbRepository.Update<Setting, SettingDto>(setting);
+            
+            _dbRepository.ToggleDispose(true);
 
-            await dbRepository.SaveChangesAsync();
+            await _dbRepository.SaveChangesAsync();
         }
     }
 }

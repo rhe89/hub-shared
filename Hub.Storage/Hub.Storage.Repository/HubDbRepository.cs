@@ -9,19 +9,71 @@ using Hub.Storage.Core.Entities;
 using Hub.Storage.Core.Repository;
 using Hub.Storage.Repository.DatabaseContext;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace Hub.Storage.Repository
 {
     public class HubDbRepository<TDbContext> : IHubDbRepository
         where TDbContext : HubDbContext
     {
-        protected readonly TDbContext DbContext;
         private readonly IMapper _mapper;
+        private readonly IServiceScopeFactory _serviceScopeFactory;
+        private TDbContext _currentScopedDbContext;
+        private IServiceScope _serviceScope;
+        private bool _doDispose = true;
 
-        public HubDbRepository(TDbContext dbContext, IMapper mapper)
+        public HubDbRepository(IMapper mapper, IServiceScopeFactory serviceScopeFactory)
         {
-            DbContext = dbContext;
             _mapper = mapper;
+            _serviceScopeFactory = serviceScopeFactory;
+        }
+        
+        ~HubDbRepository()
+        {
+            Dispose(false);
+        }
+
+        private DbContext DbContext
+        {
+            get
+            {
+                if (_currentScopedDbContext != null)
+                    return _currentScopedDbContext;
+                
+                _serviceScope ??= _serviceScopeFactory.CreateScope();
+
+                _currentScopedDbContext = _serviceScope.ServiceProvider.GetService<TDbContext>();
+
+                return _currentScopedDbContext;
+            }
+        }
+        
+        public void ToggleDispose(bool dispose)
+        {
+            _doDispose = dispose;
+        }
+
+        public void Dispose()
+        {
+            Dispose(true);
+        }
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
+                if (_serviceScope != null && _doDispose)
+                {
+                    _serviceScope.Dispose();
+                    _serviceScope = null;
+                }
+
+                if (_currentScopedDbContext != null && _doDispose)
+                {
+                    _currentScopedDbContext.Dispose();
+                    _currentScopedDbContext = null;
+                }
+            }
         }
 
         public IList<TDto> All<TEntity, TDto>() 
@@ -112,14 +164,7 @@ namespace Hub.Storage.Repository
             return Map<TEntity, TDto>(entity);
         }
         
-        public TDto Add<TEntity, TDto>(TDto tDto) 
-            where TEntity : EntityBase
-            where TDto : EntityDtoBase
-        {
-            return Add<TEntity, TDto>(tDto, false);
-        }
-        
-        public TDto Add<TEntity, TDto>(TDto tDto, bool saveChanges)
+        public TEntity Add<TEntity, TDto>(TDto tDto) 
             where TEntity : EntityBase
             where TDto : EntityDtoBase
         {
@@ -132,46 +177,10 @@ namespace Hub.Storage.Repository
             
             DbContext.Add(entity);
 
-            SaveChanges(saveChanges);
-
-            return tDto;
-        }
-
-        public async Task<TDto> AddAsync<TEntity, TDto>(TDto tDto)
-            where TEntity : EntityBase
-            where TDto : EntityDtoBase
-        {
-            return await AddAsync<TEntity, TDto>(tDto, false);
-        }
-
-        public async Task<TDto> AddAsync<TEntity, TDto>(TDto tDto, bool saveChanges) 
-            where TEntity : EntityBase
-            where TDto : EntityDtoBase
-        {
-            var entity = Map<TDto, TEntity>(tDto);
-
-            var now = DateTime.Now;
-
-            entity.UpdatedDate = now;
-            entity.CreatedDate = now;
-            
-            DbContext.Add(entity);
-
-            await SaveChangesAsync(saveChanges);
-
-            return Map<TEntity, TDto>(entity);
+            return entity;
         }
         
-        
-
         public void BulkAdd<TEntity, TDto>(ICollection<TDto> tDtos) 
-            where TEntity : EntityBase
-            where TDto : EntityDtoBase
-        {
-            BulkAdd<TEntity, TDto>(tDtos, false);
-        }
-
-        public void BulkAdd<TEntity, TDto>(ICollection<TDto> tDtos, bool saveChanges)  
             where TEntity : EntityBase
             where TDto : EntityDtoBase
         {
@@ -185,22 +194,14 @@ namespace Hub.Storage.Repository
                 entity.CreatedDate = now;
             }
             
-            DbContext.AddRange(entities);
-
-            SaveChanges(saveChanges);
+            DbContext.AddRange(entities);        
         }
+
 
         public async Task BulkAddAsync<TEntity, TDto>(ICollection<TDto> tDtos) 
             where TEntity : EntityBase
             where TDto : EntityDtoBase
         {
-            await BulkAddAsync<TEntity, TDto>(tDtos, false);
-        }
-
-        public async Task BulkAddAsync<TEntity, TDto>(ICollection<TDto> tDtos, bool saveChanges) 
-            where TEntity : EntityBase
-            where TDto : EntityDtoBase
-        {
             var entities = Map<ICollection<TDto>, ICollection<TEntity>>(tDtos);
 
             var now = DateTime.Now;
@@ -211,62 +212,24 @@ namespace Hub.Storage.Repository
                 entity.CreatedDate = now;
             }
             
-            await DbContext.AddRangeAsync(entities);
-
-            await SaveChangesAsync(saveChanges);
+            await DbContext.AddRangeAsync(entities);        
         }
 
         public void Update<TEntity, TDto>(TDto tDto) 
             where TEntity : EntityBase
             where TDto : EntityDtoBase
         {
-            Update<TEntity, TDto>(tDto, false);
-        }
-
-        public void Update<TEntity, TDto>(TDto tDto, bool saveChanges) 
-            where TEntity : EntityBase
-            where TDto : EntityDtoBase
-        {
             var entity = DbContext.Set<TEntity>().Single(x => x.Id == tDto.Id);
 
             entity.UpdatedDate = DateTime.Now;
             
-            DbContext.Update(entity);
-
-            SaveChanges(saveChanges);
-        }
-
-        public async Task UpdateAsync<TEntity, TDto>(TDto tDto) 
-            where TEntity : EntityBase
-            where TDto : EntityDtoBase
-        {
-            await UpdateAsync<TEntity, TDto>(tDto, false);
-        }
-
-        public async Task UpdateAsync<TEntity, TDto>(TDto tDto, bool saveChanges) 
-            where TEntity : EntityBase
-            where TDto : EntityDtoBase
-        {
-            var entity = DbContext.Set<TEntity>().Single(x => x.Id == tDto.Id);
-
-            entity.UpdatedDate = DateTime.Now;
-
-            DbContext.Update(entity);
-
-            await SaveChangesAsync(saveChanges);
+            DbContext.Update(entity);        
         }
 
         public void BulkUpdate<TEntity, TDto>(ICollection<TDto> tDtos) 
             where TEntity : EntityBase
             where TDto : EntityDtoBase
         {
-            BulkUpdate<TEntity, TDto>(tDtos, false);
-        }
-
-        public void BulkUpdate<TEntity, TDto>(ICollection<TDto> tDtos, bool saveChanges) 
-            where TEntity : EntityBase
-            where TDto : EntityDtoBase
-        {
             var now = DateTime.Now;
             
             var entities = DbContext.Set<TEntity>().Where(x => tDtos.Any(y => y.Id == x.Id));
@@ -276,152 +239,77 @@ namespace Hub.Storage.Repository
                 entity.UpdatedDate = now;
             }
             
-            DbContext.UpdateRange(entities);
-
-            SaveChanges(saveChanges);
-        }
-
-        public async Task BulkUpdateAsync<TEntity, TDto>(ICollection<TDto> tDtos) 
-            where TEntity : EntityBase
-            where TDto : EntityDtoBase
-        {
-            await BulkUpdateAsync<TEntity, TDto>(tDtos, false);
-        }
-
-        public async Task BulkUpdateAsync<TEntity, TDto>(ICollection<TDto> tDtos, bool saveChanges) 
-            where TEntity : EntityBase
-            where TDto : EntityDtoBase
-        {
-            var now = DateTime.Now;
-            
-            var entities = DbContext.Set<TEntity>().Where(x => tDtos.Any(y => y.Id == x.Id));
-
-            foreach (var entity in entities)
-            {
-                entity.UpdatedDate = now;
-            }
-            
-            DbContext.UpdateRange(entities);
-
-            await SaveChangesAsync(saveChanges);
+            DbContext.UpdateRange(entities);        
         }
 
         public void Remove<TEntity, TDto>(TDto tDto) 
             where TEntity : EntityBase
             where TDto : EntityDtoBase
         {
-            Remove<TEntity, TDto>(tDto, false);
-        }
-
-        public void Remove<TEntity, TDto>(TDto tDto, bool saveChanges) 
-            where TEntity : EntityBase
-            where TDto : EntityDtoBase
-        {
             var entity = DbContext.Set<TEntity>().Single(x => x.Id == tDto.Id);
 
             DbContext.Remove(entity);
-
-            SaveChanges(saveChanges);
-        }
-
-        public async Task RemoveAsync<TEntity, TDto>(TDto tDto) 
-            where TEntity : EntityBase
-            where TDto : EntityDtoBase
-        {
-            await RemoveAsync<TEntity, TDto>(tDto, false);
-        }
-
-        public async Task RemoveAsync<TEntity, TDto>(TDto tDto, bool saveChanges) 
-            where TEntity : EntityBase
-            where TDto : EntityDtoBase
-        {
-            var entity = DbContext.Set<TEntity>().Single(x => x.Id == tDto.Id);
-
-            DbContext.Remove(entity);
-
-            await SaveChangesAsync(saveChanges);
         }
 
         public void BulkRemove<TEntity, TDto>(IEnumerable<TDto> tDtos) 
             where TEntity : EntityBase
             where TDto : EntityDtoBase
         {
-            BulkRemove<TEntity, TDto>(tDtos, false);
-        }
-
-        public void BulkRemove<TEntity, TDto>(IEnumerable<TDto> tDtos, bool saveChanges) 
-            where TDto : EntityDtoBase 
-            where TEntity : EntityBase
-        {
             var entities = DbContext.Set<TEntity>().Where(x => tDtos.Any(y => y.Id == x.Id));
 
-            DbContext.RemoveRange(entities);
-            
-            SaveChanges(saveChanges);
+            DbContext.RemoveRange(entities);        
         }
-        
+
         public void BulkRemove<TEntity>(IEnumerable<TEntity> entities) 
             where TEntity : EntityBase
         {
             DbContext.RemoveRange(entities);
-            
-            SaveChanges(false);
         }
         
-        public void BulkRemove<TEntity>(IEnumerable<TEntity> entities, bool saveChanges) 
-            where TEntity : EntityBase
-        {
-            DbContext.RemoveRange(entities);
-            
-            SaveChanges(saveChanges);
-        }
-
         public void SaveChanges()
         {
-            SaveChanges(true);
+            
+            DbContext.ChangeTracker.DetectChanges();
+            DbContext.SaveChanges();
+            
+            Dispose();
         }
         
         public async Task SaveChangesAsync()
         {
-            await SaveChangesAsync(true);
+            DbContext.ChangeTracker.DetectChanges();
+            
+            await DbContext.SaveChangesAsync();
+            
+            Dispose();
         }
 
-        public void SaveChanges(bool doSaveChanges)
-        {
-            if (!doSaveChanges)
-            {
-                return;
-            }
-            
-            DbContext.ChangeTracker.DetectChanges();
-            DbContext.SaveChanges();
-        }
-        
-        public async Task SaveChangesAsync(bool doSaveChanges)
-        {
-            if (!doSaveChanges)
-            {
-                return;
-            }
-            
-            DbContext.ChangeTracker.DetectChanges();
-            await DbContext.SaveChangesAsync();
-        }
-        
         public IList<TDestination> Project<TSource, TDestination>(IQueryable<TSource> source) 
         {
-            return _mapper.ProjectTo<TDestination>(source).ToList();
+            var projected = _mapper.ProjectTo<TDestination>(source).ToList();
+            
+            Dispose();
+
+            return projected;
         }
         
         public async Task<IList<TDestination>> ProjectAsync<TSource, TDestination>(IQueryable<TSource> source) 
         {
-            return await _mapper.ProjectTo<TDestination>(source).ToListAsync();
+            var projected = await _mapper.ProjectTo<TDestination>(source).ToListAsync();
+            
+            Dispose();
+
+            return projected;
         }
-        
+
         public TDestination Map<TSource, TDestination>(TSource source)
             where TDestination : class
         {
-            return source == null ? null : _mapper.Map<TDestination>(source);
+            var mapped = source == null ? null : _mapper.Map<TDestination>(source);
+            
+            Dispose();
+
+            return mapped;
         }
     }
 }

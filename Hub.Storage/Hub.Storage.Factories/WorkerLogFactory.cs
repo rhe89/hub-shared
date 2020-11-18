@@ -6,19 +6,18 @@ using Hub.Storage.Core.Entities;
 using Hub.Storage.Core.Factories;
 using Hub.Storage.Core.Repository;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 
 namespace Hub.Storage.Factories
 {
     public class WorkerLogFactory : IWorkerLogFactory
     {
-        private readonly IServiceScopeFactory _serviceScopeFactory;
+        private readonly IHubDbRepository _dbRepository;
         private readonly ILogger<WorkerLogFactory> _logger;
 
-        public WorkerLogFactory(IServiceScopeFactory serviceScopeFactory, ILoggerFactory loggerFactory)
+        public WorkerLogFactory(IHubDbRepository dbRepository, ILoggerFactory loggerFactory)
         {
-            _serviceScopeFactory = serviceScopeFactory;
+            _dbRepository = dbRepository;
             _logger = loggerFactory.CreateLogger<WorkerLogFactory>();
         }
         public async Task AddWorkerLog(string name, bool success, string errorMessage, string initiatedBy)
@@ -31,13 +30,9 @@ namespace Hub.Storage.Factories
                 InitiatedBy = initiatedBy
             };
 
-            using var scope = _serviceScopeFactory.CreateScope();
+            _dbRepository.Add<WorkerLog, WorkerLogDto>(workerLog);
 
-            using var dbRepository = scope.ServiceProvider.GetService<IScopedHubDbRepository>();
-
-            dbRepository.Add<WorkerLog, WorkerLogDto>(workerLog);
-
-            await dbRepository.SaveChangesAsync();
+            await _dbRepository.SaveChangesAsync();
         }
         
         public async Task DeleteDueWorkerLogs()
@@ -47,11 +42,9 @@ namespace Hub.Storage.Factories
         
         public async Task DeleteDueWorkerLogs(int ageInDaysOfLogsToDelete)
         {
-            using var scope = _serviceScopeFactory.CreateScope();
-
-            using var dbRepository = scope.ServiceProvider.GetService<IScopedHubDbRepository>();
-
-            var workerLogsToDelete = await dbRepository
+            _dbRepository.ToggleDispose(false);
+            
+            var workerLogsToDelete = await _dbRepository
                 .Where<WorkerLog>(wl => wl.CreatedDate < DateTime.Today.AddDays(-ageInDaysOfLogsToDelete))
                 .ToListAsync();
             
@@ -59,12 +52,17 @@ namespace Hub.Storage.Factories
 
             if (!workerLogsToDelete.Any())
             {
+                _dbRepository.ToggleDispose(true);
+                _dbRepository.Dispose();
+                
                 return;
             }
 
-            dbRepository.BulkRemove(workerLogsToDelete);
+            _dbRepository.BulkRemove(workerLogsToDelete);
+            
+            _dbRepository.ToggleDispose(true);
 
-            await dbRepository.SaveChangesAsync();
+            await _dbRepository.SaveChangesAsync();
         }
     }
 }

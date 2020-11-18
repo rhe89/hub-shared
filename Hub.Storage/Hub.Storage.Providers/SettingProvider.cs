@@ -5,37 +5,28 @@ using Hub.Storage.Core.Dto;
 using Hub.Storage.Core.Entities;
 using Hub.Storage.Core.Providers;
 using Hub.Storage.Core.Repository;
-using Microsoft.Extensions.DependencyInjection;
 
 namespace Hub.Storage.Providers
 {
     public class SettingProvider : ISettingProvider
     {
-        private readonly IServiceScopeFactory _serviceScopeFactory;
+        private readonly IHubDbRepository _dbRepository;
 
-        public SettingProvider(IServiceScopeFactory serviceScopeFactory)
+        public SettingProvider(IHubDbRepository dbRepository)
         {
-            _serviceScopeFactory = serviceScopeFactory;
+            _dbRepository = dbRepository;
         }
     
         public async Task<IList<SettingDto>> GetSettings()
         {
-            using var scope = _serviceScopeFactory.CreateScope();
-
-            using var dbRepository = scope.ServiceProvider.GetService<IScopedHubDbRepository>();
-
-            var settings = await dbRepository.AllAsync<Setting, SettingDto>();
+            var settings = await _dbRepository.AllAsync<Setting, SettingDto>();
 
             return settings;
         }
         
         public T GetSetting<T>(string key)
         {
-            using var scope = _serviceScopeFactory.CreateScope();
-
-            using var dbRepository = scope.ServiceProvider.GetService<IScopedHubDbRepository>();
-
-            var setting = dbRepository.Single<Setting, SettingDto>(x => x.Key == key);
+            var setting = _dbRepository.Single<Setting, SettingDto>(x => x.Key == key);
             
             if (setting == null)
             {
