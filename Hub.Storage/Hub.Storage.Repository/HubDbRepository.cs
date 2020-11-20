@@ -62,13 +62,18 @@ namespace Hub.Storage.Repository
         {
             if (disposing)
             {
-                if (_serviceScope != null && _doDispose)
+                if (!_doDispose)
+                {
+                    return;
+                }
+                
+                if (_serviceScope != null)
                 {
                     _serviceScope.Dispose();
                     _serviceScope = null;
                 }
 
-                if (_currentScopedDbContext != null && _doDispose)
+                if (_currentScopedDbContext != null)
                 {
                     _currentScopedDbContext.Dispose();
                     _currentScopedDbContext = null;
