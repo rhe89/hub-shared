@@ -15,7 +15,7 @@ namespace Hub.Web.Api
 {
     public abstract class DependencyRegistrationFactoryBase
     {
-        public void AddBaseServices(IServiceCollection serviceCollection, IConfiguration configuration)
+        public virtual void AddServices(IServiceCollection serviceCollection, IConfiguration configuration)
         {
             var entryAssembly = Assembly.GetEntryAssembly();
             
@@ -42,19 +42,32 @@ namespace Hub.Web.Api
             _migrationAssembly = migrationAssembly;
         }
         
-        public new void AddBaseServices(IServiceCollection serviceCollection, IConfiguration configuration)
+        public override void AddServices(IServiceCollection serviceCollection, IConfiguration configuration)
         {
-            base.AddBaseServices(serviceCollection, configuration);
+            base.AddServices(serviceCollection, configuration);
             
             serviceCollection.AddDbContext<TDbContext>(configuration, _connectionStringKey, _migrationAssembly);
-            serviceCollection.TryAddTransientDbRepository<TDbContext>();
             serviceCollection.TryAddTransient<ISettingFactory, SettingFactory>();
+            serviceCollection.TryAddTransient<ISettingProvider, SettingProvider>();
+        }
+    }
+    
+    public abstract class DependencyRegistrationFactoryWithHostedServiceBase<THostedServiceDbContext> : DependencyRegistrationFactoryBase<THostedServiceDbContext>
+        where THostedServiceDbContext : HostedServiceDbContext 
+    {
+        protected DependencyRegistrationFactoryWithHostedServiceBase(string connectionStringKey, string migrationAssembly) : base(connectionStringKey, migrationAssembly)
+        {
+        }
+        
+        public override void AddServices(IServiceCollection serviceCollection, IConfiguration configuration)
+        {
+            base.AddServices(serviceCollection, configuration);
+            
             serviceCollection.TryAddTransient<IBackgroundTaskConfigurationFactory, BackgroundTaskConfigurationFactory>();
             serviceCollection.TryAddTransient<IWorkerLogFactory, WorkerLogFactory>();
-            serviceCollection.TryAddTransient<ISettingProvider, SettingProvider>();
             serviceCollection.TryAddTransient<IBackgroundTaskConfigurationProvider, BackgroundTaskConfigurationProvider>();
             serviceCollection.TryAddTransient<IWorkerLogProvider, WorkerLogProvider>();
-            serviceCollection.AddQueueHostedService<TDbContext>();
+            serviceCollection.AddQueueHostedService<THostedServiceDbContext>();
         }
     }
 }

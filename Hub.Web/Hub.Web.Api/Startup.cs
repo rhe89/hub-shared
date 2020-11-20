@@ -22,7 +22,7 @@ namespace Hub.Web.Api
         
         public void ConfigureServices(IServiceCollection serviceCollection)
         {
-            new TDependencyRegistrationFactory().AddBaseServices(serviceCollection, _configuration);
+            new TDependencyRegistrationFactory().AddServices(serviceCollection, _configuration);
         }
         
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

@@ -11,7 +11,7 @@ namespace Hub.Web.Api
 {
     public static class HostBuilder<TDependencyRegistrationFactory, TDbContext>
         where TDependencyRegistrationFactory : DependencyRegistrationFactoryBase<TDbContext>, new()
-        where TDbContext : HubDbContext 
+        where TDbContext : HostedServiceDbContext 
     {
         public static IHostBuilder Create(string[] args) 
         { 
