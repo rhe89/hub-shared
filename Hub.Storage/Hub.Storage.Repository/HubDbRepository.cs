@@ -224,8 +224,8 @@ namespace Hub.Storage.Repository
             where TEntity : EntityBase
             where TDto : EntityDtoBase
         {
-            var entity = DbContext.Set<TEntity>().Single(x => x.Id == tDto.Id);
-
+            var entity = Map<TDto, TEntity>(tDto);
+            
             entity.UpdatedDate = DateTime.Now;
             
             DbContext.Update(entity);        
@@ -237,8 +237,8 @@ namespace Hub.Storage.Repository
         {
             var now = DateTime.Now;
             
-            var entities = DbContext.Set<TEntity>().Where(x => tDtos.Any(y => y.Id == x.Id));
-
+            var entities = Project<TDto, TEntity>(tDtos.AsQueryable());
+            
             foreach (var entity in entities)
             {
                 entity.UpdatedDate = now;
