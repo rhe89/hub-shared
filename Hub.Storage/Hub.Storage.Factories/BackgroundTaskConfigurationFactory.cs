@@ -41,6 +41,7 @@ namespace Hub.Storage.Factories
             
             if (dto == null)
             {
+                _dbRepository.ToggleDispose(true);
                 return;
             }
 
@@ -53,11 +54,12 @@ namespace Hub.Storage.Factories
         {
             _dbRepository.ToggleDispose(false);
 
-            var dto = _dbRepository
-                .FirstOrDefault<BackgroundTaskConfiguration, BackgroundTaskConfigurationDto>(x => x.Name == name);
+            var dto = await _dbRepository
+                .FirstOrDefaultAsync<BackgroundTaskConfiguration, BackgroundTaskConfigurationDto>(x => x.Name == name);
             
             if (dto == null)
             {
+                _dbRepository.ToggleDispose(true);
                 return;
             }
 
