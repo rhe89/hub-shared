@@ -43,6 +43,8 @@ namespace Hub.Storage.Repository
                 _serviceScope ??= _serviceScopeFactory.CreateScope();
 
                 _currentScopedDbContext = _serviceScope.ServiceProvider.GetService<TDbContext>();
+                _currentScopedDbContext.ChangeTracker.AutoDetectChangesEnabled = false;
+                _currentScopedDbContext.ChangeTracker.QueryTrackingBehavior = QueryTrackingBehavior.NoTracking;
 
                 return _currentScopedDbContext;
             }
