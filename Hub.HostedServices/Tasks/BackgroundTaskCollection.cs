@@ -10,7 +10,7 @@ namespace Hub.HostedServices.Tasks
 
         public BackgroundTaskCollection(IEnumerable<IBackgroundTask> backgroundTasks)
         {
-            _backgroundTasks = backgroundTasks.ToList();
+            _backgroundTasks = backgroundTasks;
         }
         
         public IEnumerator<IBackgroundTask> GetEnumerator()

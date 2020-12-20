@@ -37,9 +37,15 @@ namespace Hub.HostedServices.TimerHost
                         continue;
                     }
 
-                    _executingTask = ExecuteAsync(backgroundTask, cancellationToken);
-
-                    await _executingTask;
+                    try
+                    {
+                        _executingTask = ExecuteAsync(backgroundTask, cancellationToken);
+                        await _executingTask;
+                    }
+                    catch (Exception exception)
+                    {
+                        Logger.LogError(exception, $"Unhandled error occured in ExecuteAsync in {backgroundTask.Name}.");
+                    }
                 }
 
                 var delayMillis = TimeSpan.FromMinutes(10);
