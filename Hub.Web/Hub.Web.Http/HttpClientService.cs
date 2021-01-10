@@ -4,7 +4,6 @@ using System.Net.Http;
 using System.Net.Http.Json;
 using System.Text;
 using System.Threading.Tasks;
-using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 
 namespace Hub.Web.Http
@@ -12,13 +11,11 @@ namespace Hub.Web.Http
     public abstract class HttpClientService
     {
         protected readonly HttpClient HttpClient;
-        private readonly ILogger<HttpClientService> _logger;
         private readonly string _friendlyApiName;
 
-        protected HttpClientService(HttpClient httpClient, ILogger<HttpClientService> logger, string friendlyApiName)
+        protected HttpClientService(HttpClient httpClient, string friendlyApiName)
         {
             HttpClient = httpClient;
-            _logger = logger;
             _friendlyApiName = friendlyApiName;
         }
 
@@ -85,14 +82,11 @@ namespace Hub.Web.Http
                 };
             }
             
-            _logger.LogError(
-                $@"{_friendlyApiName} returned status code: {responseMessage.StatusCode}.
-                            Request uri {responseMessage.RequestMessage.RequestUri}");
-
             return new Response<TResponseObject>
             {
                 StatusCode = responseMessage.StatusCode,
-                ErrorMessage = "Error occured when calling API."
+                ErrorMessage = $@"{_friendlyApiName} returned status code: {responseMessage.StatusCode}.
+                            Request uri {responseMessage.RequestMessage.RequestUri}"
             };
         }
 
@@ -107,36 +101,27 @@ namespace Hub.Web.Http
                 };
             }
             
-            _logger.LogError(
-                $@"{_friendlyApiName} returned status code: {responseMessage.StatusCode}.
-                            Request uri {responseMessage.RequestMessage.RequestUri}");
-
             return new Response<TResponseObject>
             {
                 StatusCode = responseMessage.StatusCode,
-                ErrorMessage = "Error occured when calling API."
+                ErrorMessage = $@"{_friendlyApiName} returned status code: {responseMessage.StatusCode}.
+                            Request uri {responseMessage.RequestMessage.RequestUri}"
             };
         }
 
         private Response<TResponseObject> HandleRequestException<TResponseObject>(HttpRequestException exception, string requestUri)
         {
-            _logger.LogError(
-                $"Error occured when requesting {_friendlyApiName} with uri {HttpClient.BaseAddress}{requestUri}: {exception.Message} {exception.InnerException?.Message}");
-
             return new Response<TResponseObject>
             {
-                ErrorMessage = $"Error occured in request when calling API. Error message: {exception.Message}"
+                ErrorMessage = $"Error occured when requesting {_friendlyApiName} with uri {HttpClient.BaseAddress}{requestUri}: {exception.Message} {exception.InnerException?.Message}"
             };
         }
 
         private Response<TResponseObject> HandleResponseException<TResponseObject>(Exception exception, string requestUri)
         {
-            _logger.LogError(
-                $"Error occured when handling response from {_friendlyApiName} with uri {HttpClient.BaseAddress}{requestUri}: {exception.InnerException?.Message}");
-            
             return new Response<TResponseObject>
             {
-                ErrorMessage = $"Error when handling response from API. Error message: {exception.Message}"
+                ErrorMessage = $"Error occured when handling response from {_friendlyApiName} with uri {HttpClient.BaseAddress}{requestUri}: {exception.InnerException?.Message}"
             };
         } 
     }
