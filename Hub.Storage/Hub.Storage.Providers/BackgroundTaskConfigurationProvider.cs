@@ -19,7 +19,7 @@ namespace Hub.Storage.Providers
         public BackgroundTaskConfigurationDto Get(string name)
         {
             var backgroundTaskConfiguration = _dbRepository
-                .Single<BackgroundTaskConfiguration, BackgroundTaskConfigurationDto>(bt => bt.Name == name);
+                .FirstOrDefault<BackgroundTaskConfiguration, BackgroundTaskConfigurationDto>(bt => bt.Name == name);
 
             return backgroundTaskConfiguration;
         }
