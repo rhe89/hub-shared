@@ -11,12 +11,13 @@ namespace Hub.Web.Http
     public abstract class HttpClientService
     {
         protected readonly HttpClient HttpClient;
-        private readonly string _friendlyApiName;
+        
+        public string FriendlyApiName { get; }
 
         protected HttpClientService(HttpClient httpClient, string friendlyApiName)
         {
             HttpClient = httpClient;
-            _friendlyApiName = friendlyApiName;
+            FriendlyApiName = friendlyApiName;
         }
 
         protected async Task<Response<TResponseObject>> Get<TResponseObject>(string requestUri, params string[] requestParameters)
@@ -85,7 +86,7 @@ namespace Hub.Web.Http
             return new Response<TResponseObject>
             {
                 StatusCode = responseMessage.StatusCode,
-                ErrorMessage = $@"{_friendlyApiName} returned status code: {responseMessage.StatusCode}.
+                ErrorMessage = $@"{FriendlyApiName} returned status code: {responseMessage.StatusCode}.
                             Request uri {responseMessage.RequestMessage.RequestUri}"
             };
         }
@@ -104,7 +105,7 @@ namespace Hub.Web.Http
             return new Response<TResponseObject>
             {
                 StatusCode = responseMessage.StatusCode,
-                ErrorMessage = $@"{_friendlyApiName} returned status code: {responseMessage.StatusCode}.
+                ErrorMessage = $@"{FriendlyApiName} returned status code: {responseMessage.StatusCode}.
                             Request uri {responseMessage.RequestMessage.RequestUri}"
             };
         }
@@ -113,7 +114,7 @@ namespace Hub.Web.Http
         {
             return new Response<TResponseObject>
             {
-                ErrorMessage = $"Error occured when requesting {_friendlyApiName} with uri {HttpClient.BaseAddress}{requestUri}: {exception.Message} {exception.InnerException?.Message}"
+                ErrorMessage = $"Error occured when requesting {FriendlyApiName} with uri {HttpClient.BaseAddress}{requestUri}: {exception.Message} {exception.InnerException?.Message}"
             };
         }
 
@@ -121,7 +122,7 @@ namespace Hub.Web.Http
         {
             return new Response<TResponseObject>
             {
-                ErrorMessage = $"Error occured when handling response from {_friendlyApiName} with uri {HttpClient.BaseAddress}{requestUri}: {exception.InnerException?.Message}"
+                ErrorMessage = $"Error occured when handling response from {FriendlyApiName} with uri {HttpClient.BaseAddress}{requestUri}: {exception.InnerException?.Message}"
             };
         } 
     }
