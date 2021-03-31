@@ -67,6 +67,8 @@ namespace Hub.Storage.Core.Repository
         void Update<TEntity, TDto>(TDto tDto) 
             where TEntity : EntityBase
             where TDto : EntityDtoBase;
+
+        Task UpdateAsync<TEntity, TDto>(TDto tDto);
         
         void QueueRemove<TEntity, TDto>(TDto tDto) 
             where TEntity : EntityBase
