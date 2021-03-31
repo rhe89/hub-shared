@@ -2,7 +2,7 @@
 
     <PropertyGroup>
         <PackageId>Hub.Storage.Core</PackageId>
-        <Version>1.0.9</Version>
+        <Version>3.0.1</Version>
         <Authors>rhe89</Authors>
         <TargetFramework>netstandard2.1</TargetFramework>
         <Dependencies>
