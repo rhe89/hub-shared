@@ -5,7 +5,11 @@ namespace Hub.Storage.Repository.DatabaseContext
 {
     public class HubDbContext : DbContext
     {
-        public HubDbContext(DbContextOptions options) : base(options) { }
+        public HubDbContext(DbContextOptions options) : base(options)
+        {
+            ChangeTracker.AutoDetectChangesEnabled = false;
+            ChangeTracker.QueryTrackingBehavior = QueryTrackingBehavior.NoTracking;
+        }
         
         protected override void OnModelCreating(ModelBuilder builder)
         {
