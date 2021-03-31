@@ -26,55 +26,37 @@ namespace Hub.Storage.Factories
             };
             
             var entity = _dbRepository.Add<BackgroundTaskConfiguration, BackgroundTaskConfigurationDto>(dto);
-
-             _dbRepository.SaveChanges();
-             
+            
              return _dbRepository.Map<BackgroundTaskConfiguration, BackgroundTaskConfigurationDto>(entity);
         }   
         
         public async Task UpdateLastRun(string name, DateTime lastRun)
         {
-            _dbRepository.ToggleDispose(false);
-            
-            var dto = _dbRepository
+            var backgroundTaskConfiguration = _dbRepository
                 .FirstOrDefault<BackgroundTaskConfiguration, BackgroundTaskConfigurationDto>(x => x.Name == name);
             
-            if (dto == null)
+            if (backgroundTaskConfiguration == null)
             {
-                _dbRepository.ToggleDispose(true);
                 return;
             }
 
-            dto.LastRun = lastRun;
+            backgroundTaskConfiguration.LastRun = lastRun;
             
-            await Update(dto);
-        }   
+            await _dbRepository.UpdateAsync<BackgroundTaskConfiguration, BackgroundTaskConfigurationDto>(backgroundTaskConfiguration);        }   
         
         public async Task UpdateRunIntervalType(string name, RunIntervalType runIntervalType)
         {
-            _dbRepository.ToggleDispose(false);
-
-            var dto = await _dbRepository
+            var backgroundTaskConfiguration = await _dbRepository
                 .FirstOrDefaultAsync<BackgroundTaskConfiguration, BackgroundTaskConfigurationDto>(x => x.Name == name);
             
-            if (dto == null)
+            if (backgroundTaskConfiguration == null)
             {
-                _dbRepository.ToggleDispose(true);
                 return;
             }
 
-            dto.RunIntervalType = runIntervalType;
+            backgroundTaskConfiguration.RunIntervalType = runIntervalType;
             
-            await Update(dto);
-        }
-
-        private async Task Update(BackgroundTaskConfigurationDto dto)
-        {
-            _dbRepository.Update<BackgroundTaskConfiguration, BackgroundTaskConfigurationDto>(dto);
-            
-            _dbRepository.ToggleDispose(true);
-
-            await _dbRepository.SaveChangesAsync();
+            await _dbRepository.UpdateAsync<BackgroundTaskConfiguration, BackgroundTaskConfigurationDto>(backgroundTaskConfiguration);
         }
     }
 }

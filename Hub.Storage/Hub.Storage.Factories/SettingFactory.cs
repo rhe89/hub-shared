@@ -18,19 +18,13 @@ namespace Hub.Storage.Factories
         
         public async Task UpdateSetting(string key, string value)
         {
-            _dbRepository.ToggleDispose(false);
-            
             var setting = _dbRepository.Single<Setting, SettingDto>(x => x.Key == key);
             
             if (setting == null) { throw new ArgumentException($"Invalid settings key: {key}");}
 
             setting.Value = value;
 
-            _dbRepository.Update<Setting, SettingDto>(setting);
-            
-            _dbRepository.ToggleDispose(true);
-
-            await _dbRepository.SaveChangesAsync();
+            await _dbRepository.UpdateAsync<Setting, SettingDto>(setting);
         }
     }
 }

@@ -30,9 +30,7 @@ namespace Hub.Storage.Factories
                 InitiatedBy = initiatedBy
             };
 
-            _dbRepository.Add<WorkerLog, WorkerLogDto>(workerLog);
-
-            await _dbRepository.SaveChangesAsync();
+            await _dbRepository.AddAsync<WorkerLog, WorkerLogDto>(workerLog);
         }
         
         public async Task DeleteDueWorkerLogs()
@@ -42,8 +40,6 @@ namespace Hub.Storage.Factories
         
         public async Task DeleteDueWorkerLogs(int ageInDaysOfLogsToDelete)
         {
-            _dbRepository.ToggleDispose(false);
-            
             var workerLogsToDelete = await _dbRepository
                 .Where<WorkerLog>(wl => wl.CreatedDate < DateTime.Today.AddDays(-ageInDaysOfLogsToDelete))
                 .ToListAsync();
@@ -52,17 +48,12 @@ namespace Hub.Storage.Factories
 
             if (!workerLogsToDelete.Any())
             {
-                _dbRepository.ToggleDispose(true);
-                _dbRepository.Dispose();
-                
                 return;
             }
-
-            _dbRepository.BulkRemove(workerLogsToDelete);
             
-            _dbRepository.ToggleDispose(true);
+            workerLogsToDelete.ForEach(workerLogToDelete => _dbRepository.QueueRemove(workerLogToDelete));
 
-            await _dbRepository.SaveChangesAsync();
+            await _dbRepository.ExecuteQueueAsync();
         }
     }
 }
