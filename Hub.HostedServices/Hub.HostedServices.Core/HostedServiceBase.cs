@@ -1,12 +1,12 @@
 ﻿using System;
 using System.Threading;
 using System.Threading.Tasks;
-using Hub.HostedServices.Tasks;
+using Hub.HostedServices.Core.Tasks;
 using Hub.Storage.Core.Factories;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 
-namespace Hub.HostedServices
+namespace Hub.HostedServices.Core
 {
     public abstract class HostedServiceBase : BackgroundService
     {

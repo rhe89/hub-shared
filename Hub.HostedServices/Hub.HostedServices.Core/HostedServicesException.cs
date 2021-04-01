@@ -1,6 +1,6 @@
 using System;
 
-namespace Hub.HostedServices
+namespace Hub.HostedServices.Core
 {
     public class HostedServicesException : Exception
     {
