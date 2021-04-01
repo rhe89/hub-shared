@@ -2,11 +2,12 @@
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using Hub.HostedServices.Tasks;
+using Hub.HostedServices.Core.Hosts;
+using Hub.HostedServices.Core.Tasks;
 using Hub.Storage.Core.Factories;
 using Microsoft.Extensions.Logging;
 
-namespace Hub.HostedServices.TimerHost
+namespace Hub.HostedServices.Hosts.Timer
 {
     public class TimerHostedService : HostedServiceBase
     {

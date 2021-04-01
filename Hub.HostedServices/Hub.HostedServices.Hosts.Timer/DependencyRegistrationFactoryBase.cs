@@ -1,3 +1,4 @@
+using Hub.HostedServices.Core.Tasks;
 using Hub.HostedServices.Tasks;
 using Hub.Storage.Core.Factories;
 using Hub.Storage.Core.Providers;
@@ -9,7 +10,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 
-namespace Hub.HostedServices.TimerHost
+namespace Hub.HostedServices.Hosts.Timer
 {
     public abstract class DependencyRegistrationFactoryBase<TDbContext>
         where TDbContext : HostedServiceDbContext
