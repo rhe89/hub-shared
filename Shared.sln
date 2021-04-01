@@ -3,8 +3,6 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Hub.Logging", "Hub.Logging\Hub.Logging.csproj", "{A5739153-32DC-43A1-874E-9C76EBF92C2A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Hub.HostedServices", "Hub.HostedServices\Hub.HostedServices.csproj", "{510CFB90-6FCD-4F6C-A4C2-48A17E7A8CD3}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Hub.Web.Http", "Hub.Web\Hub.Web.Http\Hub.Web.Http.csproj", "{78DC9B62-21DC-4511-AC01-63DAFF5D6A2C}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Hub.Storage.Providers", "Hub.Storage\Hub.Storage.Providers\Hub.Storage.Providers.csproj", "{6DEFEB02-32CF-43BB-87FF-2C5D105C6F6B}"
@@ -25,6 +23,18 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Hub.Web.BlazorServer", "Hub
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Hub.Storage.Core", "Hub.Storage\Hub.Storage.Core\Hub.Storage.Core.csproj", "{E0997BAB-BE2A-4B4E-AC35-212F41F71413}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Hub.HostedServices", "Hub.HostedServices", "{83A30151-BD2D-4FB2-B3CC-37F2B8B32D82}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Hub.HostedServices.Core.Hosts", "Hub.HostedServices\Hub.HostedServices.Core.Hosts\Hub.HostedServices.Core.Hosts.csproj", "{612487E2-9D06-4F1D-BF2B-91E959CA3A0C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Hub.HostedServices.Tasks", "Hub.HostedServices\Hub.HostedServices.Tasks\Hub.HostedServices.Tasks.csproj", "{91740E96-8829-4FE6-888E-FB3C3F2B6B76}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Hub.HostedServices.Hosts.Queue", "Hub.HostedServices\Hub.HostedServices.Hosts.Queue\Hub.HostedServices.Hosts.Queue.csproj", "{395BF2BD-8125-42E7-BD7F-F740F7B894E2}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Hub.HostedServices.Hosts.Timer", "Hub.HostedServices\Hub.HostedServices.Hosts.Timer\Hub.HostedServices.Hosts.Timer.csproj", "{A5B99D40-E774-40C3-AB0F-C439AFA97059}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Hub.HostedServices.Core.Tasks", "Hub.HostedServices\Hub.HostedServices.Core.Tasks\Hub.HostedServices.Core.Tasks.csproj", "{9D964635-0B22-49CA-83CE-F0FD3548D75C}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -35,10 +45,6 @@ Global
 		{A5739153-32DC-43A1-874E-9C76EBF92C2A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A5739153-32DC-43A1-874E-9C76EBF92C2A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A5739153-32DC-43A1-874E-9C76EBF92C2A}.Release|Any CPU.Build.0 = Release|Any CPU
-		{510CFB90-6FCD-4F6C-A4C2-48A17E7A8CD3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{510CFB90-6FCD-4F6C-A4C2-48A17E7A8CD3}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{510CFB90-6FCD-4F6C-A4C2-48A17E7A8CD3}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{510CFB90-6FCD-4F6C-A4C2-48A17E7A8CD3}.Release|Any CPU.Build.0 = Release|Any CPU
 		{78DC9B62-21DC-4511-AC01-63DAFF5D6A2C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{78DC9B62-21DC-4511-AC01-63DAFF5D6A2C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{78DC9B62-21DC-4511-AC01-63DAFF5D6A2C}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -71,6 +77,26 @@ Global
 		{E0997BAB-BE2A-4B4E-AC35-212F41F71413}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E0997BAB-BE2A-4B4E-AC35-212F41F71413}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E0997BAB-BE2A-4B4E-AC35-212F41F71413}.Release|Any CPU.Build.0 = Release|Any CPU
+		{612487E2-9D06-4F1D-BF2B-91E959CA3A0C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{612487E2-9D06-4F1D-BF2B-91E959CA3A0C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{612487E2-9D06-4F1D-BF2B-91E959CA3A0C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{612487E2-9D06-4F1D-BF2B-91E959CA3A0C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{91740E96-8829-4FE6-888E-FB3C3F2B6B76}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{91740E96-8829-4FE6-888E-FB3C3F2B6B76}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{91740E96-8829-4FE6-888E-FB3C3F2B6B76}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{91740E96-8829-4FE6-888E-FB3C3F2B6B76}.Release|Any CPU.Build.0 = Release|Any CPU
+		{395BF2BD-8125-42E7-BD7F-F740F7B894E2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{395BF2BD-8125-42E7-BD7F-F740F7B894E2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{395BF2BD-8125-42E7-BD7F-F740F7B894E2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{395BF2BD-8125-42E7-BD7F-F740F7B894E2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A5B99D40-E774-40C3-AB0F-C439AFA97059}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A5B99D40-E774-40C3-AB0F-C439AFA97059}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A5B99D40-E774-40C3-AB0F-C439AFA97059}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A5B99D40-E774-40C3-AB0F-C439AFA97059}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9D964635-0B22-49CA-83CE-F0FD3548D75C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9D964635-0B22-49CA-83CE-F0FD3548D75C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9D964635-0B22-49CA-83CE-F0FD3548D75C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9D964635-0B22-49CA-83CE-F0FD3548D75C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{78DC9B62-21DC-4511-AC01-63DAFF5D6A2C} = {B328846E-B016-4808-9D8E-F7D986C53CD6}
@@ -80,5 +106,10 @@ Global
 		{A7FE0CE7-80A6-41F6-8A05-863A2EE3724E} = {B328846E-B016-4808-9D8E-F7D986C53CD6}
 		{465AFB07-0285-4182-9513-6C5EE29F3B42} = {B328846E-B016-4808-9D8E-F7D986C53CD6}
 		{E0997BAB-BE2A-4B4E-AC35-212F41F71413} = {AA100D82-33FB-46C7-88FD-BC48DCC1B684}
+		{612487E2-9D06-4F1D-BF2B-91E959CA3A0C} = {83A30151-BD2D-4FB2-B3CC-37F2B8B32D82}
+		{91740E96-8829-4FE6-888E-FB3C3F2B6B76} = {83A30151-BD2D-4FB2-B3CC-37F2B8B32D82}
+		{395BF2BD-8125-42E7-BD7F-F740F7B894E2} = {83A30151-BD2D-4FB2-B3CC-37F2B8B32D82}
+		{A5B99D40-E774-40C3-AB0F-C439AFA97059} = {83A30151-BD2D-4FB2-B3CC-37F2B8B32D82}
+		{9D964635-0B22-49CA-83CE-F0FD3548D75C} = {83A30151-BD2D-4FB2-B3CC-37F2B8B32D82}
 	EndGlobalSection
 EndGlobal
