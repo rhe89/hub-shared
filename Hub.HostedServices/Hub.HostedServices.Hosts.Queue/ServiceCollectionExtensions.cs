@@ -1,3 +1,4 @@
+using Hub.HostedServices.Core.Tasks;
 using Hub.HostedServices.Tasks;
 using Hub.Storage.Core.Factories;
 using Hub.Storage.Core.Providers;
@@ -7,7 +8,7 @@ using Hub.Storage.Repository.DatabaseContext;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 
-namespace Hub.HostedServices.QueueHost
+namespace Hub.HostedServices.Hosts.Queue
 {
     public static class ServiceCollectionExtensions
     {

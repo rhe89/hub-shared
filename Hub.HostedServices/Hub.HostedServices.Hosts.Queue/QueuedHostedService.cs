@@ -1,10 +1,11 @@
 using System.Threading;
 using System.Threading.Tasks;
-using Hub.HostedServices.Tasks;
+using Hub.HostedServices.Core.Hosts;
+using Hub.HostedServices.Core.Tasks;
 using Hub.Storage.Core.Factories;
 using Microsoft.Extensions.Logging;
 
-namespace Hub.HostedServices.QueueHost
+namespace Hub.HostedServices.Hosts.Queue
 {
     public class QueuedHostedService : HostedServiceBase
     {
