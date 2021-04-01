@@ -2,19 +2,24 @@
 
     <PropertyGroup>
         <PackageId>Hub.Web.Api</PackageId>
-        <Version>3.0.3</Version>
+        <Version>3.0.4</Version>
         <Authors>rhe89</Authors>
         <TargetFramework>netcoreapp3.1</TargetFramework>
         <Dependencies>
             <Group targetFramework="netcoreapp3.1">
                 <FrameworkReference Include="Microsoft.AspNetCore.App" Version="2.2.8" />
-                <PackageReference Include="Hub.HostedServices" Version="3.0.3" />
+                <PackageReference Include="Hub.HostedServices.Hosts.Queue" Version="3.0.3" />
+                <PackageReference Include="Hub.Logging" Version="1.0.2" />            
             </Group>
         </Dependencies>
     </PropertyGroup>
 
     <ItemGroup>
         <FrameworkReference Include="Microsoft.AspNetCore.App" Version="2.2.8" />
-        <PackageReference Include="Hub.HostedServices" Version="3.0.3" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <PackageReference Include="Hub.HostedServices.Hosts.Queue" Version="3.0.3" />
+      <PackageReference Include="Hub.Logging" Version="1.0.2" />
     </ItemGroup>
 </Project>

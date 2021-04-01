@@ -1,5 +1,5 @@
 using System.Reflection;
-using Hub.HostedServices.QueueHost;
+using Hub.HostedServices.Hosts.Queue;
 using Hub.Storage.Core.Factories;
 using Hub.Storage.Core.Providers;
 using Hub.Storage.Factories;
