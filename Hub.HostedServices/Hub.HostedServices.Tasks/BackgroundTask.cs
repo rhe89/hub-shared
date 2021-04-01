@@ -1,6 +1,7 @@
 using System;
 using System.Threading;
 using System.Threading.Tasks;
+using Hub.HostedServices.Core.Tasks;
 using Hub.Storage.Core.Dto;
 using Hub.Storage.Core.Factories;
 using Hub.Storage.Core.Providers;

@@ -2,6 +2,7 @@ using System;
 using System.Collections.Concurrent;
 using System.Threading;
 using System.Threading.Tasks;
+using Hub.HostedServices.Core.Tasks;
 
 namespace Hub.HostedServices.Tasks
 {

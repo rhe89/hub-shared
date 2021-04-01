@@ -1,6 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
+using Hub.HostedServices.Core.Tasks;
 
 namespace Hub.HostedServices.Tasks
 {

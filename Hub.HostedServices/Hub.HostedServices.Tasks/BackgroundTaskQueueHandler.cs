@@ -1,3 +1,4 @@
+using Hub.HostedServices.Core.Tasks;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Hub.HostedServices.Tasks
@@ -14,7 +15,7 @@ namespace Hub.HostedServices.Tasks
             _serviceScopeFactory = serviceScopeFactory;
         }
         
-        public void QueueBackgroundTask<TBackgroundTask>() where TBackgroundTask : BackgroundTask
+        public void QueueBackgroundTask<TBackgroundTask>() where TBackgroundTask : IBackgroundTask
         {
             using var scope = _serviceScopeFactory.CreateScope();
 
