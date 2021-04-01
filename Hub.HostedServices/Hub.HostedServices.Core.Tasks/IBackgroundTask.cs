@@ -3,7 +3,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Hub.Storage.Core.Dto;
 
-namespace Hub.HostedServices.Tasks
+namespace Hub.HostedServices.Core.Tasks
 {
     public interface IBackgroundTask
     {
