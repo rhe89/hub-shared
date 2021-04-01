@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <PackageId>Hub.HostedServices.Core</PackageId>
+    <PackageId>Hub.HostedServices.Core.Hosts</PackageId>
     <Version>3.0.3</Version>
     <Authors>rhe89</Authors>
     <TargetFramework>netstandard2.1</TargetFramework>

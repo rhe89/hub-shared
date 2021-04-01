@@ -6,7 +6,7 @@ using Hub.Storage.Core.Factories;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 
-namespace Hub.HostedServices.Core
+namespace Hub.HostedServices.Core.Hosts
 {
     public abstract class HostedServiceBase : BackgroundService
     {
