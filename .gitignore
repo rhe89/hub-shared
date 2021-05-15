@@ -352,3 +352,5 @@ MigrationBackup/
 .DS_Store
 Dockerfile
 .idea/
+
+**/az-pipeline-create.sh
