@@ -1,4 +1,6 @@
-steps:
+trigger: none
+
+teps:
 - task: DotNetCoreCLI@2
   displayName: restore
   inputs:

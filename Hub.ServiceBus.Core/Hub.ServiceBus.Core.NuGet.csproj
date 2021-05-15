@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
 	<PropertyGroup>
 		<PackageId>Hub.ServiceBus.Core</PackageId>
-		<Version>3.0.2</Version>
+		<Version>3.0.6</Version>
 		<Authors>rhe89</Authors>
 		<RepositoryUrl>https://github.com/rhe89/hub-shared</RepositoryUrl>
 		<TargetFramework>netstandard2.1</TargetFramework>

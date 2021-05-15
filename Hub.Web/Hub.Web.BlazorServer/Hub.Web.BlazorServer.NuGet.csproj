@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
 	<PropertyGroup>
 		<PackageId>Hub.Web.BlazorServer</PackageId>
-		<Version>3.0.2</Version>
+		<Version>3.0.6</Version>
 		<Authors>rhe89</Authors>
 		<RepositoryUrl>https://github.com/rhe89/hub-shared</RepositoryUrl>
 		<TargetFramework>netcoreapp3.1</TargetFramework>
@@ -9,8 +9,8 @@
 			<Group targetFramework="netcoreapp3.1">
 				<FrameworkReference Include="Microsoft.AspNetCore.App" Version="2.2.8" />
 				<PackageReference Include="Microsoft.AspNetCore.Identity.UI" Version="3.1.8" />
-				<PackageReference Include="Hub.Storage.Azure" Version="3.0.2" />
-				<PackageReference Include="Hub.Web.Http" Version="3.0.2" />
+				<PackageReference Include="Hub.Storage.Azure" Version="3.0.6" />
+				<PackageReference Include="Hub.Web.Http" Version="3.0.6" />
 			</Group>
 		</Dependencies>
 	</PropertyGroup>
@@ -18,7 +18,7 @@
 	<ItemGroup>
 		<FrameworkReference Include="Microsoft.AspNetCore.App" Version="2.2.8" />
 		<PackageReference Include="Microsoft.AspNetCore.Identity.UI" Version="3.1.8" />
-		<PackageReference Include="Hub.Storage.Azure" Version="3.0.2" />
-		<PackageReference Include="Hub.Web.Http" Version="3.0.2" />
+		<PackageReference Include="Hub.Storage.Azure" Version="3.0.6" />
+		<PackageReference Include="Hub.Web.Http" Version="3.0.6" />
 	</ItemGroup>
 </Project>

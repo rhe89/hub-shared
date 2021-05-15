@@ -1,20 +1,20 @@
 <Project Sdk="Microsoft.NET.Sdk">
 	<PropertyGroup>
 		<PackageId>Hub.Settings.Core</PackageId>
-		<Version>3.0.2</Version>
+		<Version>3.0.6</Version>
 		<Authors>rhe89</Authors>
 		<RepositoryUrl>https://github.com/rhe89/hub-shared</RepositoryUrl>
 		<TargetFramework>netstandard2.1</TargetFramework>
 		<Dependencies>
 			<Group targetFramework="netstandard2.1">
-				<PackageReference Include="Hub.Storage.Repository.Dto" Version="3.0.2" />
-				<PackageReference Include="Hub.Storage.Repository.Entities" Version="3.0.2" />
+				<PackageReference Include="Hub.Storage.Repository.Dto" Version="3.0.6" />
+				<PackageReference Include="Hub.Storage.Repository.Entities" Version="3.0.6" />
 			</Group>
 		</Dependencies>
 	</PropertyGroup>
 
 	<ItemGroup>
-		<PackageReference Include="Hub.Storage.Repository.Dto" Version="3.0.2" />
-		<PackageReference Include="Hub.Storage.Repository.Entities" Version="3.0.2" />
+		<PackageReference Include="Hub.Storage.Repository.Dto" Version="3.0.6" />
+		<PackageReference Include="Hub.Storage.Repository.Entities" Version="3.0.6" />
 	</ItemGroup>
 </Project>
