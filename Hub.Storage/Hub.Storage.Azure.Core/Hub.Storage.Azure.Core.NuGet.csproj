@@ -1,0 +1,18 @@
+<Project Sdk="Microsoft.NET.Sdk">
+	<PropertyGroup>
+		<PackageId>Hub.Storage.Azure.Core</PackageId>
+		<Version>3.0.2</Version>
+		<Authors>rhe89</Authors>
+		<RepositoryUrl>https://github.com/rhe89/hub-shared</RepositoryUrl>
+		<TargetFramework>netstandard2.1</TargetFramework>
+		<Dependencies>
+			<Group targetFramework="netstandard2.1">
+				<PackageReference Include="Microsoft.Azure.Cosmos.Table" Version="1.0.8" />
+			</Group>
+		</Dependencies>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<PackageReference Include="Microsoft.Azure.Cosmos.Table" Version="1.0.8" />
+	</ItemGroup>
+</Project>

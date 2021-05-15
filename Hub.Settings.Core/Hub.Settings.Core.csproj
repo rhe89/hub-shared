@@ -1,0 +1,12 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>netstandard2.1</TargetFramework>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\Hub.Storage\Hub.Storage.Repository.Dto\Hub.Storage.Repository.Dto.csproj" />
+      <ProjectReference Include="..\Hub.Storage\Hub.Storage.Repository.Entities\Hub.Storage.Repository.Entities.csproj" />
+    </ItemGroup>
+    
+</Project>

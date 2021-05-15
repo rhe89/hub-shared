@@ -1,26 +1,23 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
-        <PackageId>Hub.Storage.Repository</PackageId>
-        <Version>3.0.3</Version>
-        <Authors>rhe89</Authors>
         <TargetFramework>netstandard2.1</TargetFramework>
-        <Dependencies>
-            <Group targetFramework="netstandard2.1">
-                <PackageReference Include="AutoMapper" Version="10.1.0" />
-                <PackageReference Include="Hub.Storage.Core" Version="3.0.3" />
-                <PackageReference Include="Microsoft.EntityFrameworkCore" Version="3.1.8" />
-                <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="3.1.8" />
-                <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="3.1.8" />
-            </Group>
-        </Dependencies>
     </PropertyGroup>
-
+    
     <ItemGroup>
         <PackageReference Include="AutoMapper" Version="10.1.0" />
-        <PackageReference Include="Hub.Storage.Core" Version="3.0.3" />
+        <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="8.1.0" />
         <PackageReference Include="Microsoft.EntityFrameworkCore" Version="3.1.8" />
         <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="3.1.8" />
         <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="3.1.8" />
     </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\..\Hub.HostedServices\Hub.HostedServices.Commands.Configuration.Core\Hub.HostedServices.Commands.Configuration.Core.csproj" />
+      <ProjectReference Include="..\..\Hub.HostedServices\Hub.HostedServices.Commands.Configuration\Hub.HostedServices.Commands.Configuration.csproj" />
+      <ProjectReference Include="..\..\Hub.Settings.Core\Hub.Settings.Core.csproj" />
+      <ProjectReference Include="..\..\Hub.Settings\Hub.Settings.csproj" />
+      <ProjectReference Include="..\Hub.Storage.Repository.Core\Hub.Storage.Repository.Core.csproj" />
+    </ItemGroup>
+    
 </Project>

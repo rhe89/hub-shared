@@ -1,24 +1,16 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
-        <PackageId>Hub.Web.BazorServer</PackageId>
-        <Version>3.0.3</Version>
-        <Authors>rhe89</Authors>
         <TargetFramework>netcoreapp3.1</TargetFramework>
-        <Dependencies>
-            <Group targetFramework="netcoreapp3.1">
-                <FrameworkReference Include="Microsoft.AspNetCore.App" Version="2.2.8" />
-                <PackageReference Include="Microsoft.AspNetCore.Identity.UI" Version="3.1.8" />
-                <PackageReference Include="Hub.Web.Http" Version="3.0.1" />
-                <PackageReference Include="Hub.Logging" Version="1.0.2" />
-            </Group>
-        </Dependencies>
     </PropertyGroup>
 
     <ItemGroup>
         <FrameworkReference Include="Microsoft.AspNetCore.App" Version="2.2.8" />
         <PackageReference Include="Microsoft.AspNetCore.Identity.UI" Version="3.1.8" />
-        <PackageReference Include="Hub.Web.Http" Version="3.0.1" />
-        <PackageReference Include="Hub.Logging" Version="1.0.2" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\..\Hub.Storage\Hub.Storage.Azure\Hub.Storage.Azure.csproj" />
+      <ProjectReference Include="..\Hub.Web.Http\Hub.Web.Http.csproj" />
     </ItemGroup>
 </Project>

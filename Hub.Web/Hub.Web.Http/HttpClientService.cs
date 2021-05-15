@@ -110,7 +110,7 @@ namespace Hub.Web.Http
             };
         }
 
-        private Response<TResponseObject> HandleRequestException<TResponseObject>(HttpRequestException exception, string requestUri)
+        private Response<TResponseObject> HandleRequestException<TResponseObject>(Exception exception, string requestUri)
         {
             return new Response<TResponseObject>
             {

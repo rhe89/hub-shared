@@ -1,0 +1,18 @@
+<Project Sdk="Microsoft.NET.Sdk">
+	<PropertyGroup>
+		<PackageId>Hub.Storage.Repository.Entities</PackageId>
+		<Version>3.0.2</Version>
+		<Authors>rhe89</Authors>
+		<RepositoryUrl>https://github.com/rhe89/hub-shared</RepositoryUrl>
+		<TargetFramework>netstandard2.1</TargetFramework>
+		<Dependencies>
+			<Group targetFramework="netstandard2.1">
+				<PackageReference Include="System.ComponentModel.Annotations" Version="4.7.0" />
+			</Group>
+		</Dependencies>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<PackageReference Include="System.ComponentModel.Annotations" Version="4.7.0" />
+	</ItemGroup>
+</Project>

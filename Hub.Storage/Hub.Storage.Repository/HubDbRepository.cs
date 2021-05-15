@@ -4,11 +4,11 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
 using AutoMapper;
-using Hub.Storage.Core.Dto;
-using Hub.Storage.Core.Entities;
-using Hub.Storage.Core.Repository;
-using Hub.Storage.Repository.DatabaseContext;
+using Hub.Storage.Repository.Core;
+using Hub.Storage.Repository.Dto;
+using Hub.Storage.Repository.Entities;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Query;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Hub.Storage.Repository
@@ -32,122 +32,137 @@ namespace Hub.Storage.Repository
             _removeQueue = new Queue<EntityBase>();
         }
         
-        public IList<TDto> All<TEntity, TDto>() 
+        public IList<TDto> All<TEntity, TDto>(Func<IQueryable<TEntity>, IIncludableQueryable<TEntity, object>> include = null) 
             where TEntity : EntityBase
             where TDto : EntityDtoBase
         {
             using var scope = _serviceScopeFactory.CreateScope();
             using var dbContext = scope.ServiceProvider.GetService<TDbContext>();
             
-            var entities = dbContext.Set<TEntity>();
+            var entities = QueryWithIncludes(dbContext, include);
 
             return Project<TEntity, TDto>(entities);
         }
 
-        public async Task<IList<TDto>> AllAsync<TEntity, TDto>()
+        public async Task<IList<TDto>> AllAsync<TEntity, TDto>(Func<IQueryable<TEntity>, IIncludableQueryable<TEntity, object>> include = null)
             where TEntity : EntityBase
             where TDto : EntityDtoBase
         {
             using var scope = _serviceScopeFactory.CreateScope();
             await using var dbContext = scope.ServiceProvider.GetService<TDbContext>();
             
-            var entities = dbContext.Set<TEntity>();
-
+            var entities = QueryWithIncludes(dbContext, include);
+            
             return await ProjectAsync<TEntity, TDto>(entities);
         }
-
-        public IQueryable<TEntity> Where<TEntity>(Expression<Func<TEntity, bool>> predicate) 
+        
+        public IList<TDto> Where<TEntity, TDto>(Expression<Func<TEntity, bool>> predicate, Func<IQueryable<TEntity>, IIncludableQueryable<TEntity, object>> include = null) 
             where TEntity : EntityBase
+            where TDto : EntityDtoBase
         {
             using var scope = _serviceScopeFactory.CreateScope();
             using var dbContext = scope.ServiceProvider.GetService<TDbContext>();
 
-            var entities = dbContext.Set<TEntity>().Where(predicate);
+            var entities = QueryWithIncludes(dbContext, include).Where(predicate);
             
-            return entities;
+            return Project<TEntity, TDto>(entities);
         }
         
-        public IQueryable<TEntity> Set<TEntity>() 
+        public async Task<IList<TDto>> WhereAsync<TEntity, TDto>(Expression<Func<TEntity, bool>> predicate, Func<IQueryable<TEntity>, IIncludableQueryable<TEntity, object>> include = null) 
             where TEntity : EntityBase
+            where TDto : EntityDtoBase
         {
             using var scope = _serviceScopeFactory.CreateScope();
-            using var dbContext = scope.ServiceProvider.GetService<TDbContext>();
+            await using var dbContext = scope.ServiceProvider.GetService<TDbContext>();
+
+            var entities = QueryWithIncludes(dbContext, include).Where(predicate);
             
-            var entities = dbContext.Set<TEntity>();
-            
-            return entities;
+            return await ProjectAsync<TEntity, TDto>(entities);
         }
         
-        public TDto First<TEntity, TDto>(Expression<Func<TEntity, bool>> predicate) 
+        public TDto First<TEntity, TDto>(Expression<Func<TEntity, bool>> predicate, Func<IQueryable<TEntity>, IIncludableQueryable<TEntity, object>> include = null) 
             where TEntity : EntityBase
             where TDto : EntityDtoBase
         {
             using var scope = _serviceScopeFactory.CreateScope();
             using var dbContext = scope.ServiceProvider.GetService<TDbContext>();
             
-            var entity = dbContext.Set<TEntity>().First(predicate);
+            var entity = QueryWithIncludes(dbContext, include).First(predicate);
 
             return Map<TEntity, TDto>(entity);
         }
         
-        public async Task<TDto> FirstAsync<TEntity, TDto>(Expression<Func<TEntity, bool>> predicate) 
+        public async Task<TDto> FirstAsync<TEntity, TDto>(Expression<Func<TEntity, bool>> predicate, Func<IQueryable<TEntity>, IIncludableQueryable<TEntity, object>> include = null) 
             where TEntity : EntityBase
             where TDto : EntityDtoBase
         {
             using var scope = _serviceScopeFactory.CreateScope();
             await using var dbContext = scope.ServiceProvider.GetService<TDbContext>();
             
-            var entity = await dbContext.Set<TEntity>().FirstAsync(predicate);
-
+            var entity = await QueryWithIncludes(dbContext, include).FirstAsync(predicate);
+            
             return Map<TEntity, TDto>(entity);
         }
         
-        public TDto Single<TEntity, TDto>(Expression<Func<TEntity, bool>> predicate) 
+        public TDto Single<TEntity, TDto>(Expression<Func<TEntity, bool>> predicate, Func<IQueryable<TEntity>, IIncludableQueryable<TEntity, object>> include = null) 
             where TEntity : EntityBase
             where TDto : EntityDtoBase
         { 
             using var scope = _serviceScopeFactory.CreateScope();
             using var dbContext = scope.ServiceProvider.GetService<TDbContext>();
             
-            var entity = dbContext.Set<TEntity>().Single(predicate);
-
+            var entity = QueryWithIncludes(dbContext, include).Single(predicate);
+            
             return Map<TEntity, TDto>(entity);
         }
         
-        public async Task<TDto> SingleAsync<TEntity, TDto>(Expression<Func<TEntity, bool>> predicate) 
+        public async Task<TDto> SingleAsync<TEntity, TDto>(Expression<Func<TEntity, bool>> predicate, Func<IQueryable<TEntity>, IIncludableQueryable<TEntity, object>> include = null) 
             where TEntity : EntityBase
             where TDto : EntityDtoBase
         { 
             using var scope = _serviceScopeFactory.CreateScope();
             await using var dbContext = scope.ServiceProvider.GetService<TDbContext>();
             
-            var entity = await dbContext.Set<TEntity>().SingleAsync(predicate);
+            var entity = await QueryWithIncludes(dbContext, include).SingleAsync(predicate);
 
             return Map<TEntity, TDto>(entity);
         }
         
-        public TDto FirstOrDefault<TEntity, TDto>(Expression<Func<TEntity, bool>> predicate) 
+        public TDto FirstOrDefault<TEntity, TDto>(Expression<Func<TEntity, bool>> predicate, Func<IQueryable<TEntity>, IIncludableQueryable<TEntity, object>> include = null) 
             where TEntity : EntityBase
             where TDto : EntityDtoBase
         { 
             using var scope = _serviceScopeFactory.CreateScope();
             using var dbContext = scope.ServiceProvider.GetService<TDbContext>();
             
-            var entity = dbContext.Set<TEntity>().FirstOrDefault(predicate);
+            var entity = QueryWithIncludes(dbContext, include).FirstOrDefault(predicate);
             
             return Map<TEntity, TDto>(entity);
         }
         
-        public async Task<TDto> FirstOrDefaultAsync<TEntity, TDto>(Expression<Func<TEntity, bool>> predicate) 
+        public async Task<TDto> FirstOrDefaultAsync<TEntity, TDto>(Expression<Func<TEntity, bool>> predicate, Func<IQueryable<TEntity>, IIncludableQueryable<TEntity, object>> include = null) 
             where TEntity : EntityBase
             where TDto : EntityDtoBase
         { 
             using var scope = _serviceScopeFactory.CreateScope();
             await using var dbContext = scope.ServiceProvider.GetService<TDbContext>();
             
-            var entity = await dbContext.Set<TEntity>().FirstOrDefaultAsync(predicate);
+            var entity = await QueryWithIncludes(dbContext, include).FirstOrDefaultAsync(predicate);
             
             return Map<TEntity, TDto>(entity);
+        }
+
+        private static IQueryable<TEntity> QueryWithIncludes<TEntity>(TDbContext dbContext, Func<IQueryable<TEntity>, IIncludableQueryable<TEntity, object>> include) where TEntity : EntityBase
+        {
+            var query = dbContext.Set<TEntity>().AsQueryable();
+
+            if (include != null)
+            {
+                query = include(query);
+            }
+           
+            return query;
+
         }
         
         public void QueueAdd<TEntity, TDto>(TDto tDto) 
@@ -164,7 +179,7 @@ namespace Hub.Storage.Repository
             _addQueue.Enqueue(entity);
         }
         
-        public TEntity Add<TEntity, TDto>(TDto tDto) 
+        public TDto Add<TEntity, TDto>(TDto tDto) 
             where TEntity : EntityBase
             where TDto : EntityDtoBase
         {
@@ -181,10 +196,10 @@ namespace Hub.Storage.Repository
             dbContext.Add(entity);
             dbContext.SaveChanges();
 
-            return entity;
+            return Map<TEntity, TDto>(entity);
         }
         
-        public async Task<TEntity> AddAsync<TEntity, TDto>(TDto tDto) 
+        public async Task<TDto> AddAsync<TEntity, TDto>(TDto tDto) 
             where TEntity : EntityBase
             where TDto : EntityDtoBase
         {
@@ -201,7 +216,7 @@ namespace Hub.Storage.Repository
             await dbContext.AddAsync(entity);
             await dbContext.SaveChangesAsync();
 
-            return entity;
+            return Map<TEntity, TDto>(entity);
         }
         
         public void QueueUpdate<TEntity, TDto>(TDto tDto) 

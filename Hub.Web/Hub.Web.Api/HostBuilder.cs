@@ -1,7 +1,7 @@
 using System;
 using System.IO;
 using Hub.Logging;
-using Hub.Storage.Repository.DatabaseContext;
+using Hub.Storage.Repository;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
@@ -10,8 +10,8 @@ using Microsoft.Extensions.Logging;
 namespace Hub.Web.Api
 {
     public static class HostBuilder<TDependencyRegistrationFactory, TDbContext>
-        where TDependencyRegistrationFactory : DependencyRegistrationFactoryBase<TDbContext>, new()
-        where TDbContext : HostedServiceDbContext 
+        where TDependencyRegistrationFactory : DependencyRegistrationFactory<TDbContext>, new()
+        where TDbContext : HubDbContext 
     {
         public static IHostBuilder Create(string[] args) 
         { 
@@ -35,10 +35,11 @@ namespace Hub.Web.Api
                 .ConfigureLogging(loggingBuilder =>
                 {
                     loggingBuilder.AddHubLogger(new HubLoggerConfig
-                    {
-                        Color = ConsoleColor.Blue,
-                        LogLevel = LogLevel.Information
-                    });
+                        {
+                            Color = ConsoleColor.Blue,
+                            LogLevel = LogLevel.Information
+                        }, 
+                        config);
                 });
         }
     }

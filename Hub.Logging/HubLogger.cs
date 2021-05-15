@@ -1,15 +1,26 @@
 ﻿using System;
+using Hub.Storage.Azure;
+using Hub.Storage.Azure.Core;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 
 namespace Hub.Logging
 {
     public class HubLogger : ILogger
     {
+        private readonly IConfiguration _appConfig;
         private static readonly object Lock = new object(); 
-        private readonly HubLoggerConfig _config;
+        private readonly HubLoggerConfig _loggerConfig;
         private readonly string _name;
-
-        public HubLogger(string name, HubLoggerConfig config) => (_name, _config) = (name, config);
+        private ITableStorage _tableStorage;
+        private string _errorLogTableName;
+        
+        public HubLogger(string name, HubLoggerConfig loggerConfig, IConfiguration appConfig)
+        {
+            _name = name;
+            _loggerConfig = loggerConfig;
+            _appConfig = appConfig;
+        }
 
         public IDisposable BeginScope<TState>(TState state)
         {
@@ -20,7 +31,7 @@ namespace Hub.Logging
         {
             lock (Lock)
             {
-                return (int)logLevel >= (int)_config.LogLevel;
+                return (int)logLevel >= (int)_loggerConfig.LogLevel;
             }
         }
 
@@ -33,7 +44,7 @@ namespace Hub.Logging
 
             lock (Lock)
             {
-                if (_config.EventId != 0 && _config.EventId != eventId.Id)
+                if (_loggerConfig.EventId != 0 && _loggerConfig.EventId != eventId.Id)
                 {
                     return;
                 }
@@ -43,13 +54,34 @@ namespace Hub.Logging
                 Console.ForegroundColor = GetColor(logLevel);
 
                 var msg = GetMessage(logLevel, state, exception, formatter);
+
+                LogToTableStorage(logLevel, msg);
                 
                 Console.WriteLine(msg);
 
                 Console.ForegroundColor = color;
             }
         }
-        
+
+        private void LogToTableStorage(LogLevel logLevel, string msg)
+        {
+            if (logLevel != LogLevel.Error && logLevel != LogLevel.Critical)
+            {
+                return;
+            }
+
+            try
+            {
+                TableStorage
+                    .InsertOrMerge(ErrorLogTableName, new LogItem(logLevel.ToString(), msg))
+                    .GetAwaiter().GetResult();
+            }
+            catch (Exception)
+            {
+                // ignored
+            }
+        }
+
         private static bool Ignore(LogLevel logLevel, string name)
             => (name, logLevel) switch
             {
@@ -62,10 +94,10 @@ namespace Hub.Logging
         private ConsoleColor GetColor(LogLevel logLevel)
             => logLevel switch
             {
-                LogLevel.Information => _config.Color,
+                LogLevel.Information => _loggerConfig.Color,
                 LogLevel.Warning => ConsoleColor.DarkYellow,
                 LogLevel.Error => ConsoleColor.Red,
-                _ => _config.Color
+                _ => _loggerConfig.Color
             };
 
         private string GetMessage<TState>(LogLevel logLevel, TState state, Exception exception,
@@ -83,5 +115,35 @@ namespace Hub.Logging
                 $"\n[EXCEPTION]       {exception.Message}" +
                 $"\n[INNER EXCEPTION] {(exception.InnerException is null ? "(none)" : formatter(state, exception.InnerException))}" +
                 $"\n[STACKTRACE]   {exception.StackTrace}";
+
+        private ITableStorage TableStorage
+        {
+            get
+            {
+                if (_tableStorage != null)
+                {
+                    return _tableStorage;
+                }
+
+                _tableStorage = new TableStorage(_appConfig.GetValue<string>("STORAGE_ACCOUNT"));
+
+                return _tableStorage;
+            }
+        }
+
+        private string ErrorLogTableName
+        {
+            get
+            {
+                if (_errorLogTableName != null)
+                {
+                    return _errorLogTableName;
+                }
+                
+                _errorLogTableName = _appConfig.GetValue<string>("ERROR_LOG_TABLE_NAME");
+
+                return _errorLogTableName;
+            }
+        }
     }
 }

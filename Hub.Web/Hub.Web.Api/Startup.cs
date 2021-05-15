@@ -1,5 +1,4 @@
-using System.Reflection;
-using Hub.Storage.Repository.DatabaseContext;
+using Hub.Storage.Repository;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
@@ -10,7 +9,7 @@ using Microsoft.Extensions.Hosting;
 namespace Hub.Web.Api
 {
     public class Startup<TDependencyRegistrationFactory, TDbContext>
-        where TDependencyRegistrationFactory : DependencyRegistrationFactoryBase<TDbContext>, new()
+        where TDependencyRegistrationFactory : DependencyRegistrationFactory<TDbContext>, new()
         where TDbContext : HubDbContext
     {
         private readonly IConfiguration _configuration;

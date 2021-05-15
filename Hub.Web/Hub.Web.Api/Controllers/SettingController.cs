@@ -1,7 +1,5 @@
 using System.Threading.Tasks;
-using Hub.Storage.Core.Dto;
-using Hub.Storage.Core.Factories;
-using Hub.Storage.Core.Providers;
+using Hub.Settings.Core;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Hub.Web.Api.Controllers
@@ -10,19 +8,19 @@ namespace Hub.Web.Api.Controllers
     [Route("api/[controller]")]
     public class SettingController : ControllerBase
     {
-        protected readonly ISettingProvider SettingProvider;
-        protected readonly ISettingFactory SettingFactory;
+        private readonly ISettingProvider _settingProvider;
+        private readonly ISettingFactory _settingFactory;
 
         public SettingController(ISettingProvider settingProvider, ISettingFactory settingFactory)
         {
-            SettingProvider = settingProvider;
-            SettingFactory = settingFactory;
+            _settingProvider = settingProvider;
+            _settingFactory = settingFactory;
         }
         
         [HttpGet("settings")]
         public async Task<IActionResult> Settings()
         {
-            var settings = await SettingProvider.GetSettings();
+            var settings = await _settingProvider.GetSettings();
             
             return Ok(settings);
         }
@@ -30,7 +28,7 @@ namespace Hub.Web.Api.Controllers
         [HttpPost("update")]
         public async Task<IActionResult> UpdateSetting([FromBody] SettingDto settingDto)
         {
-            await SettingFactory.UpdateSetting(settingDto.Key, settingDto.Value);
+            await _settingFactory.UpdateSetting(settingDto.Key, settingDto.Value);
             
             return Ok();
         }
