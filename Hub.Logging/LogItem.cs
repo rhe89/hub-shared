@@ -16,7 +16,7 @@ namespace Hub.Logging
             var now = DateTime.Now;
             
             PartitionKey = DateTime.Now.ToString("yyyy-MM-dd");
-            RowKey = now.ToString("hh:mm:ss.ffff");
+            RowKey = now.ToString("HH:mm:ss.ffff");
             Timestamp = DateTimeOffset.Now;
             
             LogLevel = logLevel;

@@ -15,7 +15,7 @@ namespace Hub.HostedServices.Commands.Logging
             var now = DateTime.Now;
             
             PartitionKey = now.ToString("yyyy-MM-dd");
-            RowKey = now.ToString("hh:mm:ss.ffff");
+            RowKey = now.ToString("HH:mm:ss.ffff");
             Timestamp = DateTimeOffset.Now;
             
             Domain = domain;
