@@ -3,6 +3,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Hub.HostedServices.Commands.Configuration.Core;
 using Hub.HostedServices.Commands.Core;
+using Microsoft.Extensions.Configuration;
 
 namespace Hub.HostedServices.Schedule.Commands
 {
@@ -10,7 +11,6 @@ namespace Hub.HostedServices.Schedule.Commands
     {
         private readonly ICommandConfigurationProvider _commandConfigurationProvider;
         private readonly ICommandConfigurationFactory _commandConfigurationFactory;
-        private CommandConfigurationDto _commandConfiguration;
 
         protected ScheduledCommand(ICommandConfigurationProvider commandConfigurationProvider,
             ICommandConfigurationFactory commandConfigurationFactory)
@@ -22,14 +22,12 @@ namespace Hub.HostedServices.Schedule.Commands
         public async Task UpdateLastRun(DateTime lastRun)
         {
             await _commandConfigurationFactory.UpdateLastRun(Name, lastRun);
-
-            _commandConfiguration = null;
         }
         
         public abstract Task Execute(CancellationToken cancellationToken);
         
         public DateTime LastRun => CommandConfiguration.LastRun;
-        public string Name => GetType().Name;
+        public string Name => GetType().FullName;
         public RunInterval RunInterval => Enum.Parse<RunInterval>(CommandConfiguration.RunInterval);
         
         public bool IsDue
@@ -71,10 +69,10 @@ namespace Hub.HostedServices.Schedule.Commands
         {
             get
             {
-                _commandConfiguration = _commandConfigurationProvider.Get(Name) ??
-                                        _commandConfigurationFactory.CreateDefaultCommandConfiguration(Name);
+                var commandConfiguration = _commandConfigurationProvider.Get(Name) ??
+                                            _commandConfigurationFactory.CreateDefaultCommandConfiguration(Name);
                 
-                return _commandConfiguration;
+                return commandConfiguration;
             }
         }
     }

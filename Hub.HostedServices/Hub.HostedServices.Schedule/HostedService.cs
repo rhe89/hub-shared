@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Hub.HostedServices.Commands.Logging.Core;
 using Hub.HostedServices.Core;
 using Hub.HostedServices.Schedule.Commands;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 
 namespace Hub.HostedServices.Schedule
@@ -17,7 +18,8 @@ namespace Hub.HostedServices.Schedule
         
         public HostedService(ILogger<HostedService> logger, 
             ICommandLogFactory commandLogFactory,
-            IScheduledCommandCollection scheduledCommandCollection) : base(logger, commandLogFactory)
+            IScheduledCommandCollection scheduledCommandCollection,
+            IConfiguration configuration) : base(logger, commandLogFactory, configuration)
         {
             _scheduledCommandCollection = scheduledCommandCollection;
         }
@@ -88,7 +90,7 @@ namespace Hub.HostedServices.Schedule
 
         public override void Dispose()
         {
-            _cancellationTokenSource.Cancel();
+            _cancellationTokenSource.Dispose();
         }
     }
 }

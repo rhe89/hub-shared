@@ -14,6 +14,7 @@ namespace Hub.Logging
         private readonly string _name;
         private ITableStorage _tableStorage;
         private string _errorLogTableName;
+        private string _domain;
         
         public HubLogger(string name, HubLoggerConfig loggerConfig, IConfiguration appConfig)
         {
@@ -63,7 +64,7 @@ namespace Hub.Logging
             }
         }
 
-        private void LogToTableStorage(LogLevel logLevel, string msg)
+        private void LogToTableStorage(LogLevel logLevel, string logMessage)
         {
             if (logLevel != LogLevel.Error && logLevel != LogLevel.Critical)
             {
@@ -73,7 +74,7 @@ namespace Hub.Logging
             try
             {
                 TableStorage
-                    .InsertOrMerge(ErrorLogTableName, new LogItem(logLevel.ToString(), msg))
+                    .InsertOrMerge(ErrorLogTableName, new LogItem(logLevel.ToString(), Domain, logMessage))
                     .GetAwaiter().GetResult();
             }
             catch (Exception)
@@ -143,6 +144,21 @@ namespace Hub.Logging
                 _errorLogTableName = _appConfig.GetValue<string>("ERROR_LOG_TABLE_NAME");
 
                 return _errorLogTableName;
+            }
+        }
+
+        private string Domain
+        {
+            get
+            {
+                if (_domain != null)
+                {
+                    return _domain;
+                }
+
+                _domain = _appConfig.GetValue<string>("DOMAIN");
+
+                return _domain;
             }
         }
     }

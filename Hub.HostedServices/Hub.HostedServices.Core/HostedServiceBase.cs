@@ -3,6 +3,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Hub.HostedServices.Commands.Core;
 using Hub.HostedServices.Commands.Logging.Core;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 
@@ -12,12 +13,15 @@ namespace Hub.HostedServices.Core
     {
         protected readonly ILogger<HostedServiceBase> Logger;
         private readonly ICommandLogFactory _commandLogFactory;
+        private readonly IConfiguration _configuration;
 
         protected HostedServiceBase(ILogger<HostedServiceBase> logger, 
-            ICommandLogFactory commandLogFactory)
+            ICommandLogFactory commandLogFactory, 
+            IConfiguration configuration)
         {
             Logger = logger;
             _commandLogFactory = commandLogFactory;
+            _configuration = configuration;
         }
 
         protected async Task ExecuteAsync(ICommand command,
@@ -32,7 +36,9 @@ namespace Hub.HostedServices.Core
                 await SaveCommandLog(true, command.Name);
 
                 if (command is ICommandWithConsumers commandWithConsumers)
+                {
                     await commandWithConsumers.NotifyConsumers();
+                }
 
             }
             catch (Exception exception)
@@ -52,9 +58,11 @@ namespace Hub.HostedServices.Core
                         ? ""
                         : $"Exception: {exception.Message}. Inner exception: {exception.InnerException}. Stacktrace: {exception.StackTrace}";
 
-                var initiatedBy = GetType().Name;
+                var initiatedBy = GetType().FullName;
 
-                await _commandLogFactory.AddCommandLog(commandName, success, errorMessage, initiatedBy);
+                var domain = _configuration.GetValue<string>("DOMAIN");
+
+                await _commandLogFactory.AddCommandLog(commandName, success, errorMessage, initiatedBy, domain);
             }
             catch (Exception e)
             {

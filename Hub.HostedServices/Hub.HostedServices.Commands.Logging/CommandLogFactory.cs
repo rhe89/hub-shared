@@ -17,14 +17,9 @@ namespace Hub.HostedServices.Commands.Logging
             _logTableName = configuration.GetValue<string>("COMMAND_LOG_TABLE_NAME");
         }
         
-        public async Task AddCommandLog(string commandName, bool success, string errorMessage, string initiatedBy)
+        public async Task AddCommandLog(string commandName, bool success, string errorMessage, string initiatedBy, string domain)
         {
-            var commandLog = new CommandLog(commandName)
-            {
-                Success = success,
-                ErrorMessage = errorMessage,
-                InitiatedBy = initiatedBy
-            };
+            var commandLog = new CommandLog(domain, commandName, success, initiatedBy, errorMessage);
             
             await _tableStorage.InsertOrMerge(_logTableName, commandLog);
         }

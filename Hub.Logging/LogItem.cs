@@ -11,16 +11,21 @@ namespace Hub.Logging
             
         }
 
-        public LogItem(string partitionKey, string logMessage)
+        public LogItem(string logLevel, string domain, string logMessage)
         {
-            LogMessage = logMessage;
-            PartitionKey = partitionKey;
-            RowKey = DateTime.Now.ToString("O");
+            var now = DateTime.Now;
+            
+            PartitionKey = DateTime.Now.ToString("yyyy-MM-dd");
+            RowKey = now.ToString("hh:mm:ss.ffff");
             Timestamp = DateTimeOffset.Now;
+            
+            LogLevel = logLevel;
+            Domain = domain;
             LogMessage = logMessage;
         }
         
+        public string LogLevel { get; set; }
+        public string Domain { get; set; }
         public string LogMessage { get; set; }
-
     }
 }

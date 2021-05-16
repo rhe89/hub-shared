@@ -7,6 +7,7 @@ using Hub.HostedServices.Commands.Logging.Core;
 using Hub.HostedServices.Core;
 using Hub.HostedServices.ServiceBusQueue.Commands;
 using Hub.ServiceBus.Core;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 
 namespace Hub.HostedServices.ServiceBusQueue
@@ -18,8 +19,9 @@ namespace Hub.HostedServices.ServiceBusQueue
 
         protected ServiceBusHostedService(ILogger<ServiceBusHostedService> logger, 
             ICommandLogFactory commandLogFactory, 
+            IConfiguration configuration,
             IServiceBusQueueCommand serviceBusQueueCommand,
-            IQueueProcessor queueProcessor) : base(logger, commandLogFactory)
+            IQueueProcessor queueProcessor) : base(logger, commandLogFactory, configuration)
         {
             _serviceBusQueueCommand = serviceBusQueueCommand;
             _queueProcessor = queueProcessor;
@@ -36,9 +38,11 @@ namespace Hub.HostedServices.ServiceBusQueue
         
         private async Task Handle(ProcessMessageEventArgs args)  
         {  
-            if (args.Message == null)  
+            if (args.Message == null)
+            {
                 throw new ArgumentNullException(nameof(args.Message));
-
+            }
+            
             var body = Encoding.Default.GetString(args.Message.Body);
             
             Logger.LogInformation($"New message in queue {_serviceBusQueueCommand.QueueName} created at {args.Message.EnqueuedTime:dd.MM.yyyy HH.mm.ss} received: {body}");
