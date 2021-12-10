@@ -1,12 +1,16 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Hub.Shared.Storage.Repository.Core;
+using JetBrains.Annotations;
 
 namespace Hub.Shared.HostedServices.Commands
 {
     public interface ICommandConfigurationProvider
     {
+        [UsedImplicitly]
         CommandConfigurationDto Get(string name);
+        
+        [UsedImplicitly]
         Task<IList<CommandConfigurationDto>> GetCommandConfigurations();
     }
     

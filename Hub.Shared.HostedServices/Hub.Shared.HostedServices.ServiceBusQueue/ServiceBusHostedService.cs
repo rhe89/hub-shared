@@ -1,16 +1,18 @@
 ﻿using System;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using Azure.Messaging.ServiceBus;
 using Hub.Shared.HostedServices.Core;
 using Hub.Shared.Storage.ServiceBus;
+using JetBrains.Annotations;
 using Microsoft.ApplicationInsights;
+using Microsoft.ApplicationInsights.DataContracts;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 
 namespace Hub.Shared.HostedServices.ServiceBusQueue
 {
+    [UsedImplicitly]
     public abstract class ServiceBusHostedService : HostedServiceBase
     {
         private readonly IServiceBusQueueCommand _serviceBusQueueCommand;
@@ -28,11 +30,11 @@ namespace Hub.Shared.HostedServices.ServiceBusQueue
 
         protected override async Task ExecuteAsync(CancellationToken stoppingToken)
         {
-            Logger.LogInformation($"Initializing queue processor for queue {_serviceBusQueueCommand.Trigger}");
+            Logger.LogInformation("Initializing queue processor for queue {Queue}", _serviceBusQueueCommand.Trigger);
 
             await _queueProcessor.Start(_serviceBusQueueCommand.Trigger, Handle);
             
-            Logger.LogInformation("Queue processor initialized");
+            Logger.LogInformation("Queue processor initialized for queue {Queue}", _serviceBusQueueCommand.Trigger);
         }
         
         private async Task Handle(ProcessMessageEventArgs args)  
@@ -42,13 +44,27 @@ namespace Hub.Shared.HostedServices.ServiceBusQueue
                 throw new ArgumentNullException(nameof(args.Message));
             }
             
-            var body = Encoding.Default.GetString(args.Message.Body);
-            
-            Logger.LogInformation($"New message in queue {_serviceBusQueueCommand.Trigger} created at {args.Message.EnqueuedTime:dd.MM.yyyy HH.mm.ss} received: {body}");
+            var requestTelemetry = new RequestTelemetry { Name = "process " + _serviceBusQueueCommand.Trigger };
 
-            await base.ExecuteAsync(_serviceBusQueueCommand, args.CancellationToken);
+            if (args.Message.ApplicationProperties.TryGetValue("RootId", out var rootId))
+            {
+                requestTelemetry.Context.Operation.Id = rootId.ToString();
+            }
+            
+            if (args.Message.ApplicationProperties.TryGetValue("ParentId", out var parentId))
+            {
+                requestTelemetry.Context.Operation.ParentId = parentId.ToString();
+            }
+            
+            using var operation = TelemetryClient.StartOperation(requestTelemetry);
+            
+            Logger.LogInformation("New message in queue {Queue} created at {Time} received", _serviceBusQueueCommand.Trigger, args.Message.EnqueuedTime.ToString("dd.MM.yyyy HH.mm.ss"));
+
+            await base.ExecuteAsync(_serviceBusQueueCommand, args.CancellationToken, operation);
 
             await args.CompleteMessageAsync(args.Message);
+            
+            operation.Telemetry.Stop();
         }
     }
 }

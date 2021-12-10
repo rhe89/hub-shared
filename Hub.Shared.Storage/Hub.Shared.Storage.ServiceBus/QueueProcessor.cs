@@ -33,7 +33,7 @@ namespace Hub.Shared.Storage.ServiceBus
 
         private Task ErrorHandler(ProcessErrorEventArgs arg)
         {
-            _logger.LogError(arg.Exception, $"Error occured when processing message with entity path {arg.EntityPath}");
+            _logger.LogError(arg.Exception, "Error occured when processing message with entity path {EntityPath}", arg.EntityPath);
             
             return Task.CompletedTask;
         }

@@ -5,6 +5,7 @@
     </PropertyGroup>
 
     <ItemGroup>
+      <PackageReference Include="JetBrains.Annotations" Version="2021.3.0" />
       <PackageReference Include="Microsoft.Azure.Cosmos.Table" Version="1.0.8" />
       <PackageReference Include="Microsoft.Azure.Storage.Common" Version="11.2.3" />
       <PackageReference Include="Microsoft.Azure.Storage.File" Version="11.2.2" />

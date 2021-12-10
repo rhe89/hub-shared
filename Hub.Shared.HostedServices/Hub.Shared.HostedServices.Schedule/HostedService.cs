@@ -29,8 +29,10 @@ namespace Hub.Shared.HostedServices.Schedule
             {
                 if (!_scheduledCommandCollection.Any())
                 {
-                    throw new HostedServicesException("No scheduled commands registered");
+                    Logger.LogInformation("No scheduled commands registered");
+                    return;
                 }
+                
                 foreach (var scheduledCommand in _scheduledCommandCollection)
                 {
                     if (scheduledCommand == null)
@@ -40,7 +42,6 @@ namespace Hub.Shared.HostedServices.Schedule
                     
                     if (!scheduledCommand.IsDue)
                     {
-                        Logger.LogInformation($"{scheduledCommand.Name} not due yet. Next scheduled run: {scheduledCommand.NextScheduledRun}");
                         continue;
                     }
 
@@ -50,12 +51,10 @@ namespace Hub.Shared.HostedServices.Schedule
                     
                     await scheduledCommand.UpdateLastRun(DateTime.Now);
             
-                    Logger.LogInformation($"{scheduledCommand.Name}'s next run: {scheduledCommand.NextScheduledRun}");
+                    Logger.LogInformation("{CommandName}'s next run: {NextScheduledRun}", scheduledCommand.Name, scheduledCommand.NextScheduledRun);
                 }
                 
                 var delayMillis = TimeSpan.FromMinutes(1);
-                
-                Logger.LogInformation($"Awaiting {delayMillis.Minutes} minutes for next iteration");
                 
                 await Task.Delay(delayMillis, cancellationToken);
             }

@@ -1,26 +1,33 @@
 using System;
-using System.IO;
+using Azure.Identity;
 using Hub.Shared.Logging;
 using Hub.Shared.Storage.Repository;
+using JetBrains.Annotations;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Configuration.AzureAppConfiguration;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
 
 namespace Hub.Shared.Web.Api
 {
+    [UsedImplicitly]
     public static class HostBuilder<TDependencyRegistrationFactory, TDbContext>
         where TDependencyRegistrationFactory : DependencyRegistrationFactory<TDbContext>, new()
         where TDbContext : HubDbContext 
     {
+        [UsedImplicitly]
         public static IHostBuilder Create(string[] args) 
-        { 
-            var configPath = $"{Directory.GetCurrentDirectory()}/../..";
-
+        {
             var config = new ConfigurationBuilder()
                 .AddEnvironmentVariables()
-                .SetBasePath(configPath)
-                .AddJsonFile("appsettings.json", true)
+                .AddAzureAppConfiguration(options =>
+                {
+                    options.Connect(Environment.GetEnvironmentVariable("APP_CONFIG_CONNECTION_STRING"))
+                        .Select(KeyFilter.Any)
+                        .Select(KeyFilter.Any, Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT"));
+                    options.ConfigureKeyVault(o =>
+                        o.SetCredential(new DefaultAzureCredential()));
+                })
                 .Build();
 
             return Host.CreateDefaultBuilder(args)
@@ -34,12 +41,7 @@ namespace Hub.Shared.Web.Api
                 })
                 .ConfigureLogging(loggingBuilder =>
                 {
-                    loggingBuilder.AddHubLogger(new HubLoggerConfig
-                        {
-                            Color = ConsoleColor.Blue,
-                            LogLevel = LogLevel.Information
-                        }, 
-                        config);
+                    loggingBuilder.AddHubLogging();
                 });
         }
     }

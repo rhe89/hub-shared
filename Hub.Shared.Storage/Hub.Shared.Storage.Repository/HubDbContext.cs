@@ -1,5 +1,4 @@
 using Hub.Shared.HostedServices.Commands;
-using Hub.Shared.Settings;
 using Microsoft.EntityFrameworkCore;
 
 namespace Hub.Shared.Storage.Repository
@@ -14,9 +13,6 @@ namespace Hub.Shared.Storage.Repository
         
         protected override void OnModelCreating(ModelBuilder builder)
         {
-            builder.Entity<Setting>()
-                .ToTable(schema: "dbo", name: "Setting");
-                
             builder.Entity<CommandConfiguration>()
                 .ToTable(schema: "dbo", name: "CommandConfiguration");
         }

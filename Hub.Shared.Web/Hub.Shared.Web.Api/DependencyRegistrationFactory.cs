@@ -1,6 +1,6 @@
 using System.Reflection;
-using Hub.Shared.Storage.Azure;
 using Hub.Shared.Storage.Repository;
+using JetBrains.Annotations;
 using Microsoft.ApplicationInsights.AspNetCore.Extensions;
 using Microsoft.AspNetCore.Mvc.ApplicationParts;
 using Microsoft.Extensions.Configuration;
@@ -34,14 +34,11 @@ namespace Hub.Shared.Web.Api
                 ConnectionString = configuration.GetValue<string>("AI_CONNECTION_STRING")
             });
             
-            serviceCollection.AddTransient<ITableStorage, TableStorage>(x => 
-                new TableStorage(configuration.GetValue<string>("STORAGE_ACCOUNT")));
-            
             serviceCollection.AddDatabase<TDbContext>(configuration, _connectionStringKey, _migrationAssembly);
             
             AddDomainDependencies(serviceCollection, configuration);
         }
         
-        protected abstract void AddDomainDependencies(IServiceCollection serviceCollection, IConfiguration configuration);
+        protected abstract void AddDomainDependencies(IServiceCollection serviceCollection, [UsedImplicitly]IConfiguration configuration);
     }
 }

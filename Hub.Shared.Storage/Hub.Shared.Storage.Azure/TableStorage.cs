@@ -1,13 +1,16 @@
 ﻿using System.Threading.Tasks;
+using JetBrains.Annotations;
 using Microsoft.Azure.Cosmos.Table;
 
 namespace Hub.Shared.Storage.Azure
 {
     public interface ITableStorage
     {
+        [UsedImplicitly]
         Task InsertOrMerge(string tableName, TableEntity tableEntity);
     }
     
+    [UsedImplicitly]
     public class TableStorage : ITableStorage
     {
         private readonly string _azureStorageConnectionString;

@@ -1,36 +1,34 @@
-﻿using System;
-using Microsoft.Extensions.Configuration;
+﻿using JetBrains.Annotations;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Logging.ApplicationInsights;
+using Microsoft.Extensions.Logging.Console;
 
 namespace Hub.Shared.Logging
 {
+    [UsedImplicitly]
     public static class HubLoggerExtensions
     {
-        public static ILoggingBuilder AddHubLogger(this ILoggingBuilder loggingBuilder, HubLoggerConfig loggerConfig, IConfiguration appConfig)
+        [UsedImplicitly]
+        public static ILoggingBuilder AddHubLogging(this ILoggingBuilder loggingBuilder)
         {
             loggingBuilder.ClearProviders();
 
-            loggingBuilder.AddProvider(new HubLoggerProvider(loggerConfig, appConfig));
+            loggingBuilder.AddConsole();
+            loggingBuilder.AddFilters<ConsoleLoggerProvider>();
+            
+            loggingBuilder.AddApplicationInsights();
+            loggingBuilder.AddFilters<ApplicationInsightsLoggerProvider>();
 
             return loggingBuilder;
         }
-        public static ILoggingBuilder AddHubLogger(this ILoggingBuilder loggingBuilder, IConfiguration appConfig)
+
+        private static void AddFilters<TLoggerProvider>(this ILoggingBuilder loggingBuilder)
+            where TLoggerProvider : ILoggerProvider
         {
-            loggingBuilder.ClearProviders();
-
-            var loggerConfig = new HubLoggerConfig();
-
-            return loggingBuilder.AddHubLogger(loggerConfig, appConfig);
-        }
-        public static ILoggingBuilder AddHubLogger(this ILoggingBuilder loggingBuilder, Action<HubLoggerConfig> configure, IConfiguration appConfig)
-        {
-            var loggerConfig = new HubLoggerConfig();
-
-            configure(loggerConfig);
-
-            loggingBuilder.ClearProviders();
-
-            return loggingBuilder.AddHubLogger(loggerConfig, appConfig);
+            loggingBuilder.AddFilter<TLoggerProvider>("", LogLevel.Information);
+            loggingBuilder.AddFilter<TLoggerProvider>("Microsoft.EntityFrameworkCore.SqlServer", LogLevel.Warning);
+            loggingBuilder.AddFilter<TLoggerProvider>("Microsoft.EntityFrameworkCore.Database.Command", LogLevel.Warning);
+            loggingBuilder.AddFilter<TLoggerProvider>("Microsoft.EntityFrameworkCore.Infrastructure", LogLevel.Warning);
         }
     }
 }

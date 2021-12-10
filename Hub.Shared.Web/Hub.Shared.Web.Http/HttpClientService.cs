@@ -4,61 +4,71 @@ using System.Net.Http;
 using System.Net.Http.Json;
 using System.Text;
 using System.Threading.Tasks;
+using IdentityModel.Client;
+using JetBrains.Annotations;
 using Newtonsoft.Json;
 
 namespace Hub.Shared.Web.Http
 {
+    [UsedImplicitly]
     public abstract class HttpClientService
     {
+        [UsedImplicitly]
         protected readonly HttpClient HttpClient;
+        private DateTime? _tokenExpirationDate;
         
+        [UsedImplicitly]
         public string FriendlyApiName { get; }
-
-        protected HttpClientService(HttpClient httpClient, string friendlyApiName)
+        
+        [UsedImplicitly]
+        protected bool IsAuthenticated => _tokenExpirationDate != null && _tokenExpirationDate < DateTime.Now;
+        
+        protected HttpClientService(HttpClient httpClient, 
+            string friendlyApiName)
         {
             HttpClient = httpClient;
             FriendlyApiName = friendlyApiName;
         }
 
-        protected async Task<Response<TResponseObject>> Get<TResponseObject>(string requestUri, params string[] requestParameters)
+        [UsedImplicitly]
+        protected async Task<TResponseObject> Get<TResponseObject>(string requestUri, params string[] requestParameters)
         {
-            try
-            {
-                var response = await HttpClient.GetAsync(BuildGetRequest(requestUri, requestParameters));
+            var response = await HttpClient.GetAsync(BuildGetRequest(requestUri, requestParameters));
+            
+            return await HandleResponse<TResponseObject>(response);
+        }
 
-                return await HandleResponse<TResponseObject>(response);
-            }
-            catch (HttpRequestException e)
+        [UsedImplicitly]
+        protected async Task RequestClientCredentialsTokenAsync(string address, string clientId, string secret)
+        {
+            var tokenResponse = await HttpClient.RequestClientCredentialsTokenAsync(new ClientCredentialsTokenRequest
             {
-                return HandleRequestException<TResponseObject>(e, requestUri);
-            }
-            catch (Exception e)
+                Address = address,
+                ClientId = clientId,
+                ClientSecret = secret
+            });
+            
+            if (tokenResponse.IsError)
             {
-                return HandleResponseException<TResponseObject>(e, requestUri);
+                throw new HttpRequestException($"Request to {FriendlyApiName} ({tokenResponse.HttpResponse.RequestMessage.RequestUri}) failed: {tokenResponse.Error} ({tokenResponse.HttpStatusCode}).");
             }
+
+            HttpClient.SetBearerToken(tokenResponse.AccessToken);
+            
+            _tokenExpirationDate = DateTime.Now.AddSeconds(tokenResponse.ExpiresIn);
         }
         
-        protected async Task<Response<string>> Post(string requestUri, object payload)
+        [UsedImplicitly]
+        protected async Task<TResponseObject> Post<TResponseObject>(string requestUri, object payload)
         {
             var uri = new Uri(HttpClient.BaseAddress, requestUri);
             
-            try
-            {
-                var payloadSerialized = JsonConvert.SerializeObject(payload);
-                var stringContent = new StringContent(payloadSerialized, Encoding.UTF8, "application/json");
-                
-                var response = await HttpClient.PostAsync(uri, stringContent);
+            var payloadSerialized = JsonConvert.SerializeObject(payload);
+            var stringContent = new StringContent(payloadSerialized, Encoding.UTF8, "application/json");
+            
+            var response = await HttpClient.PostAsync(uri, stringContent);
 
-                return HandlePostResponse<string>(response);
-            }
-            catch (HttpRequestException e)
-            {
-                return HandleRequestException<string>(e, uri.OriginalString);
-            }
-            catch (Exception e)
-            {
-                return HandleResponseException<string>(e, uri.OriginalString);
-            }
+            return await HandlePostResponse<TResponseObject>(response);
         }
 
         private static string BuildGetRequest(string requestUri, string[] requestParameters)
@@ -73,57 +83,24 @@ namespace Hub.Shared.Web.Http
             return $"{requestUri}?{flattenedRequestParameters}";
         }
         
-        private Response<TResponseObject> HandlePostResponse<TResponseObject>(HttpResponseMessage responseMessage)
+        private async Task<TResponseObject> HandlePostResponse<TResponseObject>(HttpResponseMessage responseMessage)
         {
             if (responseMessage.IsSuccessStatusCode)
             {
-                return new Response<TResponseObject>
-                {
-                    StatusCode = responseMessage.StatusCode
-                };
+                return await responseMessage.Content.ReadFromJsonAsync<TResponseObject>();
             }
-            
-            return new Response<TResponseObject>
-            {
-                StatusCode = responseMessage.StatusCode,
-                ErrorMessage = $@"{FriendlyApiName} returned status code: {responseMessage.StatusCode}.
-                            Request uri {responseMessage.RequestMessage.RequestUri}"
-            };
+
+            throw new HttpRequestException($"Request to {FriendlyApiName} ({responseMessage.RequestMessage.RequestUri}) failed: {responseMessage.StatusCode}.");
         }
 
-        private async Task<Response<TResponseObject>> HandleResponse<TResponseObject>(HttpResponseMessage responseMessage)
+        private async Task<TResponseObject> HandleResponse<TResponseObject>(HttpResponseMessage responseMessage)
         {
             if (responseMessage.IsSuccessStatusCode)
             {
-                return new Response<TResponseObject>
-                {
-                    Data = await responseMessage.Content.ReadFromJsonAsync<TResponseObject>(),
-                    StatusCode = responseMessage.StatusCode
-                };
+                return await responseMessage.Content.ReadFromJsonAsync<TResponseObject>();
             }
             
-            return new Response<TResponseObject>
-            {
-                StatusCode = responseMessage.StatusCode,
-                ErrorMessage = $@"{FriendlyApiName} returned status code: {responseMessage.StatusCode}.
-                            Request uri {responseMessage.RequestMessage.RequestUri}"
-            };
+            throw new HttpRequestException($"Request to {FriendlyApiName} ({responseMessage.RequestMessage.RequestUri}) failed: {responseMessage.StatusCode}.");
         }
-
-        private Response<TResponseObject> HandleRequestException<TResponseObject>(Exception exception, string requestUri)
-        {
-            return new Response<TResponseObject>
-            {
-                ErrorMessage = $"Error occured when requesting {FriendlyApiName} with uri {HttpClient.BaseAddress}{requestUri}: {exception.Message} {exception.InnerException?.Message}"
-            };
-        }
-
-        private Response<TResponseObject> HandleResponseException<TResponseObject>(Exception exception, string requestUri)
-        {
-            return new Response<TResponseObject>
-            {
-                ErrorMessage = $"Error occured when handling response from {FriendlyApiName} with uri {HttpClient.BaseAddress}{requestUri}: {exception.InnerException?.Message}"
-            };
-        } 
     }
 }

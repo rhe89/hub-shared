@@ -1,4 +1,5 @@
 using System.Threading.Tasks;
+using JetBrains.Annotations;
 using Microsoft.Azure.Storage;
 using Microsoft.Azure.Storage.File;
 
@@ -6,9 +7,11 @@ namespace Hub.Shared.Storage.Azure
 {
     public interface IFileStorage
     {
+        [UsedImplicitly]
         Task<byte[]> GetItem(string fileShare, string folder, string fileReference);
     }
     
+    [UsedImplicitly]
     public class FileStorage : IFileStorage
     {
         private readonly string _azureStorageConnectionString;

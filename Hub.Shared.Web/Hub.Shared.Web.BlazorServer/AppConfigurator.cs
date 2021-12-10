@@ -1,9 +1,11 @@
+using JetBrains.Annotations;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Hosting;
 
 namespace Hub.Shared.Web.BlazorServer
 {
+    [UsedImplicitly]
     public class AppConfigurator
     {
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)

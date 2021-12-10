@@ -3,7 +3,11 @@ using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 using Hub.Shared.HostedServices.Commands;
+using JetBrains.Annotations;
 using Microsoft.ApplicationInsights;
+using Microsoft.ApplicationInsights.DataContracts;
+using Microsoft.ApplicationInsights.Extensibility;
+using Microsoft.ApplicationInsights.Extensibility.Implementation;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
@@ -12,9 +16,13 @@ namespace Hub.Shared.HostedServices.Core
 {
     public abstract class HostedServiceBase : BackgroundService
     {
+        [UsedImplicitly]
         protected readonly ILogger<HostedServiceBase> Logger;
+        
+        [UsedImplicitly]
+        protected readonly TelemetryClient TelemetryClient;
+
         private readonly IConfiguration _configuration;
-        private readonly TelemetryClient _telemetryClient;
 
         protected HostedServiceBase(ILogger<HostedServiceBase> logger, 
             IConfiguration configuration,
@@ -22,18 +30,32 @@ namespace Hub.Shared.HostedServices.Core
         {
             Logger = logger;
             _configuration = configuration;
-            _telemetryClient = telemetryClient;
+            TelemetryClient = telemetryClient;
         }
 
+        [UsedImplicitly]
         protected async Task ExecuteAsync(ICommand command,
             CancellationToken cancellationToken)
         {
+            using var operation = TelemetryClient.StartOperation<DependencyTelemetry>($"Executing {command.Name}");
+            
+            await ExecuteAsync(command, cancellationToken, operation);
+                
+            operation.Telemetry.Stop();
+        }
+        
+        [UsedImplicitly]
+        protected async Task ExecuteAsync<TTelemetry>(ICommand command,
+            CancellationToken cancellationToken,
+            IOperationHolder<TTelemetry> operation) where TTelemetry : OperationTelemetry
+        {
             try
             {
-                Logger.LogInformation($"{command.Name} starting.");
-                _telemetryClient.TrackEvent($"{command.Name} starting.");
+                Logger.LogInformation("Executing {CommandName}", command.Name);
 
                 await command.Execute(cancellationToken);
+
+                Logger.LogInformation("Executed {CommandName}", command.Name);
 
                 SaveCommandLog(true, command.Name);
 
@@ -42,17 +64,16 @@ namespace Hub.Shared.HostedServices.Core
                     await commandWithConsumers.NotifyConsumers();
                 }
 
+                operation.Telemetry.Success = true;
             }
             catch (Exception exception)
             {
-                Logger.LogError(exception, $"Error occurred executing {command.Name}.");
-                _telemetryClient.TrackException(exception);
+                Logger.LogError(exception, "Error occurred executing {CommandName}", command.Name);
+                
+                operation.Telemetry.Success = false;
 
                 SaveCommandLog(false, command.Name, exception);
             }
-            
-            Logger.LogInformation($"{command.Name} finished.");
-            _telemetryClient.TrackEvent($"{command.Name} finished.");
         }
             
         private void SaveCommandLog(bool success, string commandName, Exception exception = null)
@@ -67,7 +88,7 @@ namespace Hub.Shared.HostedServices.Core
 
                 var domain = _configuration.GetValue<string>("DOMAIN");
 
-                _telemetryClient.TrackEvent("CommandLog", new Dictionary<string, string>
+                TelemetryClient.TrackEvent("CommandLog", new Dictionary<string, string>
                 {
                     {"CommandName", commandName},
                     {"InitiatedBy", initiatedBy},
@@ -78,7 +99,7 @@ namespace Hub.Shared.HostedServices.Core
             }
             catch (Exception e)
             {
-                Logger.LogError(e, $"Error occured when saving CommandLog for command with name {commandName} in {GetType().Name}");
+                Logger.LogError(e, "Error occured when logging CommandLog for command with name {CommandName} in {BackgroundService}", commandName, GetType().Name);
             }
         }
 

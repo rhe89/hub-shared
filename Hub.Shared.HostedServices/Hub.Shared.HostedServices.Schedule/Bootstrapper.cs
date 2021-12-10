@@ -1,13 +1,16 @@
-using System.IO;
+using System;
+using Azure.Identity;
 using Hub.Shared.Logging;
 using Hub.Shared.Storage.Repository;
+using JetBrains.Annotations;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Configuration.AzureAppConfiguration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
 
 namespace Hub.Shared.HostedServices.Schedule
 {
+    [UsedImplicitly]
     public class Bootstrapper<TDependencyRegistrationFactory, TDbContext>
         where TDependencyRegistrationFactory : DependencyRegistrationFactory<TDbContext>, new()
         where TDbContext : HubDbContext
@@ -16,45 +19,39 @@ namespace Hub.Shared.HostedServices.Schedule
         private readonly string _connectionStringKey;
         private IConfigurationRoot _config;
 
-        public Bootstrapper(string [] args, string connectionStringKey)
+        public Bootstrapper(string[] args, string connectionStringKey)
         {
             _args = args;
             _connectionStringKey = connectionStringKey;
         }
-        
+
+        [UsedImplicitly]
         public IHostBuilder CreateHostBuilder()
         {
             return Host.CreateDefaultBuilder(_args)
                 .ConfigureHostConfiguration(AddConfiguration)
                 .ConfigureServices(RegisterServices)
-                .ConfigureLogging(AddLogging);
+                .ConfigureLogging(l => l.AddHubLogging());
         }
-        
+
         private void AddConfiguration(IConfigurationBuilder configurationBuilder)
         {
-            var configPath = $"{Directory.GetCurrentDirectory()}/../..";
-
-            _config = new ConfigurationBuilder()
+            _config = configurationBuilder
                 .AddEnvironmentVariables()
-                .SetBasePath(configPath)
-                .AddJsonFile("appsettings.json", true)
+                .AddAzureAppConfiguration(options =>
+                {
+                    options.Connect(Environment.GetEnvironmentVariable("APP_CONFIG_CONNECTION_STRING"))
+                        .Select(KeyFilter.Any)
+                        .Select(KeyFilter.Any, Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT"));
+                    options.ConfigureKeyVault(o =>
+                        o.SetCredential(new DefaultAzureCredential()));
+                })
                 .Build();
-
-             configurationBuilder.AddConfiguration(_config);
         }
 
         private void RegisterServices(IServiceCollection serviceCollection)
         {
             new TDependencyRegistrationFactory().AddServices(serviceCollection, _config, _connectionStringKey);
-        }
-        
-        private void AddLogging(ILoggingBuilder loggingBuilder)
-        {
-            loggingBuilder.AddHubLogger(new HubLoggerConfig
-            {
-                Color = System.ConsoleColor.Blue,
-                LogLevel = LogLevel.Information
-            }, _config);
         }
     }
 }

@@ -6,11 +6,15 @@
 
     <ItemGroup>
         <FrameworkReference Include="Microsoft.AspNetCore.App" Version="2.2.8" />
+        <PackageReference Include="Azure.Identity" Version="1.5.0" />
+        <PackageReference Include="JetBrains.Annotations" Version="2021.3.0" />
+        <PackageReference Include="Microsoft.Extensions.Configuration.AzureAppConfiguration" Version="4.5.1" />
         <PackageReference Include="Microsoft.AspNetCore.Identity.UI" Version="3.1.8" />
+        <PackageReference Include="Microsoft.ApplicationInsights.AspNetCore" Version="2.17.0" />
+        
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\..\Hub.Shared.Storage\Hub.Shared.Storage.Azure\Hub.Shared.Storage.Azure.csproj" />
       <ProjectReference Include="..\Hub.Shared.Web.Http\Hub.Shared.Web.Http.csproj" />
     </ItemGroup>
 </Project>

@@ -1,17 +1,22 @@
 using System.Threading;
 using System.Threading.Tasks;
+using JetBrains.Annotations;
 
 namespace Hub.Shared.HostedServices.Commands
 {
+    [UsedImplicitly]
     public interface ICommandWithConsumers : ICommand
     { 
+        [UsedImplicitly]
         Task NotifyConsumers();
-        string QueueName { get; }
     }
     
     public interface ICommand
     {
-        Task Execute(CancellationToken cancellationToken);
+        [UsedImplicitly]
+        Task Execute([UsedImplicitly]CancellationToken cancellationToken);
+        
+        [UsedImplicitly]
         string Name { get; }
     }
 }

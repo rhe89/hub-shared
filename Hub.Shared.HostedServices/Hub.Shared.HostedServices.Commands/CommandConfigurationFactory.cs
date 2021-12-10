@@ -1,14 +1,22 @@
 using System;
 using System.Threading.Tasks;
 using Hub.Shared.Storage.Repository.Core;
+using JetBrains.Annotations;
 
 namespace Hub.Shared.HostedServices.Commands
 {
     public interface ICommandConfigurationFactory
     {
+        [UsedImplicitly]
         CommandConfigurationDto CreateDefaultCommandConfiguration(string name);
+        
+        [UsedImplicitly]
         Task UpdateLastRun(string name, DateTime lastRun);
+        
+        [UsedImplicitly]
         Task UpdateRunIntervalType(string name, string runInterval);
+
+        [UsedImplicitly]
         Task DeleteConfigurations();
     }
     

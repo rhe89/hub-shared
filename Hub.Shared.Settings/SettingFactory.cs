@@ -1,15 +1,18 @@
 using System;
 using System.Threading.Tasks;
 using Hub.Shared.Storage.Repository.Core;
+using JetBrains.Annotations;
 
 namespace Hub.Shared.Settings
 {
     
     public interface ISettingFactory
     {
+        [UsedImplicitly]
         Task UpdateSetting(string key, string value);
     }
     
+    [UsedImplicitly]
     public class SettingFactory : ISettingFactory
     {
         private readonly IHubDbRepository _dbRepository;

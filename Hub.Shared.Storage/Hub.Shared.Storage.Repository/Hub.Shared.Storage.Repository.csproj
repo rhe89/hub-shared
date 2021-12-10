@@ -7,6 +7,7 @@
     <ItemGroup>
         <PackageReference Include="AutoMapper" Version="10.1.0" />
         <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="8.1.0" />
+        <PackageReference Include="JetBrains.Annotations" Version="2021.3.0" />
         <PackageReference Include="Microsoft.EntityFrameworkCore" Version="3.1.8" />
         <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="3.1.8" />
         <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="3.1.8" />
@@ -14,7 +15,6 @@
 
     <ItemGroup>
       <ProjectReference Include="..\..\Hub.Shared.HostedServices\Hub.Shared.HostedServices.Commands\Hub.Shared.HostedServices.Commands.csproj" />
-      <ProjectReference Include="..\..\Hub.Shared.Settings\Hub.Shared.Settings.csproj" />
       <ProjectReference Include="..\Hub.Shared.Storage.Repository.Core\Hub.Shared.Storage.Repository.Core.csproj" />
     </ItemGroup>
     

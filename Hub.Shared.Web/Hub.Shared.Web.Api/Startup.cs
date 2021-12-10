@@ -1,4 +1,5 @@
 using Hub.Shared.Storage.Repository;
+using JetBrains.Annotations;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
@@ -19,12 +20,14 @@ namespace Hub.Shared.Web.Api
             _configuration = configuration;
         }
         
+        [UsedImplicitly]
         public void ConfigureServices(IServiceCollection serviceCollection)
         {
             new TDependencyRegistrationFactory().AddServices(serviceCollection, _configuration);
         }
         
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
+        [UsedImplicitly]
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
             if (env.IsDevelopment())

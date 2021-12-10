@@ -2,15 +2,20 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Hub.Shared.Storage.Repository.Core;
+using JetBrains.Annotations;
 
 namespace Hub.Shared.Settings
 {
     public interface ISettingProvider
     {
+        [UsedImplicitly]
         Task<IList<SettingDto>> GetSettings();
+        
+        [UsedImplicitly]
         T GetSetting<T>(string key);
     }
     
+    [UsedImplicitly]
     public class SettingProvider : ISettingProvider
     {
         private readonly IHubDbRepository _dbRepository;

@@ -2,18 +2,23 @@ using System;
 using System.Threading;
 using System.Threading.Tasks;
 using Hub.Shared.HostedServices.Commands;
+using JetBrains.Annotations;
 
 namespace Hub.Shared.HostedServices.Schedule
 {
     public interface IScheduledCommand : ICommand
     {
-        DateTime LastRun { get; }
+        [UsedImplicitly]
         bool IsDue { get; }
+        
+        [UsedImplicitly]
         string NextScheduledRun { get; }
-        RunInterval RunInterval { get; }
+        
+        [UsedImplicitly]
         Task UpdateLastRun(DateTime lastRun);
     }
     
+    [UsedImplicitly]
     public abstract class ScheduledCommand : IScheduledCommand
     {
         private readonly ICommandConfigurationProvider _commandConfigurationProvider;
@@ -32,11 +37,11 @@ namespace Hub.Shared.HostedServices.Schedule
         }
         
         public abstract Task Execute(CancellationToken cancellationToken);
-        
-        public DateTime LastRun => CommandConfiguration.LastRun;
         public string Name => GetType().Name;
-        public RunInterval RunInterval => Enum.Parse<RunInterval>(CommandConfiguration.RunInterval);
         
+        private RunInterval RunInterval => Enum.Parse<RunInterval>(CommandConfiguration.RunInterval);
+        private DateTime LastRun => CommandConfiguration.LastRun;
+
         public bool IsDue
         {
             get
