@@ -1,5 +1,8 @@
 trigger: none
 
+pool:
+  vmImage: 'ubuntu-18.04'
+
 steps:
 - task: UseDotNet@2
   inputs:
