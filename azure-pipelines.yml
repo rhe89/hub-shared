@@ -1,5 +1,8 @@
 trigger: none
 
+pool:
+  vmImage: 'windows-latest'
+
 steps:
 - task: DotNetCoreCLI@2
   displayName: restore
