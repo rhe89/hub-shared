@@ -1,7 +1,10 @@
+using System;
 using System.Reflection;
+using Hub.Shared.Logging;
 using Hub.Shared.Storage.Repository;
 using JetBrains.Annotations;
 using Microsoft.ApplicationInsights.AspNetCore.Extensions;
+using Microsoft.ApplicationInsights.Extensibility;
 using Microsoft.AspNetCore.Mvc.ApplicationParts;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -33,7 +36,9 @@ public abstract class DependencyRegistrationFactory<TDbContext>
         {
             ConnectionString = configuration.GetValue<string>("AI_CONNECTION_STRING")
         });
-            
+        
+        serviceCollection.AddSingleton<ITelemetryInitializer>(new CloudRoleNameInitializer(Environment.GetEnvironmentVariable("CLOUD_ROLE_NAME")));
+
         serviceCollection.AddDatabase<TDbContext>(configuration, _connectionStringKey, _migrationAssembly);
             
         AddDomainDependencies(serviceCollection, configuration);

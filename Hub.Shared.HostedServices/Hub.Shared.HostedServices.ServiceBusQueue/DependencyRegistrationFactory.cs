@@ -1,6 +1,9 @@
+using System;
+using Hub.Shared.Logging;
 using Hub.Shared.Storage.Repository;
 using Hub.Shared.Storage.ServiceBus;
 using JetBrains.Annotations;
+using Microsoft.ApplicationInsights.Extensibility;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
@@ -17,7 +20,8 @@ public abstract class DependencyRegistrationFactory<TDbContext>
         serviceCollection.AddDatabase<TDbContext>(configuration, dbConnectionStringKey);
         serviceCollection.TryAddTransient<IQueueProcessor, QueueProcessor>();
         serviceCollection.AddApplicationInsightsTelemetryWorkerService();
-            
+        serviceCollection.AddSingleton<ITelemetryInitializer>(new CloudRoleNameInitializer(Environment.GetEnvironmentVariable("CLOUD_ROLE_NAME")));
+
         AddDomainDependencies(serviceCollection, configuration);
         AddQueueListenerServices(serviceCollection, configuration);
     }

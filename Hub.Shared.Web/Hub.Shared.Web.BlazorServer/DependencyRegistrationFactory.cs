@@ -1,6 +1,8 @@
+using System;
 using Hub.Shared.Logging;
 using JetBrains.Annotations;
 using Microsoft.ApplicationInsights.AspNetCore.Extensions;
+using Microsoft.ApplicationInsights.Extensibility;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -22,7 +24,9 @@ public abstract class DependencyRegistrationFactory
         {
             ConnectionString = configuration.GetValue<string>("AI_CONNECTION_STRING")
         });
-            
+        
+        serviceCollection.AddSingleton<ITelemetryInitializer>(new CloudRoleNameInitializer(Environment.GetEnvironmentVariable("CLOUD_ROLE_NAME")));
+
         serviceCollection.AddLogging(loggingBuilder => loggingBuilder.AddHubLogging());
     }
         
