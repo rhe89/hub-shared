@@ -1,13 +1,13 @@
 trigger: none
 
 pool:
-  vmImage: 'ubuntu-18.04'
+  vmImage: 'windows-2022'
 
 steps:
 - task: UseDotNet@2
   inputs:
-    version: '6.0.0'
-    includePreviewVersions:
+    version: '6.0'
+    
 - task: DotNetCoreCLI@2
   displayName: restore
   inputs:
