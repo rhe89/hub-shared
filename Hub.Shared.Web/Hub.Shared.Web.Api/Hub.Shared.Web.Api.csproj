@@ -1,12 +1,14 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
-        <TargetFramework>netcoreapp3.1</TargetFramework>
+        <TargetFramework>net6.0</TargetFramework>
     </PropertyGroup>
 
+
     <ItemGroup>
-        <FrameworkReference Include="Microsoft.AspNetCore.App" Version="2.2.8" />
+        <FrameworkReference Include="Microsoft.AspNetCore.App" Version="" />
     </ItemGroup>
+
 
     <ItemGroup>
       <ProjectReference Include="..\..\Hub.Shared.HostedServices\Hub.Shared.HostedServices.Commands\Hub.Shared.HostedServices.Commands.csproj" />
@@ -18,8 +20,8 @@
         <PackageReference Include="Azure.Identity" Version="1.5.0" />
         <PackageReference Include="JetBrains.Annotations" Version="2021.3.0" />
         <PackageReference Include="Microsoft.Extensions.Configuration.AzureAppConfiguration" Version="4.5.1" />
-        <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="8.1.0" />
-        <PackageReference Include="Microsoft.ApplicationInsights.AspNetCore" Version="2.17.0" />
+        <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="8.1.1" />
+        <PackageReference Include="Microsoft.ApplicationInsights.AspNetCore" Version="2.19.0" />
     </ItemGroup>
 
 </Project>

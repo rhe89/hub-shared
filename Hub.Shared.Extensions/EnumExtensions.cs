@@ -4,18 +4,17 @@ using System.Linq;
 using System.Reflection;
 using JetBrains.Annotations;
 
-namespace Hub.Shared.Extensions
+namespace Hub.Shared.Extensions;
+
+[UsedImplicitly]
+public static class EnumExtensions
 {
     [UsedImplicitly]
-    public static class EnumExtensions
+    public static string GetEnumDisplayName(this Enum enumType)
     {
-        [UsedImplicitly]
-        public static string GetEnumDisplayName(this Enum enumType)
-        {
-            return enumType.GetType().GetMember(enumType.ToString())
-                .First()
-                .GetCustomAttribute<DisplayAttribute>()
-                .Name;
-        }
+        return enumType.GetType().GetMember(enumType.ToString())
+            .First()
+            .GetCustomAttribute<DisplayAttribute>()
+            .Name;
     }
 }

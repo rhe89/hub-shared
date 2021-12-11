@@ -1,15 +1,14 @@
 using AutoMapper;
 using JetBrains.Annotations;
 
-namespace Hub.Shared.HostedServices.Commands
+namespace Hub.Shared.HostedServices.Commands;
+
+[UsedImplicitly]
+public class CommandConfigurationProfile : Profile
 {
-    [UsedImplicitly]
-    public class CommandConfigurationProfile : Profile
+    public CommandConfigurationProfile()
     {
-        public CommandConfigurationProfile()
-        {
-            CreateMap<CommandConfiguration, CommandConfigurationDto>()
-                .ReverseMap();
-        }
+        CreateMap<CommandConfiguration, CommandConfigurationDto>()
+            .ReverseMap();
     }
 }

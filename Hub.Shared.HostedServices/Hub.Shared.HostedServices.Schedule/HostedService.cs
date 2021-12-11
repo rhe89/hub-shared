@@ -7,81 +7,81 @@ using Microsoft.ApplicationInsights;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 
-namespace Hub.Shared.HostedServices.Schedule
+namespace Hub.Shared.HostedServices.Schedule;
+
+public class HostedService : HostedServiceBase
 {
-    public class HostedService : HostedServiceBase
-    {
-        private readonly IScheduledCommandCollection _scheduledCommandCollection;
-        private Task _executingTask;
-        private readonly CancellationTokenSource _cancellationTokenSource = new CancellationTokenSource();
+    private readonly IScheduledCommandCollection _scheduledCommandCollection;
+    private Task _executingTask;
+    private readonly CancellationTokenSource _cancellationTokenSource = new ();
         
-        public HostedService(ILogger<HostedService> logger, 
-            IScheduledCommandCollection scheduledCommandCollection,
-            IConfiguration configuration,
-            TelemetryClient telemetryClient) : base(logger, configuration, telemetryClient)
-        {
-            _scheduledCommandCollection = scheduledCommandCollection;
-        }
+    public HostedService(ILogger<HostedService> logger, 
+        IScheduledCommandCollection scheduledCommandCollection,
+        IConfiguration configuration,
+        TelemetryClient telemetryClient) : base(logger, configuration, telemetryClient)
+    {
+        _scheduledCommandCollection = scheduledCommandCollection;
+    }
 
-        protected override async Task ExecuteAsync(CancellationToken cancellationToken)
+    protected override async Task ExecuteAsync(CancellationToken cancellationToken)
+    {
+        while (!cancellationToken.IsCancellationRequested)
         {
-            while (!cancellationToken.IsCancellationRequested)
+            if (!_scheduledCommandCollection.Any())
             {
-                if (!_scheduledCommandCollection.Any())
-                {
-                    Logger.LogInformation("No scheduled commands registered");
-                    return;
-                }
-                
-                foreach (var scheduledCommand in _scheduledCommandCollection)
-                {
-                    if (scheduledCommand == null)
-                    {
-                        continue;
-                    }
-                    
-                    if (!scheduledCommand.IsDue)
-                    {
-                        continue;
-                    }
-
-                    _executingTask = ExecuteAsync(scheduledCommand, cancellationToken);
-                    
-                    await _executingTask;
-                    
-                    await scheduledCommand.UpdateLastRun(DateTime.Now);
-            
-                    Logger.LogInformation("{CommandName}'s next run: {NextScheduledRun}", scheduledCommand.Name, scheduledCommand.NextScheduledRun);
-                }
-                
-                var delayMillis = TimeSpan.FromMinutes(1);
-                
-                await Task.Delay(delayMillis, cancellationToken);
-            }
-        }
-
-        public override async Task StopAsync(CancellationToken cancellationToken)
-        {
-            Logger.LogInformation("Stopping timer hosted service");
-
-            if (_executingTask == null)
-            {
+                Logger.LogInformation("No scheduled commands registered");
                 return;
             }
+                
+            foreach (var scheduledCommand in _scheduledCommandCollection)
+            {
+                if (scheduledCommand == null)
+                {
+                    continue;
+                }
+                    
+                if (!scheduledCommand.IsDue)
+                {
+                    continue;
+                }
 
-            try
-            {
-                _cancellationTokenSource.Cancel();
+                _executingTask = ExecuteAsync(scheduledCommand, cancellationToken);
+                    
+                await _executingTask;
+                    
+                await scheduledCommand.UpdateLastRun(DateTime.Now);
+            
+                Logger.LogInformation("{CommandName}'s next run: {NextScheduledRun}", scheduledCommand.Name, scheduledCommand.NextScheduledRun);
             }
-            finally
-            {
-                await Task.WhenAny(_executingTask, Task.Delay(Timeout.Infinite, cancellationToken));
-            }
+                
+            var delayMillis = TimeSpan.FromMinutes(1);
+                
+            await Task.Delay(delayMillis, cancellationToken);
         }
+    }
 
-        public override void Dispose()
+    public override async Task StopAsync(CancellationToken cancellationToken)
+    {
+        Logger.LogInformation("Stopping timer hosted service");
+
+        if (_executingTask == null)
         {
-            _cancellationTokenSource.Dispose();
+            return;
         }
+
+        try
+        {
+            _cancellationTokenSource.Cancel();
+        }
+        finally
+        {
+            await Task.WhenAny(_executingTask, Task.Delay(Timeout.Infinite, cancellationToken));
+        }
+    }
+
+    public override void Dispose()
+    {
+        GC.SuppressFinalize(this);
+        _cancellationTokenSource.Dispose();
     }
 }

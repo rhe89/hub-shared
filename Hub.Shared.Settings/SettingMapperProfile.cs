@@ -1,15 +1,14 @@
 using AutoMapper;
 using JetBrains.Annotations;
 
-namespace Hub.Shared.Settings
+namespace Hub.Shared.Settings;
+
+[UsedImplicitly]
+public class SettingMapperProfile : Profile
 {
-    [UsedImplicitly]
-    public class SettingMapperProfile : Profile
+    public SettingMapperProfile()
     {
-        public SettingMapperProfile()
-        {
-            CreateMap<Setting, SettingDto>()
-                .ReverseMap();
-        }
+        CreateMap<Setting, SettingDto>()
+            .ReverseMap();
     }
 }

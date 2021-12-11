@@ -1,10 +1,9 @@
 using System.Runtime.Serialization;
 
-namespace Hub.Shared.DataContracts.Sbanken
+namespace Hub.Shared.DataContracts.Sbanken;
+
+public class AccountDto : Hub.Shared.DataContracts.Banking.AccountDto
 {
-    public class AccountDto : Hub.Shared.DataContracts.Banking.AccountDto
-    {
-        [DataMember]
-        public string AccountType { get; set; }
-    }
+    [DataMember]
+    public string AccountType { get; set; }
 }
