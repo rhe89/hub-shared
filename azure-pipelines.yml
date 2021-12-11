@@ -1,8 +1,5 @@
 trigger: none
 
-pool:
-  vmImage: 'windows-latest'
-
 steps:
 - task: UseDotNet@2
   inputs:
