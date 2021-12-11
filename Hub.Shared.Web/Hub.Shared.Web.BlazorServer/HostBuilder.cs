@@ -9,8 +9,9 @@ using Microsoft.Extensions.Hosting;
 namespace Hub.Shared.Web.BlazorServer
 {
     [UsedImplicitly]
-    public static class HostBuilder<TStartup> 
-        where TStartup : class
+    public static class HostBuilder<TStartup, TDependencyRegistrationFactory>
+        where TStartup : Startup<TDependencyRegistrationFactory>
+        where TDependencyRegistrationFactory : DependencyRegistrationFactory, new()
     {
         [UsedImplicitly]
         public static IHostBuilder Create(string[] args)

@@ -15,6 +15,7 @@
     </ItemGroup>
 
     <ItemGroup>
+      <ProjectReference Include="..\..\Hub.Shared.Logging\Hub.Shared.Logging.csproj" />
       <ProjectReference Include="..\Hub.Shared.Web.Http\Hub.Shared.Web.Http.csproj" />
     </ItemGroup>
 </Project>
