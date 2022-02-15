@@ -5,6 +5,8 @@
 		<Authors>rhe89</Authors>
 		<RepositoryUrl>https://github.com/rhe89/hub-shared</RepositoryUrl>
 		<TargetFramework>net6.0</TargetFramework>
+		<Nullable>enable</Nullable>
+        <ImplicitUsings>enable</ImplicitUsings>
 		<Dependencies>
 			<Group targetFramework="net6.0">
 				<FrameworkReference Include="Microsoft.AspNetCore.App" Version="2.2.8" />
