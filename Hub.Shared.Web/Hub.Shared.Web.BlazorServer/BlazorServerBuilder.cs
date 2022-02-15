@@ -1,11 +1,13 @@
 using System;
 using Azure.Identity;
 using Hub.Shared.Logging;
+using Hub.Shared.Web.Components;
 using JetBrains.Annotations;
 using Microsoft.ApplicationInsights.AspNetCore.Extensions;
 using Microsoft.ApplicationInsights.Extensibility;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Hosting.StaticWebAssets;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Configuration.AzureAppConfiguration;
 using Microsoft.Extensions.DependencyInjection;
@@ -35,7 +37,8 @@ public static class BlazorServerBuilder
                 o.SetCredential(new DefaultAzureCredential()));
         });
         builder.Services.AddApplicationInsightsTelemetry(new ApplicationInsightsServiceOptions { ConnectionString = builder.Configuration.GetValue<string>("AI_CONNECTION_STRING") });
-        
+        builder.Services.AddSingleton<State>();
+        StaticWebAssetsLoader.UseStaticWebAssets(builder.Environment, builder.Configuration);
         return builder;
     }
     

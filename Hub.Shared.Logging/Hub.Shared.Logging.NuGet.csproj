@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
 	<PropertyGroup>
 		<PackageId>Hub.Shared.Logging</PackageId>
-		<Version>6.0.1</Version>
+		<Version>6.0.2</Version>
 		<Authors>rhe89</Authors>
 		<RepositoryUrl>https://github.com/rhe89/hub-shared</RepositoryUrl>
 		<TargetFramework>net6.0</TargetFramework>
@@ -9,7 +9,7 @@
 			<Group targetFramework="net6.0">
 				<PackageReference Include="JetBrains.Annotations" Version="2021.3.0" />
 				<PackageReference Include="Microsoft.Extensions.Logging" Version="6.0.0" />
-				<PackageReference Include="Microsoft.Extensions.Logging.ApplicationInsights" Version="2.19.0" />
+				<PackageReference Include="Microsoft.Extensions.Logging.ApplicationInsights" Version="2.20.0" />
 				<PackageReference Include="Microsoft.Extensions.Logging.Console" Version="6.0.0" />
 			</Group>
 		</Dependencies>
@@ -18,7 +18,7 @@
 	<ItemGroup>
 		<PackageReference Include="JetBrains.Annotations" Version="2021.3.0" />
 		<PackageReference Include="Microsoft.Extensions.Logging" Version="6.0.0" />
-		<PackageReference Include="Microsoft.Extensions.Logging.ApplicationInsights" Version="2.19.0" />
+		<PackageReference Include="Microsoft.Extensions.Logging.ApplicationInsights" Version="2.20.0" />
 		<PackageReference Include="Microsoft.Extensions.Logging.Console" Version="6.0.0" />
 	</ItemGroup>
 </Project>

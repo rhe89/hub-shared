@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
 	<PropertyGroup>
 		<PackageId>Hub.Shared.HostedServices.Schedule</PackageId>
-		<Version>6.0.1</Version>
+		<Version>6.0.2</Version>
 		<Authors>rhe89</Authors>
 		<RepositoryUrl>https://github.com/rhe89/hub-shared</RepositoryUrl>
 		<TargetFramework>net6.0</TargetFramework>
@@ -9,14 +9,14 @@
 			<Group targetFramework="net6.0">
 				<PackageReference Include="Azure.Identity" Version="1.5.0" />
 				<PackageReference Include="JetBrains.Annotations" Version="2021.3.0" />
-				<PackageReference Include="Microsoft.Extensions.Configuration.AzureAppConfiguration" Version="4.5.1" />
-				<PackageReference Include="Microsoft.ApplicationInsights.WorkerService" Version="2.19.0" />
+				<PackageReference Include="Microsoft.Extensions.Configuration.AzureAppConfiguration" Version="5.0.0" />
+				<PackageReference Include="Microsoft.ApplicationInsights.WorkerService" Version="2.20.0" />
 				<PackageReference Include="Microsoft.AspNetCore.Diagnostics.HealthChecks" Version="2.2.0" />
-				<PackageReference Include="Microsoft.Extensions.Hosting" Version="6.0.0" />
+				<PackageReference Include="Microsoft.Extensions.Hosting" Version="6.0.1" />
 				<PackageReference Include="Microsoft.Extensions.Hosting.Abstractions" Version="6.0.0" />
-				<PackageReference Include="Hub.Shared.Logging" Version="6.0.1" />
-				<PackageReference Include="Hub.Shared.Storage.Repository" Version="6.0.1" />
-				<PackageReference Include="Hub.Shared.HostedServices.Core" Version="6.0.1" />
+				<PackageReference Include="Hub.Shared.Logging" Version="6.0.2" />
+				<PackageReference Include="Hub.Shared.Storage.Repository" Version="6.0.2" />
+				<PackageReference Include="Hub.Shared.HostedServices.Core" Version="6.0.2" />
 			</Group>
 		</Dependencies>
 	</PropertyGroup>
@@ -24,13 +24,13 @@
 	<ItemGroup>
 		<PackageReference Include="Azure.Identity" Version="1.5.0" />
 		<PackageReference Include="JetBrains.Annotations" Version="2021.3.0" />
-		<PackageReference Include="Microsoft.Extensions.Configuration.AzureAppConfiguration" Version="4.5.1" />
-		<PackageReference Include="Microsoft.ApplicationInsights.WorkerService" Version="2.19.0" />
+		<PackageReference Include="Microsoft.Extensions.Configuration.AzureAppConfiguration" Version="5.0.0" />
+		<PackageReference Include="Microsoft.ApplicationInsights.WorkerService" Version="2.20.0" />
 		<PackageReference Include="Microsoft.AspNetCore.Diagnostics.HealthChecks" Version="2.2.0" />
-		<PackageReference Include="Microsoft.Extensions.Hosting" Version="6.0.0" />
+		<PackageReference Include="Microsoft.Extensions.Hosting" Version="6.0.1" />
 		<PackageReference Include="Microsoft.Extensions.Hosting.Abstractions" Version="6.0.0" />
-		<PackageReference Include="Hub.Shared.Logging" Version="6.0.1" />
-		<PackageReference Include="Hub.Shared.Storage.Repository" Version="6.0.1" />
-		<PackageReference Include="Hub.Shared.HostedServices.Core" Version="6.0.1" />
+		<PackageReference Include="Hub.Shared.Logging" Version="6.0.2" />
+		<PackageReference Include="Hub.Shared.Storage.Repository" Version="6.0.2" />
+		<PackageReference Include="Hub.Shared.HostedServices.Core" Version="6.0.2" />
 	</ItemGroup>
 </Project>

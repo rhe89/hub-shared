@@ -8,14 +8,15 @@
         <FrameworkReference Include="Microsoft.AspNetCore.App" Version="2.2.8" />
         <PackageReference Include="Azure.Identity" Version="1.5.0" />
         <PackageReference Include="JetBrains.Annotations" Version="2021.3.0" />
-        <PackageReference Include="Microsoft.Extensions.Configuration.AzureAppConfiguration" Version="4.5.1" />
-        <PackageReference Include="Microsoft.AspNetCore.Identity.UI" Version="6.0.0" />
-        <PackageReference Include="Microsoft.ApplicationInsights.AspNetCore" Version="2.19.0" />
+        <PackageReference Include="Microsoft.Extensions.Configuration.AzureAppConfiguration" Version="5.0.0" />
+        <PackageReference Include="Microsoft.AspNetCore.Identity.UI" Version="6.0.2" />
+        <PackageReference Include="Microsoft.ApplicationInsights.AspNetCore" Version="2.20.0" />
         
     </ItemGroup>
 
     <ItemGroup>
       <ProjectReference Include="..\..\Hub.Shared.Logging\Hub.Shared.Logging.csproj" />
+      <ProjectReference Include="..\Hub.Shared.Web.Components\Hub.Shared.Web.Components.csproj" />
       <ProjectReference Include="..\Hub.Shared.Web.Http\Hub.Shared.Web.Http.csproj" />
     </ItemGroup>
 </Project>

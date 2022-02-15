@@ -54,9 +54,7 @@ public class HostedService : HostedServiceBase
                 Logger.LogInformation("{CommandName}'s next run: {NextScheduledRun}", scheduledCommand.Name, scheduledCommand.NextScheduledRun);
             }
                 
-            var delayMillis = TimeSpan.FromMinutes(1);
-                
-            await Task.Delay(delayMillis, cancellationToken);
+            await Task.Delay(50, cancellationToken);
         }
     }
 

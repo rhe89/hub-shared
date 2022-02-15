@@ -5,8 +5,6 @@
 		<Authors>rhe89</Authors>
 		<RepositoryUrl>https://github.com/rhe89/hub-shared</RepositoryUrl>
 		<TargetFramework>net6.0</TargetFramework>
-		<Nullable>enable</Nullable>
-        <ImplicitUsings>enable</ImplicitUsings>
 		<Dependencies>
 			<Group targetFramework="net6.0">
 				<PackageReference Include="Microsoft.AspNetCore.Components.Web" Version="6.0.2" />
@@ -15,16 +13,6 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-		<SupportedPlatform Include="browser" />
-	</ItemGroup>
-
-	<ItemGroup>
 		<PackageReference Include="Microsoft.AspNetCore.Components.Web" Version="6.0.2" />
 	</ItemGroup>
-
-	<ItemGroup>
-      <Folder Include="node_modules\*" />
-      <Folder Include="node_modules\*\**" />
-    </ItemGroup>
-	
 </Project>
