@@ -16,18 +16,19 @@ steps:
     projects: '**/$(projectName).NuGet.csproj'
     feedsToUse: 'select'
     vstsFeed: 'a9ebd0d9-61ca-407b-bd4f-cf5e1f59a5c6'
-# - task: DotNetCoreCLI@2
-#   displayName: build
-#   inputs:
-#     command: 'build'
-#     projects: '**/$(projectName).NuGet.csproj'
-#     arguments: '--no-restore'
+- task: DotNetCoreCLI@2
+  displayName: build
+  inputs:
+    command: 'build'
+    projects: '**/$(projectName).NuGet.csproj'
+    arguments: '--no-restore'
 - task: DotNetCoreCLI@2
   displayName: 'pack'
   inputs:
     command: 'pack'
     packagesToPack: '**/$(projectName).NuGet.csproj'
     versioningScheme: 'off'
+    nobuild: true
 - task: NuGetAuthenticate@0
   displayName: 'authenticate'
 - task: NuGetCommand@2
