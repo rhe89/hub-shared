@@ -1,0 +1,31 @@
+@inject State _state;
+
+@implements IDisposable
+
+<article class="saving-overlay @(!_state.Working ? "d-none" : "")">
+    <p>
+        @if (Text != null)
+        {
+            @Text
+        }
+        else
+        {
+            @("Saving...")
+        }
+    </p>
+</article>
+
+@code {
+    [Parameter]
+    public string? Text { get; set; }
+    
+    protected override void OnInitialized()
+    {
+        _state.OnChange += StateHasChanged;
+    }
+
+    public void Dispose()
+    {
+        _state.OnChange -= StateHasChanged;
+    }
+}

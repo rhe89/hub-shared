@@ -1,0 +1,10 @@
+@inherits ButtonBase
+
+@inject State _state;
+
+<button
+    class="btn btn-danger @Class"
+    disabled="@(_state.Working || @SetDisabled)"
+    @attributes="AdditionalAttributes">
+    @ChildContent
+</button>

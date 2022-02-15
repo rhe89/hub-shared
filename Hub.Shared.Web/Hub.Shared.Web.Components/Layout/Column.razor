@@ -1,0 +1,13 @@
+@inherits Component
+
+<div class="col@(Size != null ? $"-{Size}" : "") @(Offset != null ? $"offset-md-{Offset}" : "") @Class" @attributes="AdditionalAttributes">
+    @ChildContent
+</div>
+
+@code {
+    [Parameter]
+    public string? Size { get; set; }
+    
+    [Parameter]
+    public string? Offset { get; set; }
+}

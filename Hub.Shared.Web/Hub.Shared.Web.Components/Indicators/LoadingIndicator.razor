@@ -1,0 +1,21 @@
+@inherits Component
+
+<article class="row @Class" @attributes="AdditionalAttributes">
+    <p>
+        @if (Text != null)
+        {
+            @Text
+        }
+        else
+        {
+            @("Loading...")
+        }
+    </p>
+</article>
+
+@code {
+
+    [Parameter]
+    public string? Text { get; set; }
+
+}
