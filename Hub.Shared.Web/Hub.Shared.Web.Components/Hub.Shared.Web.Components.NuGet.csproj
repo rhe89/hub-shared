@@ -9,14 +9,12 @@
         <ImplicitUsings>enable</ImplicitUsings>
 		<Dependencies>
 			<Group targetFramework="net6.0">
-				<FrameworkReference Include="Microsoft.AspNetCore.App" Version="2.2.8" />
 				<PackageReference Include="Microsoft.AspNetCore.Components.Web" Version="6.0.2" />
 			</Group>
 		</Dependencies>
 	</PropertyGroup>
 
 	<ItemGroup>
-		<FrameworkReference Include="Microsoft.AspNetCore.App" Version="2.2.8" />
 		<PackageReference Include="Microsoft.AspNetCore.Components.Web" Version="6.0.2" />
 	</ItemGroup>
 </Project>
