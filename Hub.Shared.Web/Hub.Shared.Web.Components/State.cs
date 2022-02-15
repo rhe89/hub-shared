@@ -4,11 +4,11 @@ public class State
 {
     public event Action? OnChange;
 
-    public bool Working { get; private set; }
+    public bool Saving { get; private set; }
 
-    public void SetWorking(bool working)
+    public void SetWorking(bool saving)
     {
-        Working = working;
+        Saving = saving;
 
         OnChange?.Invoke();
     }

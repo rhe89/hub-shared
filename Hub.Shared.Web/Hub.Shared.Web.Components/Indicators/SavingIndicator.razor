@@ -2,7 +2,7 @@
 
 @implements IDisposable
 
-<article class="saving-overlay @(!_state.Working ? "d-none" : "")">
+<article class="saving-overlay @(!_state.Saving ? "d-none" : "")">
     <p>
         @if (Text != null)
         {
@@ -23,7 +23,7 @@
     {
         _state.OnChange += StateHasChanged;
     }
-
+    
     public void Dispose()
     {
         _state.OnChange -= StateHasChanged;

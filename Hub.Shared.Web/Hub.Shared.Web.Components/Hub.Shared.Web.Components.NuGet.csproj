@@ -21,4 +21,10 @@
 	<ItemGroup>
 		<PackageReference Include="Microsoft.AspNetCore.Components.Web" Version="6.0.2" />
 	</ItemGroup>
+
+	<ItemGroup>
+      <Folder Include="node_modules\*" />
+      <Folder Include="node_modules\*\**" />
+    </ItemGroup>
+	
 </Project>
