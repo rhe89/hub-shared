@@ -4,6 +4,11 @@ pool:
   vmImage: 'windows-2022'
 
 steps:
+- task: UseDotNet@2
+  displayName: 'Use .NET Core SDK 6.x'
+  inputs:
+    version: 6.x
+    includePreviewVersions: false
 - task: DotNetCoreCLI@2
   displayName: restore
   inputs:
