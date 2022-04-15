@@ -1,6 +1,8 @@
-@inject State _state;
+@namespace Hub.Shared.Web.Components.Indicators
 
 @implements IDisposable
+
+@inject State _state;
 
 <article class="saving-overlay @(!_state.Saving ? "d-none" : "")">
     <p>
