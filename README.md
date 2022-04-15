@@ -6,15 +6,9 @@ Packages for bootstrapping common stuff in my Hub-*-projects.
 [![Build Status](https://rhe89.visualstudio.com/Hub/_apis/build/status/Hub.Shared/Hub.Shared.DataContracts/Hub.Shared.DataContracts.Banking?branchName=main)](https://rhe89.visualstudio.com/Hub/_build/latest?definitionId=74&branchName=main) 
 ![Hub.Shared.DataContracts.Banking package in rhe89 feed in Azure Artifacts](https://rhe89.feeds.visualstudio.com/_apis/public/Packaging/Feeds/a9ebd0d9-61ca-407b-bd4f-cf5e1f59a5c6/Packages/594121ec-05ae-4e88-855e-01057ed5b352/Badge) 
 <sup>Hub.Shared.DataContracts.Banking</sup>  
-[![Build Status](https://rhe89.visualstudio.com/Hub/_apis/build/status/Hub.Shared/Hub.Shared.DataContracts/Hub.Shared.DataContracts.Coinbase?branchName=main)](https://rhe89.visualstudio.com/Hub/_build/latest?definitionId=75&branchName=main) 
-![Hub.Shared.DataContracts.Coinbase package in rhe89 feed in Azure Artifacts](https://rhe89.feeds.visualstudio.com/_apis/public/Packaging/Feeds/a9ebd0d9-61ca-407b-bd4f-cf5e1f59a5c6/Packages/a27fe009-381d-4ad9-aa6d-61c48e53e313/Badge) 
-<sup>Hub.Shared.DataContracts.Coinbase  </sup>  
-[![Build Status](https://rhe89.visualstudio.com/Hub/_apis/build/status/Hub.Shared/Hub.Shared.DataContracts/Hub.Shared.DataContracts.CoinbasePro?branchName=main)](https://rhe89.visualstudio.com/Hub/_build/latest?definitionId=73&branchName=main) 
-![Hub.Shared.DataContracts.CoinbasePro package in rhe89 feed in Azure Artifacts](https://rhe89.feeds.visualstudio.com/_apis/public/Packaging/Feeds/a9ebd0d9-61ca-407b-bd4f-cf5e1f59a5c6/Packages/8c0b00e2-ea17-40b2-bb3d-3d69f0502084/Badge) 
-<sup>Hub.Shared.DataContracts.CoinbasePro</sup>  
-[![Build Status](https://rhe89.visualstudio.com/Hub/_apis/build/status/Hub.Shared/Hub.Shared.DataContracts/Hub.Shared.DataContracts.Sbanken?branchName=main)](https://rhe89.visualstudio.com/Hub/_build/latest?definitionId=72&branchName=main) 
-![Hub.Shared.DataContracts.Sbanken package in rhe89 feed in Azure Artifacts](https://rhe89.feeds.visualstudio.com/_apis/public/Packaging/Feeds/a9ebd0d9-61ca-407b-bd4f-cf5e1f59a5c6/Packages/227e7333-bf78-4618-9a2e-f1d6b5d8ac82/Badge) 
-<sup>Hub.Shared.DataContracts.Sbanken</sup>  
+[![Build Status](https://rhe89.visualstudio.com/Hub/_apis/build/status/Hub.Shared/Hub.Shared.DataContracts/Hub.Shared.DataContracts.Crypto?branchName=main)](https://rhe89.visualstudio.com/Hub/_build/latest?definitionId=73&branchName=main) 
+![Hub.Shared.DataContracts.Crypto package in rhe89 feed in Azure Artifacts](https://rhe89.feeds.visualstudio.com/_apis/public/Packaging/Feeds/a9ebd0d9-61ca-407b-bd4f-cf5e1f59a5c6/Packages/8c0b00e2-ea17-40b2-bb3d-3d69f0502084/Badge) 
+<sup>Hub.Shared.DataContracts.Crypto</sup>  
 [![Build Status](https://rhe89.visualstudio.com/Hub/_apis/build/status/Hub.Shared/Hub.Shared.HostedServices/Hub.Shared.HostedServices.Commands?branchName=main)](https://rhe89.visualstudio.com/Hub/_build/latest?definitionId=63&branchName=main) 
 ![Hub.Shared.HostedServices.Commands package in rhe89 feed in Azure Artifacts](https://rhe89.feeds.visualstudio.com/_apis/public/Packaging/Feeds/a9ebd0d9-61ca-407b-bd4f-cf5e1f59a5c6/Packages/7a9f714f-ea67-40e9-9700-20499c68a8b6/Badge) 
 <sup>Hub.Shared.HostedServices.Commands</sup>  

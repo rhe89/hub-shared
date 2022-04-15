@@ -1,7 +1,7 @@
 ﻿using System.Runtime.Serialization;
 using Hub.Shared.Storage.Repository.Core;
 
-namespace Hub.Shared.DataContracts.Banking;
+namespace Hub.Shared.DataContracts.Crypto;
 
 [DataContract]
 public class AccountDto : EntityDtoBase
@@ -13,8 +13,5 @@ public class AccountDto : EntityDtoBase
     public decimal Balance { get; set; }
     
     [DataMember]
-    public string AccountType { get; set; }
-    
-    [DataMember]
-    public string Bank { get; set; }
+    public string Exchange { get; set; }
 }

@@ -1,18 +1,20 @@
 <Project Sdk="Microsoft.NET.Sdk.Razor">
 	<PropertyGroup>
 		<PackageId>Hub.Shared.Web.Components</PackageId>
-		<Version>6.0.2</Version>
+		<Version>6.0.3</Version>
 		<Authors>rhe89</Authors>
 		<RepositoryUrl>https://github.com/rhe89/hub-shared</RepositoryUrl>
 		<TargetFramework>net6.0</TargetFramework>
 		<Dependencies>
 			<Group targetFramework="net6.0">
+				<PackageReference Include="Microsoft.AspNetCore.ClientAssets" Version="0.1.0-alpha.21528.2" />
 				<PackageReference Include="Microsoft.AspNetCore.Components.Web" Version="6.0.2" />
 			</Group>
 		</Dependencies>
 	</PropertyGroup>
 
 	<ItemGroup>
+		<PackageReference Include="Microsoft.AspNetCore.ClientAssets" Version="0.1.0-alpha.21528.2" />
 		<PackageReference Include="Microsoft.AspNetCore.Components.Web" Version="6.0.2" />
 	</ItemGroup>
 </Project>

@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
 	<PropertyGroup>
 		<PackageId>Hub.Shared.Settings</PackageId>
-		<Version>6.0.2</Version>
+		<Version>6.0.3</Version>
 		<Authors>rhe89</Authors>
 		<RepositoryUrl>https://github.com/rhe89/hub-shared</RepositoryUrl>
 		<TargetFramework>net6.0</TargetFramework>
@@ -9,7 +9,7 @@
 			<Group targetFramework="net6.0">
 				<PackageReference Include="AutoMapper" Version="11.0.1" />
 				<PackageReference Include="JetBrains.Annotations" Version="2021.3.0" />
-				<PackageReference Include="Hub.Shared.Storage.Repository.Core" Version="6.0.2" />
+				<PackageReference Include="Hub.Shared.Storage.Repository.Core" Version="6.0.3" />
 			</Group>
 		</Dependencies>
 	</PropertyGroup>
@@ -17,6 +17,6 @@
 	<ItemGroup>
 		<PackageReference Include="AutoMapper" Version="11.0.1" />
 		<PackageReference Include="JetBrains.Annotations" Version="2021.3.0" />
-		<PackageReference Include="Hub.Shared.Storage.Repository.Core" Version="6.0.2" />
+		<PackageReference Include="Hub.Shared.Storage.Repository.Core" Version="6.0.3" />
 	</ItemGroup>
 </Project>

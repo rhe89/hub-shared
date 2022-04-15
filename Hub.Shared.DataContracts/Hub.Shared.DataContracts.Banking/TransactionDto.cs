@@ -2,7 +2,7 @@
 using System.Runtime.Serialization;
 using Hub.Shared.Storage.Repository.Core;
 
-namespace Hub.Shared.DataContracts.Sbanken;
+namespace Hub.Shared.DataContracts.Banking;
 
 [DataContract]
 public class TransactionDto : EntityDtoBase

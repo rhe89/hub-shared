@@ -39,13 +39,9 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Hub.Shared.Storage.ServiceB
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Hub.Shared.DataContracts", "Hub.Shared.DataContracts", "{63819640-1C71-4457-B028-06FCC895DB3F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Hub.Shared.DataContracts.Sbanken", "Hub.Shared.DataContracts\Hub.Shared.DataContracts.Sbanken\Hub.Shared.DataContracts.Sbanken.csproj", "{2DC8BA66-E5C1-41A8-B854-A66305C06509}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Hub.Shared.DataContracts.Coinbase", "Hub.Shared.DataContracts\Hub.Shared.DataContracts.Coinbase\Hub.Shared.DataContracts.Coinbase.csproj", "{F8A19336-6D74-4F89-94F8-9AE2BC206C92}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Hub.Shared.DataContracts.CoinbasePro", "Hub.Shared.DataContracts\Hub.Shared.DataContracts.CoinbasePro\Hub.Shared.DataContracts.CoinbasePro.csproj", "{8E34A029-EA7C-4290-BC1D-3C8AB44F5DFC}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Hub.Shared.DataContracts.Banking", "Hub.Shared.DataContracts\Hub.Shared.DataContracts.Banking\Hub.Shared.DataContracts.Banking.csproj", "{F8037AB3-0E03-4D9C-A634-40C2BF88A7B5}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Hub.Shared.DataContracts.Crypto", "Hub.Shared.DataContracts\Hub.Shared.DataContracts.Crypto\Hub.Shared.DataContracts.Crypto.csproj", "{38E186D7-56D4-44C4-86A7-AF07BCD83704}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -109,22 +105,14 @@ Global
 		{EBAB2D58-9C5B-4945-A732-E85A65D0EEE9}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{EBAB2D58-9C5B-4945-A732-E85A65D0EEE9}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{EBAB2D58-9C5B-4945-A732-E85A65D0EEE9}.Release|Any CPU.Build.0 = Release|Any CPU
-		{2DC8BA66-E5C1-41A8-B854-A66305C06509}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{2DC8BA66-E5C1-41A8-B854-A66305C06509}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{2DC8BA66-E5C1-41A8-B854-A66305C06509}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{2DC8BA66-E5C1-41A8-B854-A66305C06509}.Release|Any CPU.Build.0 = Release|Any CPU
-		{F8A19336-6D74-4F89-94F8-9AE2BC206C92}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{F8A19336-6D74-4F89-94F8-9AE2BC206C92}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{F8A19336-6D74-4F89-94F8-9AE2BC206C92}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{F8A19336-6D74-4F89-94F8-9AE2BC206C92}.Release|Any CPU.Build.0 = Release|Any CPU
-		{8E34A029-EA7C-4290-BC1D-3C8AB44F5DFC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{8E34A029-EA7C-4290-BC1D-3C8AB44F5DFC}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{8E34A029-EA7C-4290-BC1D-3C8AB44F5DFC}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{8E34A029-EA7C-4290-BC1D-3C8AB44F5DFC}.Release|Any CPU.Build.0 = Release|Any CPU
 		{F8037AB3-0E03-4D9C-A634-40C2BF88A7B5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{F8037AB3-0E03-4D9C-A634-40C2BF88A7B5}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F8037AB3-0E03-4D9C-A634-40C2BF88A7B5}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F8037AB3-0E03-4D9C-A634-40C2BF88A7B5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{38E186D7-56D4-44C4-86A7-AF07BCD83704}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{38E186D7-56D4-44C4-86A7-AF07BCD83704}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{38E186D7-56D4-44C4-86A7-AF07BCD83704}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{38E186D7-56D4-44C4-86A7-AF07BCD83704}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{78DC9B62-21DC-4511-AC01-63DAFF5D6A2C} = {B328846E-B016-4808-9D8E-F7D986C53CD6}
@@ -145,9 +133,7 @@ Global
 		{A47BB1E7-E911-4F36-9BC5-CC04DC045109} = {6965300D-8A21-4B13-8A22-2F64420E433E}
 		{EBAB2D58-9C5B-4945-A732-E85A65D0EEE9} = {6965300D-8A21-4B13-8A22-2F64420E433E}
 		{63819640-1C71-4457-B028-06FCC895DB3F} = {03B13645-89A1-43E0-823B-F98A297C1D34}
-		{2DC8BA66-E5C1-41A8-B854-A66305C06509} = {63819640-1C71-4457-B028-06FCC895DB3F}
-		{F8A19336-6D74-4F89-94F8-9AE2BC206C92} = {63819640-1C71-4457-B028-06FCC895DB3F}
-		{8E34A029-EA7C-4290-BC1D-3C8AB44F5DFC} = {63819640-1C71-4457-B028-06FCC895DB3F}
 		{F8037AB3-0E03-4D9C-A634-40C2BF88A7B5} = {63819640-1C71-4457-B028-06FCC895DB3F}
+		{38E186D7-56D4-44C4-86A7-AF07BCD83704} = {63819640-1C71-4457-B028-06FCC895DB3F}
 	EndGlobalSection
 EndGlobal
