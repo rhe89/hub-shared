@@ -1,14 +1,14 @@
 using System.Runtime.Serialization;
 using Hub.Shared.Storage.Repository.Core;
 
-namespace Hub.Shared.DataContracts.Crypto;
+namespace Hub.Shared.DataContracts.Crypto.Dto;
 
 [DataContract]
-public class AccountBalanceDto : EntityDtoBase
+public class AssetHistoryDto : EntityDtoBase
 {
     [DataMember]
     public long AccountId { get; set; }
 
     [DataMember]
-    public decimal Balance { get; set; }
+    public decimal Value { get; set; }
 }

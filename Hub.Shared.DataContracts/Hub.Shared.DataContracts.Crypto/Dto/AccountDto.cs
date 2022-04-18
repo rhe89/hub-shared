@@ -1,17 +1,20 @@
 ﻿using System.Runtime.Serialization;
 using Hub.Shared.Storage.Repository.Core;
 
-namespace Hub.Shared.DataContracts.Crypto;
+namespace Hub.Shared.DataContracts.Crypto.Dto;
 
 [DataContract]
 public class AccountDto : EntityDtoBase
 {
     [DataMember]
-    public string Name { get; set; }
+    public string Currency { get; set; }
 
     [DataMember]
     public decimal Balance { get; set; }
     
     [DataMember]
     public string Exchange { get; set; }
+    
+    [DataMember] 
+    public bool MergedAccount { get; set; }
 }

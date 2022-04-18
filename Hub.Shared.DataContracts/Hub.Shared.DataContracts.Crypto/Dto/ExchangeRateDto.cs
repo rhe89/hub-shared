@@ -1,7 +1,7 @@
 using System.Runtime.Serialization;
 using Hub.Shared.Storage.Repository.Core;
 
-namespace Hub.Shared.DataContracts.Crypto;
+namespace Hub.Shared.DataContracts.Crypto.Dto;
 
 [DataContract]
 public class ExchangeRateDto : EntityDtoBase
