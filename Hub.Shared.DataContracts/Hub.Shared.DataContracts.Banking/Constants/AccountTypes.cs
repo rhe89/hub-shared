@@ -6,6 +6,7 @@ public static class AccountTypes
     public static readonly string Billing = "Billing account";
     public static readonly string Saving = "Savings account";
     public static readonly string CreditCard = "Credit card account";
+    public static readonly string Investment = "Investment account";
 
-    public static string[] ToArray => new[] { Standard, Billing, Saving, CreditCard };
+    public static string[] ToArray => new[] { Standard, Billing, Saving, Investment, CreditCard };
 }
