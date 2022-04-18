@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
 	<PropertyGroup>
 		<PackageId>Hub.Shared.HostedServices.Schedule</PackageId>
-		<Version>6.1.0</Version>
+		<Version>6.1.1</Version>
 		<Authors>rhe89</Authors>
 		<RepositoryUrl>https://github.com/rhe89/hub-shared</RepositoryUrl>
 		<TargetFramework>net6.0</TargetFramework>
@@ -14,9 +14,9 @@
 				<PackageReference Include="Microsoft.AspNetCore.Diagnostics.HealthChecks" Version="2.2.0" />
 				<PackageReference Include="Microsoft.Extensions.Hosting" Version="6.0.1" />
 				<PackageReference Include="Microsoft.Extensions.Hosting.Abstractions" Version="6.0.0" />
-				<PackageReference Include="Hub.Shared.Logging" Version="6.1.0" />
-				<PackageReference Include="Hub.Shared.Storage.Repository" Version="6.1.0" />
-				<PackageReference Include="Hub.Shared.HostedServices.Core" Version="6.1.0" />
+				<PackageReference Include="Hub.Shared.Logging" Version="6.1.1" />
+				<PackageReference Include="Hub.Shared.Storage.Repository" Version="6.1.1" />
+				<PackageReference Include="Hub.Shared.HostedServices.Core" Version="6.1.1" />
 			</Group>
 		</Dependencies>
 	</PropertyGroup>
@@ -29,8 +29,8 @@
 		<PackageReference Include="Microsoft.AspNetCore.Diagnostics.HealthChecks" Version="2.2.0" />
 		<PackageReference Include="Microsoft.Extensions.Hosting" Version="6.0.1" />
 		<PackageReference Include="Microsoft.Extensions.Hosting.Abstractions" Version="6.0.0" />
-		<PackageReference Include="Hub.Shared.Logging" Version="6.1.0" />
-		<PackageReference Include="Hub.Shared.Storage.Repository" Version="6.1.0" />
-		<PackageReference Include="Hub.Shared.HostedServices.Core" Version="6.1.0" />
+		<PackageReference Include="Hub.Shared.Logging" Version="6.1.1" />
+		<PackageReference Include="Hub.Shared.Storage.Repository" Version="6.1.1" />
+		<PackageReference Include="Hub.Shared.HostedServices.Core" Version="6.1.1" />
 	</ItemGroup>
 </Project>
