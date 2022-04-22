@@ -14,4 +14,5 @@ public class TransactionSearchParameters
         [CanBeNull] public int[] Months { get; set; }
         [CanBeNull] public int[] Years { get; set; }
         [CanBeNull] public long[] AccountIds { get; set; }
+        public int? Take { get; set; }
 }

@@ -9,4 +9,5 @@ public class AccountSearchParameters
     [CanBeNull] public string[] AccountTypes { get; set; }
     [CanBeNull] public long[] AccountIds { get; set; }
     public bool MergeAccountsWithSameNameFromDifferentBanks { get; set; }
+    public int? Take { get; set; }
 }
