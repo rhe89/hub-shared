@@ -15,9 +15,8 @@ public static class QueueNames
     public static readonly string ExchangeRatesUpdated = "exchangeratesupdated";
     
     //Banking
-    public static readonly string UpdateBankingAccounts = "updatebankingaccounts";
-    public static readonly string UpdateBankingTransactions = "updatebankingtransactions";
-    public static readonly string UpdateBankingAccountBalances = "updatebankingaccountbalances";
+    public static readonly string UpdateRecurringTransactions = "updaterecurringtransactions";
+    public static readonly string RecurringTransactionsUpdated = "recurringtransactionsupdated";
     
     public static readonly string BankingAccountsUpdated = "bankingaccountsupdated";
     public static readonly string BankingTransactionsUpdated = "bankingtransactionsupdated";
