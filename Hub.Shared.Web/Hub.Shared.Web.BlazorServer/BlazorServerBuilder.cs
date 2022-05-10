@@ -1,14 +1,11 @@
 using System;
-using Azure.Identity;
-using Hub.Shared.Logging;
-using Hub.Shared.Web.Components;
+using Hub.Shared.Configuration;
 using JetBrains.Annotations;
 using Microsoft.ApplicationInsights.AspNetCore.Extensions;
 using Microsoft.ApplicationInsights.Extensibility;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting.StaticWebAssets;
 using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.Configuration.AzureAppConfiguration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 
@@ -21,22 +18,13 @@ public static class BlazorServerBuilder
     public static WebApplicationBuilder CreateWebApplicationBuilder(string[] args)
     {
         var builder = WebApplication.CreateBuilder(args);
-        
+
         builder.Services.AddRazorPages();
         builder.Services.AddServerSideBlazor();
         builder.Services.AddSingleton<ITelemetryInitializer>(new CloudRoleNameInitializer(Environment.GetEnvironmentVariable("CLOUD_ROLE_NAME")));
-        builder.Logging.AddHubLogging();
-        builder.Configuration.AddEnvironmentVariables();
-        builder.Configuration.AddAzureAppConfiguration(options =>
-        {
-            options.Connect(Environment.GetEnvironmentVariable("APP_CONFIG_CONNECTION_STRING"))
-                .Select(KeyFilter.Any)
-                .Select(KeyFilter.Any, Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT"));
-            options.ConfigureKeyVault(o =>
-                o.SetCredential(new DefaultAzureCredential()));
-        });
+        builder.Logging.AddDefaultLoggingProviders();
+        builder.Configuration.AddDefaultConfiguration();
         builder.Services.AddApplicationInsightsTelemetry(new ApplicationInsightsServiceOptions { ConnectionString = builder.Configuration.GetValue<string>("AI_CONNECTION_STRING") });
-        builder.Services.AddSingleton<State>();
         StaticWebAssetsLoader.UseStaticWebAssets(builder.Environment, builder.Configuration);
         return builder;
     }

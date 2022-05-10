@@ -1,34 +1,26 @@
 <Project Sdk="Microsoft.NET.Sdk">
 	<PropertyGroup>
 		<PackageId>Hub.Shared.Web.BlazorServer</PackageId>
-		<Version>6.1.1</Version>
+		<Version>6.2.0</Version>
 		<Authors>rhe89</Authors>
 		<RepositoryUrl>https://github.com/rhe89/hub-shared</RepositoryUrl>
 		<TargetFramework>net6.0</TargetFramework>
 		<Dependencies>
 			<Group targetFramework="net6.0">
 				<FrameworkReference Include="Microsoft.AspNetCore.App" Version="2.2.8" />
-				<PackageReference Include="Azure.Identity" Version="1.5.0" />
 				<PackageReference Include="JetBrains.Annotations" Version="2021.3.0" />
-				<PackageReference Include="Microsoft.Extensions.Configuration.AzureAppConfiguration" Version="5.0.0" />
-				<PackageReference Include="Microsoft.AspNetCore.Identity.UI" Version="6.0.2" />
 				<PackageReference Include="Microsoft.ApplicationInsights.AspNetCore" Version="2.20.0" />
-				<PackageReference Include="Hub.Shared.Logging" Version="6.1.1" />
-				<PackageReference Include="Hub.Shared.Web.Http" Version="6.1.1" />
-				<PackageReference Include="Hub.Shared.Web.Components" Version="6.1.1" />
+				<PackageReference Include="Hub.Shared.AppConfiguration" Version="6.2.0" />
+				<PackageReference Include="Hub.Shared.Web.Http" Version="6.2.0" />
 			</Group>
 		</Dependencies>
 	</PropertyGroup>
 
 	<ItemGroup>
 		<FrameworkReference Include="Microsoft.AspNetCore.App" Version="2.2.8" />
-		<PackageReference Include="Azure.Identity" Version="1.5.0" />
 		<PackageReference Include="JetBrains.Annotations" Version="2021.3.0" />
-		<PackageReference Include="Microsoft.Extensions.Configuration.AzureAppConfiguration" Version="5.0.0" />
-		<PackageReference Include="Microsoft.AspNetCore.Identity.UI" Version="6.0.2" />
 		<PackageReference Include="Microsoft.ApplicationInsights.AspNetCore" Version="2.20.0" />
-		<PackageReference Include="Hub.Shared.Logging" Version="6.1.1" />
-		<PackageReference Include="Hub.Shared.Web.Http" Version="6.1.1" />
-		<PackageReference Include="Hub.Shared.Web.Components" Version="6.1.1" />
+		<PackageReference Include="Hub.Shared.AppConfiguration" Version="6.2.0" />
+		<PackageReference Include="Hub.Shared.Web.Http" Version="6.2.0" />
 	</ItemGroup>
 </Project>
