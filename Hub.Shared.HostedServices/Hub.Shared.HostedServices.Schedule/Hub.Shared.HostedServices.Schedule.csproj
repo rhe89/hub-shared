@@ -5,16 +5,13 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Azure.Identity" Version="1.5.0" />
     <PackageReference Include="JetBrains.Annotations" Version="2021.3.0" />
-    <PackageReference Include="Microsoft.Extensions.Configuration.AzureAppConfiguration" Version="5.0.0" />
     <PackageReference Include="Microsoft.ApplicationInsights.WorkerService" Version="2.20.0" />
-    <PackageReference Include="Microsoft.AspNetCore.Diagnostics.HealthChecks" Version="2.2.0" />
-    <PackageReference Include="Microsoft.Extensions.Hosting" Version="6.0.1" />
-    <PackageReference Include="Microsoft.Extensions.Hosting.Abstractions" Version="6.0.0" />
   </ItemGroup>
   
   <ItemGroup>
+    <ProjectReference Include="..\..\..\Hub\hub-shared\Hub.Shared.AppConfiguration\Hub.Shared.AppConfiguration.csproj" />
+    <ProjectReference Include="..\..\Hub.Shared.AppConfiguration\Hub.Shared.AppConfiguration.csproj" />
     <ProjectReference Include="..\..\Hub.Shared.Logging\Hub.Shared.Logging.csproj" />
     <ProjectReference Include="..\..\Hub.Shared.Storage\Hub.Shared.Storage.Repository\Hub.Shared.Storage.Repository.csproj" />
     <ProjectReference Include="..\Hub.Shared.HostedServices.Core\Hub.Shared.HostedServices.Core.csproj" />
