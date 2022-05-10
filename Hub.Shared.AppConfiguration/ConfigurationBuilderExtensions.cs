@@ -1,0 +1,25 @@
+using Azure.Identity;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Configuration.AzureAppConfiguration;
+
+namespace Hub.Shared.Configuration;
+
+public static class ConfigurationBuilderExtensions
+{
+    public static IConfigurationBuilder AddDefaultConfiguration(this IConfigurationBuilder configurationBuilder)
+    {
+        return configurationBuilder
+            .AddEnvironmentVariables()
+            .AddAzureAppConfiguration(options =>
+            {
+                options
+                    .Connect(Environment.GetEnvironmentVariable("APP_CONFIG_CONNECTION_STRING"))
+                    .Select(KeyFilter.Any)
+                    .Select(KeyFilter.Any, Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT"))
+                    .ConfigureKeyVault(keyVaultOptions =>
+                        keyVaultOptions.SetCredential(new DefaultAzureCredential()))
+                    .ConfigureRefresh(refreshOptions =>
+                        refreshOptions.SetCacheExpiration(TimeSpan.FromMinutes(60)));
+            });
+    }
+}
