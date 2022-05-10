@@ -18,7 +18,7 @@ public class CommandController : ControllerBase
         _commandConfigurationFactory = commandConfigurationFactory;
     }
 
-    [HttpGet("Configurations")]
+    [HttpGet(Name = "Configurations")]
     public async Task<IActionResult> CommandConfigurations()
     {
         var commandConfigurations = await _commandConfigurationProvider.GetCommandConfigurations();
@@ -26,7 +26,7 @@ public class CommandController : ControllerBase
         return Ok(commandConfigurations);
     }
         
-    [HttpDelete("DeleteConfigurations")]
+    [HttpDelete(Name = "DeleteConfigurations")]
     public async Task<IActionResult> DeleteConfigurations()
     {
         await _commandConfigurationFactory.DeleteConfigurations();
@@ -34,7 +34,7 @@ public class CommandController : ControllerBase
         return Ok();
     }
         
-    [HttpPost("UpdateRunIntervalType")]
+    [HttpPost(Name = "UpdateRunIntervalType")]
     public async Task<IActionResult> UpdateRunIntervalType([FromBody] CommandConfigurationDto commandConfigurationDto)
     {
         await _commandConfigurationFactory.UpdateRunIntervalType(commandConfigurationDto.Name, commandConfigurationDto.RunInterval);
