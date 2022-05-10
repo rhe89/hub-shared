@@ -46,7 +46,7 @@ public enum Occurrence
     [Display(Name = "Every three months (quarterly)")]
     Quarterly,
 
-    [Display(Name = "Twice a year")]
+    [Display(Name = "Every six months")]
     Semiannually,
     
     [Display(Name = "Every year")]
