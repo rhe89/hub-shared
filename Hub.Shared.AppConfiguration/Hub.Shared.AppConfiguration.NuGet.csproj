@@ -1,6 +1,8 @@
 <Project Sdk="Microsoft.NET.Sdk">
 	<PropertyGroup>
 		<PackageId>Hub.Shared.AppConfiguration</PackageId>
+		<ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>enable</Nullable>
 		<Version>6.2.0</Version>
 		<Authors>rhe89</Authors>
 		<RepositoryUrl>https://github.com/rhe89/hub-shared</RepositoryUrl>
