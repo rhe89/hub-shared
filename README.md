@@ -43,7 +43,7 @@ Packages for bootstrapping common stuff in my Hub-*-projects.
 ![Hub.Shared.Web.Http package in rhe89 feed in Azure Artifacts](https://rhe89.feeds.visualstudio.com/_apis/public/Packaging/Feeds/a9ebd0d9-61ca-407b-bd4f-cf5e1f59a5c6/Packages/2627f716-4816-4231-9437-f007beee5a6f/Badge) 
 <sup>Hub.Shared.Web.Http</sup>  
 [![Build Status](https://rhe89.visualstudio.com/Hub/_apis/build/status/Hub.Shared/Hub.Shared.AppConfiguration?branchName=main)](https://rhe89.visualstudio.com/Hub/_build/latest?definitionId=80&branchName=main) 
-![Hub.Shared.AppConfiguration package in rhe89 feed in Azure Artifacts](https://rhe89.feeds.visualstudio.com/_apis/public/Packaging/Feeds/a9ebd0d9-61ca-407b-bd4f-cf5e1f59a5c6/Packages/eaf8cb2f-27bb-439e-8368-6d18aa6e1cbf/Badge) 
+[![Hub.Shared.AppConfiguration package in rhe89 feed in Azure Artifacts](https://rhe89.feeds.visualstudio.com/_apis/public/Packaging/Feeds/rhe89/Packages/ebb1ddcf-cfab-4df9-90d1-79827b1bc5aa/Badge)](https://rhe89.visualstudio.com/Hub/_artifacts/feed/rhe89/NuGet/Hub.Shared.AppConfiguration/6.2.0)
 <sup>Hub.Shared.AppConfiguration</sup>  
 [![Build Status](https://rhe89.visualstudio.com/Hub/_apis/build/status/Hub.Shared/Hub.Shared.Settings?branchName=main)](https://rhe89.visualstudio.com/Hub/_build/latest?definitionId=60&branchName=main) 
 ![Hub.Shared.Settings package in rhe89 feed in Azure Artifacts](https://rhe89.feeds.visualstudio.com/_apis/public/Packaging/Feeds/a9ebd0d9-61ca-407b-bd4f-cf5e1f59a5c6/Packages/66eec607-6be2-4c39-a36a-062698487834/Badge) 
