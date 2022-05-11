@@ -11,7 +11,6 @@
 
     <ItemGroup>
       <ProjectReference Include="..\..\Hub.Shared.AppConfiguration\Hub.Shared.AppConfiguration.csproj" />
-      <ProjectReference Include="..\..\Hub.Shared.Logging\Hub.Shared.Logging.csproj" />
       <ProjectReference Include="..\..\Hub.Shared.Storage\Hub.Shared.Storage.Repository\Hub.Shared.Storage.Repository.csproj" />
       <ProjectReference Include="..\..\Hub.Shared.Storage\Hub.Shared.Storage.ServiceBus\Hub.Shared.Storage.ServiceBus.csproj" />
       <ProjectReference Include="..\Hub.Shared.HostedServices.Core\Hub.Shared.HostedServices.Core.csproj" />
