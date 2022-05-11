@@ -10,8 +10,6 @@
 				<PackageReference Include="JetBrains.Annotations" Version="2021.3.0" />
 				<PackageReference Include="Microsoft.ApplicationInsights.WorkerService" Version="2.20.0" />
 				<PackageReference Include="Hub.Shared.AppConfiguration" Version="6.2.0" />
-				<PackageReference Include="Hub.Shared.AppConfiguration" Version="6.2.0" />
-				<PackageReference Include="Hub.Shared.Logging" Version="6.2.0" />
 				<PackageReference Include="Hub.Shared.Storage.Repository" Version="6.2.0" />
 				<PackageReference Include="Hub.Shared.HostedServices.Core" Version="6.2.0" />
 			</Group>
@@ -22,8 +20,6 @@
 		<PackageReference Include="JetBrains.Annotations" Version="2021.3.0" />
 		<PackageReference Include="Microsoft.ApplicationInsights.WorkerService" Version="2.20.0" />
 		<PackageReference Include="Hub.Shared.AppConfiguration" Version="6.2.0" />
-		<PackageReference Include="Hub.Shared.AppConfiguration" Version="6.2.0" />
-		<PackageReference Include="Hub.Shared.Logging" Version="6.2.0" />
 		<PackageReference Include="Hub.Shared.Storage.Repository" Version="6.2.0" />
 		<PackageReference Include="Hub.Shared.HostedServices.Core" Version="6.2.0" />
 	</ItemGroup>
