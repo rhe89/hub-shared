@@ -19,7 +19,7 @@ public static class ConfigurationBuilderExtensions
                     .ConfigureKeyVault(keyVaultOptions =>
                         keyVaultOptions.SetCredential(new DefaultAzureCredential()))
                     .ConfigureRefresh(refreshOptions =>
-                        refreshOptions.SetCacheExpiration(TimeSpan.FromMinutes(60)));
+                        refreshOptions.Register(key: "Sentinel", refreshAll: true));
             });
     }
 }
