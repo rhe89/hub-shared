@@ -24,4 +24,7 @@ public class TransactionDto : EntityDtoBase
         
     [DataMember]
     public string TransactionId { get; set; }
+    
+    [DataMember]
+    public bool Recurring { get; set; }
 }
