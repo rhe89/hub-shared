@@ -15,7 +15,7 @@ public interface ICommand
 {
     [UsedImplicitly]
     Task Execute([UsedImplicitly]CancellationToken cancellationToken);
-        
+
     [UsedImplicitly]
     string Name { get; }
 }

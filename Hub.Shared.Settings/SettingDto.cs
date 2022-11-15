@@ -4,7 +4,7 @@ using Hub.Shared.Storage.Repository.Core;
 namespace Hub.Shared.Settings;
 
 [DataContract]
-public class SettingDto : EntityDtoBase
+public class SettingDto : DtoBase
 {
     [DataMember]
     public string Key { get; set; }

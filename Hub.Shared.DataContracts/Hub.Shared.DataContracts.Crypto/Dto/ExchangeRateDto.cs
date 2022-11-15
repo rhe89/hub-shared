@@ -4,7 +4,7 @@ using Hub.Shared.Storage.Repository.Core;
 namespace Hub.Shared.DataContracts.Crypto.Dto;
 
 [DataContract]
-public class ExchangeRateDto : EntityDtoBase
+public class ExchangeRateDto : DtoBase
 {
     [DataMember]
     public string Currency { get; set; }

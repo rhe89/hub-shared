@@ -50,10 +50,10 @@ public abstract class ScheduledCommand : IScheduledCommand
             {
                 RunInterval.Minute => LastRun < DateTime.Now.AddMinutes(-1),
                 RunInterval.Hour => LastRun < DateTime.Now.AddHours(-1),
-                RunInterval.Day => LastRun < DateTime.Now.AddDays(-1),
-                RunInterval.Week => LastRun < DateTime.Now.AddDays(-7),
-                RunInterval.Month => LastRun < DateTime.Now.AddMonths(-1),
-                RunInterval.Year => LastRun < DateTime.Now.AddYears(-1),
+                RunInterval.Day => LastRun.Date < DateTime.Now.Date.AddDays(-1),
+                RunInterval.Week => LastRun.Date < DateTime.Now.Date.AddDays(-7),
+                RunInterval.Month => LastRun.Date < DateTime.Now.Date.AddMonths(-1),
+                RunInterval.Year => LastRun.Date < DateTime.Now.Date.AddYears(-1),
                 RunInterval.Never => false,
                 _ => throw new ArgumentOutOfRangeException()
             };
@@ -67,10 +67,10 @@ public abstract class ScheduledCommand : IScheduledCommand
             {
                 RunInterval.Minute => LastRun.AddMinutes(1).ToString("f"),
                 RunInterval.Hour => LastRun.AddHours(1).ToString("f"),
-                RunInterval.Day => LastRun.AddDays(1).ToString("f"),
-                RunInterval.Week => LastRun.AddDays(7).ToString("f"),
-                RunInterval.Month => LastRun.AddMonths(1).ToString("f"),
-                RunInterval.Year => LastRun.AddYears(1).ToString("f"),
+                RunInterval.Day => LastRun.Date.AddDays(1).ToString("f"),
+                RunInterval.Week => LastRun.Date.AddDays(7).ToString("f"),
+                RunInterval.Month => LastRun.Date.AddMonths(1).ToString("f"),
+                RunInterval.Year => LastRun.Date.AddYears(1).ToString("f"),
                 RunInterval.Never => "Never",
                 _ => throw new ArgumentOutOfRangeException()
             };

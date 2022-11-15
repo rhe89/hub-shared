@@ -1,18 +1,18 @@
 <Project Sdk="Microsoft.NET.Sdk">
 	<PropertyGroup>
 		<PackageId>Hub.Shared.DataContracts.Crypto</PackageId>
-		<Version>6.2.0</Version>
+		<Version>7.0.0</Version>
 		<Authors>rhe89</Authors>
 		<RepositoryUrl>https://github.com/rhe89/hub-shared</RepositoryUrl>
 		<TargetFramework>net6.0</TargetFramework>
 		<Dependencies>
 			<Group targetFramework="net6.0">
-				<PackageReference Include="Hub.Shared.Storage.Repository.Core" Version="6.2.0" />
+				<PackageReference Include="Hub.Shared.Storage.Repository.Core" Version="7.0.0" />
 			</Group>
 		</Dependencies>
 	</PropertyGroup>
 
 	<ItemGroup>
-		<PackageReference Include="Hub.Shared.Storage.Repository.Core" Version="6.2.0" />
+		<PackageReference Include="Hub.Shared.Storage.Repository.Core" Version="7.0.0" />
 	</ItemGroup>
 </Project>

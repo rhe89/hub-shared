@@ -14,16 +14,18 @@ public interface ISettingFactory
 [UsedImplicitly]
 public class SettingFactory : ISettingFactory
 {
+    private readonly ISettingProvider _settingProvider;
     private readonly IHubDbRepository _dbRepository;
 
-    public SettingFactory(IHubDbRepository dbRepository)
+    public SettingFactory(ISettingProvider settingProvider, IHubDbRepository dbRepository)
     {
+        _settingProvider = settingProvider;
         _dbRepository = dbRepository;
     }
         
     public async Task UpdateSetting(string key, string value)
     {
-        var setting = _dbRepository.Single<Setting, SettingDto>(x => x.Key == key);
+        var setting = await _settingProvider.GetSetting(key);
             
         if (setting == null) { throw new ArgumentException($"Invalid settings key: {key}");}
 

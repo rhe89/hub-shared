@@ -4,7 +4,7 @@ using System.Runtime.Serialization;
 namespace Hub.Shared.Storage.Repository.Core;
 
 [DataContract]
-public class EntityDtoBase
+public class DtoBase
 {
     [DataMember]
     public long Id { get; set; }

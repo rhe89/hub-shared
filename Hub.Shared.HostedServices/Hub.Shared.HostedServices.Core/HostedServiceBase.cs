@@ -34,7 +34,8 @@ public abstract class HostedServiceBase : BackgroundService
     }
 
     [UsedImplicitly]
-    protected async Task ExecuteAsync(ICommand command,
+    protected async Task ExecuteAsync(
+        ICommand command,
         CancellationToken cancellationToken)
     {
         using var operation = TelemetryClient.StartOperation<DependencyTelemetry>($"Executing {command.Name}");
@@ -45,9 +46,11 @@ public abstract class HostedServiceBase : BackgroundService
     }
         
     [UsedImplicitly]
-    protected async Task ExecuteAsync<TTelemetry>(ICommand command,
+    protected async Task ExecuteAsync<TTelemetry>(
+        ICommand command,
         IOperationHolder<TTelemetry> operation,
-        CancellationToken cancellationToken) where TTelemetry : OperationTelemetry
+        CancellationToken cancellationToken) 
+        where TTelemetry : OperationTelemetry
     {
         try
         {

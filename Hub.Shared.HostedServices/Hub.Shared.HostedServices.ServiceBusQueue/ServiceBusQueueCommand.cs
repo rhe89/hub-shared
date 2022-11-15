@@ -7,6 +7,7 @@ namespace Hub.Shared.HostedServices.ServiceBusQueue;
 
 public interface IServiceBusQueueCommand : ICommand
 {
+    public string Message { get; set; }
     string Trigger { get; }
 }
     
@@ -15,6 +16,7 @@ public abstract class ServiceBusQueueCommand : IServiceBusQueueCommand
 {
     public abstract Task Execute(CancellationToken cancellationToken);
         
+    public string Message { get; set; }
     public string Name => GetType().Name;
         
     public abstract string Trigger { get; }

@@ -1,16 +1,16 @@
 <Project Sdk="Microsoft.NET.Sdk">
 	<PropertyGroup>
 		<PackageId>Hub.Shared.Web.Api</PackageId>
-		<Version>6.2.0</Version>
+		<Version>7.0.0</Version>
 		<Authors>rhe89</Authors>
 		<RepositoryUrl>https://github.com/rhe89/hub-shared</RepositoryUrl>
 		<TargetFramework>net6.0</TargetFramework>
 		<Dependencies>
 			<Group targetFramework="net6.0">
 				<FrameworkReference Include="Microsoft.AspNetCore.App" Version="" />
-				<PackageReference Include="Hub.Shared.AppConfiguration" Version="6.2.0" />
-				<PackageReference Include="Hub.Shared.HostedServices.Commands" Version="6.2.0" />
-				<PackageReference Include="Hub.Shared.Storage.Repository" Version="6.2.0" />
+				<PackageReference Include="Hub.Shared.AppConfiguration" Version="7.0.0" />
+				<PackageReference Include="Hub.Shared.HostedServices.Commands" Version="7.0.0" />
+				<PackageReference Include="Hub.Shared.Storage.Repository" Version="7.0.0" />
 				<PackageReference Include="JetBrains.Annotations" Version="2021.3.0" />
 				<PackageReference Include="Microsoft.ApplicationInsights.AspNetCore" Version="2.20.0" />
 			</Group>
@@ -19,9 +19,9 @@
 
 	<ItemGroup>
 		<FrameworkReference Include="Microsoft.AspNetCore.App" Version="" />
-		<PackageReference Include="Hub.Shared.AppConfiguration" Version="6.2.0" />
-		<PackageReference Include="Hub.Shared.HostedServices.Commands" Version="6.2.0" />
-		<PackageReference Include="Hub.Shared.Storage.Repository" Version="6.2.0" />
+		<PackageReference Include="Hub.Shared.AppConfiguration" Version="7.0.0" />
+		<PackageReference Include="Hub.Shared.HostedServices.Commands" Version="7.0.0" />
+		<PackageReference Include="Hub.Shared.Storage.Repository" Version="7.0.0" />
 		<PackageReference Include="JetBrains.Annotations" Version="2021.3.0" />
 		<PackageReference Include="Microsoft.ApplicationInsights.AspNetCore" Version="2.20.0" />
 	</ItemGroup>

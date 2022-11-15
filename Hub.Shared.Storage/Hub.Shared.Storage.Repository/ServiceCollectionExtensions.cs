@@ -14,13 +14,15 @@ public static class ServiceCollectionExtensions
     public static void AddDatabase<TDbContext>(this IServiceCollection serviceCollection, IConfiguration configuration, string connectionStringKey)
         where TDbContext : HubDbContext
     {
-        serviceCollection.AddDbContext<TDbContext>(options => 
+        serviceCollection.AddDbContext<TDbContext>(options =>
             options.UseSqlServer(configuration.GetValue<string>(connectionStringKey)));
             
-        serviceCollection.TryAddTransient<IHubDbRepository, HubDbRepository<TDbContext>>();
-        serviceCollection.TryAddTransient<ICommandConfigurationProvider, CommandConfigurationProvider>();
-        serviceCollection.TryAddTransient<ICommandConfigurationFactory, CommandConfigurationFactory>();
-            
+        serviceCollection.AddTransient<IHubDbRepository, HubDbRepository<TDbContext>>();
+        serviceCollection.AddTransient<ICacheableHubDbRepository, CacheableHubDbRepository<TDbContext>>();
+        serviceCollection.TryAddSingleton<ICommandConfigurationProvider, CommandConfigurationProvider>();
+        serviceCollection.TryAddSingleton<ICommandConfigurationFactory, CommandConfigurationFactory>();
+        serviceCollection.AddMemoryCache();
+
         serviceCollection.AddAutoMapper(c =>
         {
             c.AddProfile<CommandConfigurationProfile>();

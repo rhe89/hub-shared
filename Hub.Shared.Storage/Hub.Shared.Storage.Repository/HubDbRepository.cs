@@ -1,12 +1,10 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Linq.Expressions;
 using System.Threading.Tasks;
 using AutoMapper;
 using Hub.Shared.Storage.Repository.Core;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Query;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Hub.Shared.Storage.Repository;
@@ -14,317 +12,330 @@ namespace Hub.Shared.Storage.Repository;
 public class HubDbRepository<TDbContext> : IHubDbRepository
     where TDbContext : HubDbContext
 {
+    protected readonly IServiceScopeFactory ServiceScopeFactory;
     private readonly IMapper _mapper;
-    private readonly IServiceScopeFactory _serviceScopeFactory;
     private readonly Queue<EntityBase> _addQueue;
     private readonly Queue<EntityBase> _updateQueue;
     private readonly Queue<EntityBase> _removeQueue;
 
-    public HubDbRepository(IMapper mapper, IServiceScopeFactory serviceScopeFactory)
+    public HubDbRepository(IMapper mapper,
+                           IServiceScopeFactory serviceScopeFactory)
     {
+        ServiceScopeFactory = serviceScopeFactory;
         _mapper = mapper;
-        _serviceScopeFactory = serviceScopeFactory;
-            
+
         _addQueue = new Queue<EntityBase>();
         _updateQueue = new Queue<EntityBase>();
         _removeQueue = new Queue<EntityBase>();
     }
-        
-    public IList<TDto> All<TEntity, TDto>(Func<IQueryable<TEntity>, IIncludableQueryable<TEntity, object>> include = null) 
-        where TEntity : EntityBase
-        where TDto : EntityDtoBase
-    {
-        using var scope = _serviceScopeFactory.CreateScope();
-        using var dbContext = scope.ServiceProvider.GetService<TDbContext>();
-            
-        var entities = QueryWithIncludes(dbContext, include);
 
-        return Project<TEntity, TDto>(entities);
+    public IList<TDto> Get<TEntity, TDto>(Queryable<TEntity> queryable)
+        where TEntity : EntityBase
+        where TDto : DtoBase
+    {
+        using var scope = ServiceScopeFactory.CreateScope();
+        using var dbContext = scope.ServiceProvider.GetRequiredService<TDbContext>();
+
+        var quyerable = GetQueryable(dbContext, queryable);
+
+        return Project<TEntity, TDto>(quyerable);
     }
 
-    public async Task<IList<TDto>> AllAsync<TEntity, TDto>(Func<IQueryable<TEntity>, IIncludableQueryable<TEntity, object>> include = null)
+    public async Task<IList<TDto>> GetAsync<TEntity, TDto>(Queryable<TEntity> queryable)
         where TEntity : EntityBase
-        where TDto : EntityDtoBase
+        where TDto : DtoBase
     {
-        using var scope = _serviceScopeFactory.CreateScope();
-        await using var dbContext = scope.ServiceProvider.GetService<TDbContext>();
-            
-        var entities = QueryWithIncludes(dbContext, include);
-            
-        return await ProjectAsync<TEntity, TDto>(entities);
-    }
-        
-    public IList<TDto> Where<TEntity, TDto>(Expression<Func<TEntity, bool>> predicate, Func<IQueryable<TEntity>, IIncludableQueryable<TEntity, object>> include = null) 
-        where TEntity : EntityBase
-        where TDto : EntityDtoBase
-    {
-        using var scope = _serviceScopeFactory.CreateScope();
-        using var dbContext = scope.ServiceProvider.GetService<TDbContext>();
+        using var scope = ServiceScopeFactory.CreateScope();
+        await using var dbContext = scope.ServiceProvider.GetRequiredService<TDbContext>();
 
-        var entities = QueryWithIncludes(dbContext, include).Where(predicate);
-            
-        return Project<TEntity, TDto>(entities);
-    }
-        
-    public async Task<IList<TDto>> WhereAsync<TEntity, TDto>(Expression<Func<TEntity, bool>> predicate, Func<IQueryable<TEntity>, IIncludableQueryable<TEntity, object>> include = null) 
-        where TEntity : EntityBase
-        where TDto : EntityDtoBase
-    {
-        using var scope = _serviceScopeFactory.CreateScope();
-        await using var dbContext = scope.ServiceProvider.GetService<TDbContext>();
+        var quyerable = GetQueryable(dbContext, queryable);
 
-        var entities = QueryWithIncludes(dbContext, include).Where(predicate);
-            
-        return await ProjectAsync<TEntity, TDto>(entities);
+        return await ProjectAsync<TEntity, TDto>(quyerable);
     }
-        
-    public TDto First<TEntity, TDto>(Expression<Func<TEntity, bool>> predicate, Func<IQueryable<TEntity>, IIncludableQueryable<TEntity, object>> include = null) 
+
+    public TDto First<TEntity, TDto>(Queryable<TEntity> queryable)
         where TEntity : EntityBase
-        where TDto : EntityDtoBase
+        where TDto : DtoBase
     {
-        using var scope = _serviceScopeFactory.CreateScope();
-        using var dbContext = scope.ServiceProvider.GetService<TDbContext>();
-            
-        var entity = QueryWithIncludes(dbContext, include).First(predicate);
+        using var scope = ServiceScopeFactory.CreateScope();
+        using var dbContext = scope.ServiceProvider.GetRequiredService<TDbContext>();
+
+        var entity = GetQueryable(dbContext, queryable).First();
 
         return Map<TEntity, TDto>(entity);
     }
-        
-    public async Task<TDto> FirstAsync<TEntity, TDto>(Expression<Func<TEntity, bool>> predicate, Func<IQueryable<TEntity>, IIncludableQueryable<TEntity, object>> include = null) 
+
+    public async Task<TDto> FirstAsync<TEntity, TDto>(Queryable<TEntity> queryable)
         where TEntity : EntityBase
-        where TDto : EntityDtoBase
+        where TDto : DtoBase
     {
-        using var scope = _serviceScopeFactory.CreateScope();
-        await using var dbContext = scope.ServiceProvider.GetService<TDbContext>();
-            
-        var entity = await QueryWithIncludes(dbContext, include).FirstAsync(predicate);
-            
-        return Map<TEntity, TDto>(entity);
-    }
-        
-    public TDto Single<TEntity, TDto>(Expression<Func<TEntity, bool>> predicate, Func<IQueryable<TEntity>, IIncludableQueryable<TEntity, object>> include = null) 
-        where TEntity : EntityBase
-        where TDto : EntityDtoBase
-    { 
-        using var scope = _serviceScopeFactory.CreateScope();
-        using var dbContext = scope.ServiceProvider.GetService<TDbContext>();
-            
-        var entity = QueryWithIncludes(dbContext, include).Single(predicate);
-            
-        return Map<TEntity, TDto>(entity);
-    }
-        
-    public async Task<TDto> SingleAsync<TEntity, TDto>(Expression<Func<TEntity, bool>> predicate, Func<IQueryable<TEntity>, IIncludableQueryable<TEntity, object>> include = null) 
-        where TEntity : EntityBase
-        where TDto : EntityDtoBase
-    { 
-        using var scope = _serviceScopeFactory.CreateScope();
-        await using var dbContext = scope.ServiceProvider.GetService<TDbContext>();
-            
-        var entity = await QueryWithIncludes(dbContext, include).SingleAsync(predicate);
+        using var scope = ServiceScopeFactory.CreateScope();
+        await using var dbContext = scope.ServiceProvider.GetRequiredService<TDbContext>();
+
+        var entity = await GetQueryable(dbContext, queryable).FirstAsync();
 
         return Map<TEntity, TDto>(entity);
     }
-        
-    public TDto FirstOrDefault<TEntity, TDto>(Expression<Func<TEntity, bool>> predicate, Func<IQueryable<TEntity>, IIncludableQueryable<TEntity, object>> include = null) 
-        where TEntity : EntityBase
-        where TDto : EntityDtoBase
-    { 
-        using var scope = _serviceScopeFactory.CreateScope();
-        using var dbContext = scope.ServiceProvider.GetService<TDbContext>();
-            
-        var entity = QueryWithIncludes(dbContext, include).FirstOrDefault(predicate);
-            
-        return Map<TEntity, TDto>(entity);
-    }
-        
-    public async Task<TDto> FirstOrDefaultAsync<TEntity, TDto>(Expression<Func<TEntity, bool>> predicate, Func<IQueryable<TEntity>, IIncludableQueryable<TEntity, object>> include = null) 
-        where TEntity : EntityBase
-        where TDto : EntityDtoBase
-    { 
-        using var scope = _serviceScopeFactory.CreateScope();
-        await using var dbContext = scope.ServiceProvider.GetService<TDbContext>();
-            
-        var entity = await QueryWithIncludes(dbContext, include).FirstOrDefaultAsync(predicate);
-            
-        return Map<TEntity, TDto>(entity);
-    }
 
-    private static IQueryable<TEntity> QueryWithIncludes<TEntity>(TDbContext dbContext, Func<IQueryable<TEntity>, IIncludableQueryable<TEntity, object>> include) where TEntity : EntityBase
+    public TDto Single<TEntity, TDto>(Queryable<TEntity> queryable)
+        where TEntity : EntityBase
+        where TDto : DtoBase
     {
-        var query = dbContext.Set<TEntity>().AsQueryable();
+        using var scope = ServiceScopeFactory.CreateScope();
+        using var dbContext = scope.ServiceProvider.GetRequiredService<TDbContext>();
 
-        if (include != null)
+        var entity = GetQueryable(dbContext, queryable).Single();
+
+        return Map<TEntity, TDto>(entity);
+    }
+
+    public async Task<TDto> SingleAsync<TEntity, TDto>(Queryable<TEntity> queryable)
+        where TEntity : EntityBase
+        where TDto : DtoBase
+    {
+        using var scope = ServiceScopeFactory.CreateScope();
+        await using var dbContext = scope.ServiceProvider.GetRequiredService<TDbContext>();
+
+        var entity = await GetQueryable(dbContext, queryable).SingleAsync();
+
+        return Map<TEntity, TDto>(entity);
+    }
+
+    public TDto FirstOrDefault<TEntity, TDto>(Queryable<TEntity> queryable)
+        where TEntity : EntityBase
+        where TDto : DtoBase
+    {
+        using var scope = ServiceScopeFactory.CreateScope();
+        using var dbContext = scope.ServiceProvider.GetRequiredService<TDbContext>();
+
+        var entity = GetQueryable(dbContext, queryable)?.FirstOrDefault();
+
+        return Map<TEntity, TDto>(entity);
+    }
+
+    public async Task<TDto> FirstOrDefaultAsync<TEntity, TDto>(Queryable<TEntity> queryable)
+        where TEntity : EntityBase
+        where TDto : DtoBase
+    {
+        using var scope = ServiceScopeFactory.CreateScope();
+        await using var dbContext = scope.ServiceProvider.GetRequiredService<TDbContext>();
+
+        var entity = await GetQueryable(dbContext, queryable).FirstOrDefaultAsync();
+
+        return Map<TEntity, TDto>(entity);
+    }
+
+    protected virtual IQueryable<TEntity> GetQueryable<TEntity>(
+        TDbContext dbContext,
+        Queryable<TEntity> queryable) 
+        where TEntity : EntityBase
+    {
+        var dbSet = dbContext.Set<TEntity>();
+
+        foreach (var include in queryable.Includes)
         {
-            query = include(query);
+            dbSet.Include(include);
         }
-           
-        return query;
 
-    }
+        var dbQueryable = dbSet.Where(queryable.Where);
+
+        if (queryable.OrderBy != null)
+        {
+            dbQueryable = dbSet
+                .Where(queryable.Where)
+                .OrderBy(queryable.OrderBy);
+        }
+        else if (queryable.OrderByDescending != null)
+        {
+            var orderedDbQueryable = dbSet
+                .Where(queryable.Where)
+                .OrderBy(queryable.OrderByDescending);
+
+            if (queryable.ThenOrderByDescending != null)
+            {
+                orderedDbQueryable = orderedDbQueryable.ThenByDescending(queryable.ThenOrderByDescending);
+            }
+
+            dbQueryable = orderedDbQueryable;
+        }
+
         
-    public void QueueAdd<TEntity, TDto>(TDto tDto) 
+        if (queryable.Query?.Take == null)
+        {
+            return dbQueryable;
+        }
+        
+        return 
+            dbQueryable
+            .Skip(queryable.Query.Skip)
+            .Take(queryable.Query.Take.Value);
+    }
+
+    public void QueueAdd<TEntity, TDto>(TDto tDto)
         where TEntity : EntityBase
-        where TDto : EntityDtoBase
+        where TDto : DtoBase
     {
         var entity = Map<TDto, TEntity>(tDto);
-            
+
         var now = DateTime.Now;
-            
+
         entity.UpdatedDate = now;
         entity.CreatedDate = now;
-            
+
         _addQueue.Enqueue(entity);
     }
-        
-    public TDto Add<TEntity, TDto>(TDto tDto) 
+
+    public TDto Add<TEntity, TDto>(TDto tDto)
         where TEntity : EntityBase
-        where TDto : EntityDtoBase
+        where TDto : DtoBase
     {
-        using var scope = _serviceScopeFactory.CreateScope();
-        using var dbContext = scope.ServiceProvider.GetService<TDbContext>();
-            
+        using var scope = ServiceScopeFactory.CreateScope();
+        using var dbContext = scope.ServiceProvider.GetRequiredService<TDbContext>();
+
         var entity = Map<TDto, TEntity>(tDto);
-            
+
         var now = DateTime.Now;
 
         entity.UpdatedDate = now;
         entity.CreatedDate = now;
-            
+
         dbContext.Add(entity);
         dbContext.SaveChanges();
 
         return Map<TEntity, TDto>(entity);
     }
-        
-    public async Task<TDto> AddAsync<TEntity, TDto>(TDto tDto) 
+
+    public async Task<TDto> AddAsync<TEntity, TDto>(TDto tDto)
         where TEntity : EntityBase
-        where TDto : EntityDtoBase
+        where TDto : DtoBase
     {
-        using var scope = _serviceScopeFactory.CreateScope();
-        await using var dbContext = scope.ServiceProvider.GetService<TDbContext>();
-            
+        using var scope = ServiceScopeFactory.CreateScope();
+        await using var dbContext = scope.ServiceProvider.GetRequiredService<TDbContext>();
+
         var entity = Map<TDto, TEntity>(tDto);
-            
+
         var now = DateTime.Now;
 
         entity.UpdatedDate = now;
         entity.CreatedDate = now;
-            
+
         await dbContext.AddAsync(entity);
         await dbContext.SaveChangesAsync();
 
         return Map<TEntity, TDto>(entity);
     }
-        
-    public void QueueUpdate<TEntity, TDto>(TDto tDto) 
+
+    public void QueueUpdate<TEntity, TDto>(TDto tDto)
         where TEntity : EntityBase
-        where TDto : EntityDtoBase
+        where TDto : DtoBase
     {
         var entity = Map<TDto, TEntity>(tDto);
-            
+
         entity.UpdatedDate = DateTime.Now;
 
         _updateQueue.Enqueue(entity);
     }
-        
-    public void Update<TEntity, TDto>(TDto tDto) 
+
+    public void Update<TEntity, TDto>(TDto tDto)
         where TEntity : EntityBase
-        where TDto : EntityDtoBase
+        where TDto : DtoBase
     {
-        using var scope = _serviceScopeFactory.CreateScope();
-        using var dbContext = scope.ServiceProvider.GetService<TDbContext>();
-            
+        using var scope = ServiceScopeFactory.CreateScope();
+        using var dbContext = scope.ServiceProvider.GetRequiredService<TDbContext>();
+
         var entity = Map<TDto, TEntity>(tDto);
-            
+
         entity.UpdatedDate = DateTime.Now;
-            
+
         dbContext.Update(entity);
         dbContext.SaveChanges();
     }
-        
-    public async Task UpdateAsync<TEntity, TDto>(TDto tDto) 
+
+    public async Task UpdateAsync<TEntity, TDto>(TDto tDto)
         where TEntity : EntityBase
-        where TDto : EntityDtoBase
+        where TDto : DtoBase
     {
-        using var scope = _serviceScopeFactory.CreateScope();
-        await using var dbContext = scope.ServiceProvider.GetService<TDbContext>();
-            
+        using var scope = ServiceScopeFactory.CreateScope();
+        await using var dbContext = scope.ServiceProvider.GetRequiredService<TDbContext>();
+
         var entity = Map<TDto, TEntity>(tDto);
-            
+
         entity.UpdatedDate = DateTime.Now;
-            
+
         dbContext.Update(entity);
         await dbContext.SaveChangesAsync();
     }
-        
-    public void QueueRemove<TEntity, TDto>(TDto tDto) 
+
+    public void QueueRemove<TEntity, TDto>(TDto tDto)
         where TEntity : EntityBase
-        where TDto : EntityDtoBase
+        where TDto : DtoBase
     {
         var entity = Map<TDto, TEntity>(tDto);
-            
+
         _removeQueue.Enqueue(entity);
     }
 
-    public void QueueRemove<TEntity>(TEntity tEntity) 
+    public void QueueRemove<TEntity>(TEntity tEntity)
         where TEntity : EntityBase
     {
         _removeQueue.Enqueue(tEntity);
     }
-        
-    public void Remove<TEntity, TDto>(TDto tDto) 
+
+    public void Remove<TEntity, TDto>(TDto tDto)
         where TEntity : EntityBase
-        where TDto : EntityDtoBase
+        where TDto : DtoBase
     {
-        using var scope = _serviceScopeFactory.CreateScope();
-        using var dbContext = scope.ServiceProvider.GetService<TDbContext>();
-            
+        using var scope = ServiceScopeFactory.CreateScope();
+        using var dbContext = scope.ServiceProvider.GetRequiredService<TDbContext>();
+
         var entity = dbContext.Set<TEntity>().Single(x => x.Id == tDto.Id);
 
         dbContext.Remove(entity);
         dbContext.SaveChanges();
     }
-        
-    public async Task RemoveAsync<TEntity, TDto>(TDto tDto) 
+
+    public async Task RemoveAsync<TEntity, TDto>(TDto tDto)
         where TEntity : EntityBase
-        where TDto : EntityDtoBase
+        where TDto : DtoBase
     {
-        using var scope = _serviceScopeFactory.CreateScope();
-        await using var dbContext = scope.ServiceProvider.GetService<TDbContext>();
-            
+        using var scope = ServiceScopeFactory.CreateScope();
+        await using var dbContext = scope.ServiceProvider.GetRequiredService<TDbContext>();
+
         var entity = dbContext.Set<TEntity>().Single(x => x.Id == tDto.Id);
 
         dbContext.Remove(entity);
         await dbContext.SaveChangesAsync();
     }
-        
+
     public void ExecuteQueue()
     {
-        using var scope = _serviceScopeFactory.CreateScope();
-        using var dbContext = scope.ServiceProvider.GetService<TDbContext>();
+        using var scope = ServiceScopeFactory.CreateScope();
+        using var dbContext = scope.ServiceProvider.GetRequiredService<TDbContext>();
 
         while (_addQueue.Count > 0)
         {
-            var item = _addQueue.Dequeue();
-            
+            var item = Dequeue(_addQueue);
+
             dbContext.Add(item);
         }
-            
+
         while (_updateQueue.Count > 0)
         {
-            var item = _updateQueue.Dequeue();
-            
+            var item = Dequeue(_updateQueue);
+
             dbContext.Update(item);
         }
-            
+
         while (_removeQueue.Count > 0)
         {
-            var item = _removeQueue.Dequeue();
-            
+            var item = Dequeue(_removeQueue);
+
             var entity = dbContext.Find(item.GetType(), item.Id);
 
-            dbContext.Remove(entity);
+            if (entity != null)
+            {
+                dbContext.Remove(entity);
+            }
         }
 
         dbContext.SaveChanges();
@@ -332,46 +343,65 @@ public class HubDbRepository<TDbContext> : IHubDbRepository
 
     public async Task ExecuteQueueAsync()
     {
-        using var scope = _serviceScopeFactory.CreateScope();
-        await using var dbContext = scope.ServiceProvider.GetService<TDbContext>();
+        using var scope = ServiceScopeFactory.CreateScope();
+        await using var dbContext = scope.ServiceProvider.GetRequiredService<TDbContext>();
 
         while (_addQueue.Count > 0)
         {
-            var item = _addQueue.Dequeue();
-            
+            var item = Dequeue(_addQueue);
+
             await dbContext.AddAsync(item);
         }
-            
+
         while (_updateQueue.Count > 0)
         {
-            var item = _updateQueue.Dequeue();
-            
-            dbContext.Update(item);
+            var item = Dequeue(_updateQueue);
+
+            var trackedEntry = dbContext.ChangeTracker.Entries<EntityBase>().FirstOrDefault(e => e.Entity.Id == item.Id);
+
+            if (trackedEntry == null)
+            {
+                dbContext.Update(item);
+            }
+            else
+            {
+                dbContext.Entry(trackedEntry.Entity).CurrentValues.SetValues(item);
+            }
         }
-            
+
         while (_removeQueue.Count > 0)
         {
-            var item = _removeQueue.Dequeue();
-            
+            var item = Dequeue(_removeQueue);
+
             var entity = await dbContext.FindAsync(item.GetType(), item.Id);
 
-            dbContext.Remove(entity);
+            if (entity != null)
+            {
+                dbContext.Remove(entity);
+            }
         }
 
         await dbContext.SaveChangesAsync();
     }
 
-    public IList<TDestination> Project<TSource, TDestination>(IQueryable<TSource> source) 
+    protected virtual EntityBase Dequeue(Queue<EntityBase> queue)
+    {
+        var item = queue.Dequeue();
+
+        return item;
+    }
+
+    public IList<TDestination> Project<TSource, TDestination>(IQueryable<TSource> source)
     {
         var projected = _mapper.ProjectTo<TDestination>(source).ToList();
-            
+
         return projected;
     }
-        
-    public async Task<IList<TDestination>> ProjectAsync<TSource, TDestination>(IQueryable<TSource> source) 
+
+    public async Task<IList<TDestination>> ProjectAsync<TSource, TDestination>(IQueryable<TSource> source)
     {
         var projected = await _mapper.ProjectTo<TDestination>(source).ToListAsync();
-            
+
         return projected;
     }
 
@@ -379,7 +409,7 @@ public class HubDbRepository<TDbContext> : IHubDbRepository
         where TDestination : class
     {
         var mapped = source == null ? null : _mapper.Map<TDestination>(source);
-            
+
         return mapped;
     }
 }

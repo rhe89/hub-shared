@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using Azure.Messaging.ServiceBus;
@@ -32,17 +33,19 @@ public abstract class ServiceBusHostedService : HostedServiceBase
     {
         Logger.LogInformation("Initializing queue processor for queue {Queue}", _serviceBusQueueCommand.Trigger);
 
-        await _queueProcessor.Start(_serviceBusQueueCommand.Trigger, Handle);
+        await _queueProcessor.Start(_serviceBusQueueCommand.Trigger, ProcessMessage);
             
         Logger.LogInformation("Queue processor initialized for queue {Queue}", _serviceBusQueueCommand.Trigger);
     }
         
-    private async Task Handle(ProcessMessageEventArgs args)  
+    private async Task ProcessMessage(ProcessMessageEventArgs args)  
     {  
         if (args.Message == null)
         {
             throw new ArgumentNullException(nameof(args), "args.Message was null");
         }
+
+        _serviceBusQueueCommand.Message = Encoding.UTF8.GetString(args.Message.Body);
             
         var requestTelemetry = new RequestTelemetry { Name = "process " + _serviceBusQueueCommand.Trigger };
 
@@ -58,9 +61,13 @@ public abstract class ServiceBusHostedService : HostedServiceBase
             
         using var operation = TelemetryClient.StartOperation(requestTelemetry);
             
-        Logger.LogInformation("New message in queue {Queue} created at {Time} received", _serviceBusQueueCommand.Trigger, args.Message.EnqueuedTime.ToString("dd.MM.yyyy HH.mm.ss"));
+        Logger.LogInformation(
+            "New message with body {BodyText} in queue {Queue} created at {Time} received",
+            _serviceBusQueueCommand.Message,
+            _serviceBusQueueCommand.Trigger,
+            args.Message.EnqueuedTime.ToString("dd.MM.yyyy HH.mm.ss"));
 
-        await base.ExecuteAsync(_serviceBusQueueCommand, operation, args.CancellationToken);
+        await ExecuteAsync(_serviceBusQueueCommand, operation, args.CancellationToken);
 
         await args.CompleteMessageAsync(args.Message);
             

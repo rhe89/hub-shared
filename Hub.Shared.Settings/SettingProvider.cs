@@ -10,9 +10,14 @@ public interface ISettingProvider
 {
     [UsedImplicitly]
     Task<IList<SettingDto>> GetSettings();
-        
+
     [UsedImplicitly]
-    T GetSetting<T>(string key);
+    Task<SettingDto> GetSetting(string key);
+    
+    [UsedImplicitly]
+    T GetSettingValue<T>(string key);
+    
+    
 }
     
 [UsedImplicitly]
@@ -27,14 +32,26 @@ public class SettingProvider : ISettingProvider
     
     public async Task<IList<SettingDto>> GetSettings()
     {
-        var settings = await _dbRepository.AllAsync<Setting, SettingDto>();
+        var settings = await _dbRepository.GetAsync<Setting, SettingDto>(GetQueryable(new SettingQuery()));
 
         return settings;
     }
-        
-    public T GetSetting<T>(string key)
+    
+    public async Task<SettingDto> GetSetting(string key)
     {
-        var setting = _dbRepository.Single<Setting, SettingDto>(x => x.Key == key);
+        var setting = await _dbRepository.SingleAsync<Setting, SettingDto>(GetQueryable(new SettingQuery { Key = key }));
+            
+        if (setting == null)
+        {
+            throw new ArgumentException($"Invalid settings key: {key}");
+        }
+
+        return setting;
+    }
+        
+    public T GetSettingValue<T>(string key)
+    {
+        var setting = _dbRepository.Single<Setting, SettingDto>(GetQueryable(new SettingQuery { Key = key }));
             
         if (setting == null)
         {
@@ -47,5 +64,14 @@ public class SettingProvider : ISettingProvider
         t = Nullable.GetUnderlyingType(t) ?? t;
 
         return value == null ? default : (T)Convert.ChangeType(value, t);
+    }
+    
+    private static Queryable<Setting> GetQueryable(SettingQuery settingQuery)
+    {
+        return new Queryable<Setting>
+        {
+            Query = settingQuery,
+            Where = setting => string.IsNullOrEmpty(settingQuery.Key) || setting.Key == settingQuery.Key
+        };
     }
 }

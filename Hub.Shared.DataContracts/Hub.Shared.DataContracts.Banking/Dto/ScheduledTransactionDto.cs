@@ -1,29 +1,40 @@
 using System;
 using System.ComponentModel.DataAnnotations;
 using System.Runtime.Serialization;
+using AutoMapper.Configuration.Annotations;
 using Hub.Shared.Storage.Repository.Core;
 
 namespace Hub.Shared.DataContracts.Banking.Dto;
 
-public class RecurringTransactionDto : EntityDtoBase
+public class ScheduledTransactionDto : DtoBase
 {
+    [DataMember] 
+    public long? TransactionSubCategoryId { get; set; }
+    
     [DataMember]
     public string Description { get; set; }
+    
+    [DataMember]
+    public string AccountType { get; set; }
         
     [DataMember]
     public decimal Amount { get; set; }
     
     [DataMember]
-    public long AccountId { get; set; }
-    
-    [DataMember]
-    public DateTime LatestTransactionCreated { get; set; }
-    
+    public Guid TransactionKey { get; set; }
+
     [DataMember]
     public DateTime NextTransactionDate { get; set; }
     
     [DataMember]
     public Occurrence Occurrence { get; set; }
+    
+    [DataMember]
+    public bool Completed { get; set; }
+    
+    [DataMember]
+    [Ignore]
+    public TransactionSubCategoryDto TransactionSubCategory { get; set; }
 }
 
 public enum Occurrence
@@ -53,5 +64,8 @@ public enum Occurrence
     Annually,
     
     [Display(Name = "Every two years")]
-    BiAnnually
+    BiAnnually,
+    
+    [Display(Name = "Once")]
+    Once
 }

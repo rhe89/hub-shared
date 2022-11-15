@@ -2,11 +2,11 @@ namespace Hub.Shared.DataContracts.Banking.Constants;
 
 public static class AccountTypes
 {
-    public static readonly string Standard = "Standard account";
-    public static readonly string Billing = "Billing account";
-    public static readonly string Saving = "Savings account";
-    public static readonly string CreditCard = "Credit card account";
-    public static readonly string Investment = "Investment account";
+    public const string Standard = "Standard account";
+    public const string Billing = "Billing account";
+    public const string Saving = "Savings account";
+    public const string CreditCard = "Credit card account";
+    public const string Investment = "Investment account";
 
     public static string[] ToArray => new[] { Standard, Billing, Saving, Investment, CreditCard };
 }

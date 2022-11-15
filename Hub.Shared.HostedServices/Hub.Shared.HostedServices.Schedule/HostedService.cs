@@ -35,16 +35,11 @@ public class HostedService : HostedServiceBase
                 
             foreach (var scheduledCommand in _scheduledCommandCollection)
             {
-                if (scheduledCommand == null)
+                if (scheduledCommand is not { IsDue: true })
                 {
                     continue;
                 }
                     
-                if (!scheduledCommand.IsDue)
-                {
-                    continue;
-                }
-
                 _executingTask = ExecuteAsync(scheduledCommand, cancellationToken);
                     
                 await _executingTask;

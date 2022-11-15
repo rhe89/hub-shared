@@ -4,7 +4,7 @@ using Hub.Shared.Storage.Repository.Core;
 namespace Hub.Shared.DataContracts.Banking.Dto;
 
 [DataContract]
-public class PreferenceDto : EntityDtoBase
+public class PreferenceDto : DtoBase
 {
     [DataMember]
     public string Key { get; set; }

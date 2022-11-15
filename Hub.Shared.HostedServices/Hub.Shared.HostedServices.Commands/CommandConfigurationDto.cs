@@ -5,7 +5,7 @@ using Hub.Shared.Storage.Repository.Core;
 namespace Hub.Shared.HostedServices.Commands;
 
 [DataContract]
-public class CommandConfigurationDto : EntityDtoBase
+public class CommandConfigurationDto : DtoBase
 {
     [DataMember]
     public string Name { get; set; }

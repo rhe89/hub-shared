@@ -1,4 +1,6 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Text.Json;
+using System.Threading.Tasks;
 using Azure.Messaging.ServiceBus;
 using JetBrains.Annotations;
 using Microsoft.ApplicationInsights;
@@ -21,6 +23,11 @@ public class MessageSender : IMessageSender
         
     public async Task AddToQueue(string queueName)
     {
+        await AddToQueue(queueName, "");
+    }
+    
+    public async Task AddToQueue(string queueName, object messageBody)
+    {
         await using var client = new ServiceBusClient(_connectionString);
             
         var operation = _telemetryClient.StartOperation<DependencyTelemetry>("enqueue " + queueName);
@@ -30,8 +37,13 @@ public class MessageSender : IMessageSender
             
         var sender = client.CreateSender(queueName);
 
-        var message = new ServiceBusMessage();
-            
+        JsonSerializer.SerializeToUtf8Bytes(messageBody);
+
+        var message = new ServiceBusMessage
+        {
+            Body = new BinaryData(messageBody)
+        };
+        
         message.ApplicationProperties.Add("ParentId", operation.Telemetry.Id);
         message.ApplicationProperties.Add("RootId", operation.Telemetry.Context.Operation.Id);
                 

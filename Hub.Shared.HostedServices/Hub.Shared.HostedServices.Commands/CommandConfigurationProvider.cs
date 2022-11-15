@@ -25,8 +25,7 @@ public class CommandConfigurationProvider : ICommandConfigurationProvider
         
     public CommandConfigurationDto Get(string name)
     {
-        var commandConfiguration = _dbRepository
-            .FirstOrDefault<CommandConfiguration, CommandConfigurationDto>(c => c.Name == name);
+        var commandConfiguration = _dbRepository.FirstOrDefault<CommandConfiguration, CommandConfigurationDto>(GetQueryable(new CommandConfigurationQuery { Name = name }));
 
         return commandConfiguration;
     }
@@ -34,8 +33,17 @@ public class CommandConfigurationProvider : ICommandConfigurationProvider
     public async Task<IList<CommandConfigurationDto>> GetCommandConfigurations()
     {
         var commandConfigurations = await _dbRepository
-            .AllAsync<CommandConfiguration, CommandConfigurationDto>();
+            .GetAsync<CommandConfiguration, CommandConfigurationDto>(GetQueryable(new CommandConfigurationQuery()));
 
         return commandConfigurations;
+    }
+    
+    private static Queryable<CommandConfiguration> GetQueryable(CommandConfigurationQuery commandConfigurationQuery)
+    {
+        return new Queryable<CommandConfiguration>
+        {
+            Query = commandConfigurationQuery,
+            Where = commandConfiguration => string.IsNullOrEmpty(commandConfigurationQuery.Name) || commandConfiguration.Name == commandConfigurationQuery.Name
+        };
     }
 }
