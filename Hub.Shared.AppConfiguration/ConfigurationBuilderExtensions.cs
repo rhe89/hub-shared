@@ -1,8 +1,9 @@
+using System;
 using Azure.Identity;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Configuration.AzureAppConfiguration;
 
-namespace Hub.Shared.Configuration;
+namespace Hub.Shared.AppConfiguration;
 
 public static class ConfigurationBuilderExtensions
 {

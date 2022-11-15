@@ -1,6 +1,6 @@
 ﻿using Microsoft.Extensions.Hosting;
 
-namespace Hub.Shared.Configuration;
+namespace Hub.Shared.AppConfiguration;
 
 public static class HostBuilderExtensions
 {

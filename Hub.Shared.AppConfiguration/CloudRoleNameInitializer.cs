@@ -1,13 +1,14 @@
+using System;
 using Microsoft.ApplicationInsights.Channel;
 using Microsoft.ApplicationInsights.Extensibility;
 
-namespace Hub.Shared.Configuration;
+namespace Hub.Shared.AppConfiguration;
 
 public class CloudRoleNameInitializer : ITelemetryInitializer
 {
     private readonly string _roleName;
 
-    public CloudRoleNameInitializer(string? roleName)
+    public CloudRoleNameInitializer(string roleName)
     {
         _roleName = roleName ?? throw new ArgumentNullException(nameof(roleName));
     }

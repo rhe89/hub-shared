@@ -2,7 +2,7 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Logging.ApplicationInsights;
 using Microsoft.Extensions.Logging.Console;
 
-namespace Hub.Shared.Configuration;
+namespace Hub.Shared.AppConfiguration;
 
 public static class LoggingBuilderExtensions
 {

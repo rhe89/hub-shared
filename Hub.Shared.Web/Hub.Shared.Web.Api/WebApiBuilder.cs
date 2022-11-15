@@ -1,6 +1,6 @@
 using System;
 using System.Reflection;
-using Hub.Shared.Configuration;
+using Hub.Shared.AppConfiguration;
 using Hub.Shared.Storage.Repository;
 using JetBrains.Annotations;
 using Microsoft.ApplicationInsights.AspNetCore.Extensions;

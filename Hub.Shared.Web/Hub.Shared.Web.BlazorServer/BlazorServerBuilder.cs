@@ -1,5 +1,5 @@
 using System;
-using Hub.Shared.Configuration;
+using Hub.Shared.AppConfiguration;
 using JetBrains.Annotations;
 using Microsoft.ApplicationInsights.AspNetCore.Extensions;
 using Microsoft.ApplicationInsights.Extensibility;
