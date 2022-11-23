@@ -16,8 +16,10 @@ public static class QueueNames
     
     //Banking
     public static readonly string UpdateScheduledTransactions = "updaterecurringtransactions";
+    public static readonly string UpdateAccountBalancesForNewMonth = "updateaccountbalancesfornewmonth";
     public static readonly string ImportTransactionsCsv = "importtransactionscsv";
     public static readonly string CategorizeTransactions = "categorizetransactions";
+    public static readonly string CalculateCreditCardPayments = "calculatecreditcardpayments";
     public static readonly string ScheduledTransactionsUpdated = "recurringtransactionsupdated";
     
     public static readonly string BankingAccountsUpdated = "bankingaccountsupdated";

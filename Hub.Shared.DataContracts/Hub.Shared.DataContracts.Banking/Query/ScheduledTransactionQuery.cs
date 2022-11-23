@@ -1,6 +1,5 @@
 using System;
 using System.Runtime.Serialization;
-using Hub.Shared.Storage.Repository.Core;
 using JetBrains.Annotations;
 
 namespace Hub.Shared.DataContracts.Banking.Query;
