@@ -27,7 +27,7 @@ public class CacheableHubDbRepository<TDbContext> : HubDbRepository<TDbContext>,
         where TEntity : EntityBase
         where TDto : DtoBase
     {
-        var cachedDbQueyrable = await _memoryCache.GetOrCreate(typeof(TEntity).Name, async _ =>
+        var list = await _memoryCache.GetOrCreate(typeof(TEntity).Name, async _ =>
         {
             using var scope = ServiceScopeFactory.CreateScope();
             await using var dbContext = scope.ServiceProvider.GetRequiredService<TDbContext>();
@@ -43,7 +43,14 @@ public class CacheableHubDbRepository<TDbContext> : HubDbRepository<TDbContext>,
             return dbQueryable.ToList();
         });
 
-        var filtered = GetQueryable(queryable, cachedDbQueyrable.AsQueryable().Where(queryable.Where));
+        var dbQueyrable = list.AsQueryable();
+
+        if (queryable.Where != null)
+        {
+            dbQueyrable = dbQueyrable.Where(queryable.Where);
+        }
+        
+        var filtered = GetQueryable(queryable, dbQueyrable);
 
         return Project<TEntity, TDto>(filtered);
     }

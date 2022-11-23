@@ -36,9 +36,12 @@ public class HubDbRepository<TDbContext> : IHubDbRepository
         using var scope = ServiceScopeFactory.CreateScope();
         await using var dbContext = scope.ServiceProvider.GetRequiredService<TDbContext>();
 
-        IQueryable<TEntity> dbQueryable = dbContext
-            .Set<TEntity>()
-            .Where(queryable.Where);
+        IQueryable<TEntity> dbQueryable = dbContext.Set<TEntity>();
+
+        if (queryable.Where != null)
+        {
+            dbQueryable = dbQueryable.Where(queryable.Where);
+        }
         
         foreach (var include in queryable.Includes)
         {
