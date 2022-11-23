@@ -46,7 +46,7 @@ public class CommandConfigurationFactory : ICommandConfigurationFactory
 
     public async Task UpdateLastRun(string name, DateTime lastRun)
     {
-        var commandConfiguration = _commandConfigurationProvider.Get(name);
+        var commandConfiguration = await _commandConfigurationProvider.Get(name);
 
         if (commandConfiguration == null)
         {
@@ -60,7 +60,7 @@ public class CommandConfigurationFactory : ICommandConfigurationFactory
 
     public async Task UpdateRunIntervalType(string name, string runInterval)
     {
-        var commandConfiguration = _commandConfigurationProvider.Get(name);
+        var commandConfiguration = await _commandConfigurationProvider.Get(name);
 
         if (commandConfiguration == null)
         {

@@ -81,7 +81,7 @@ public abstract class ScheduledCommand : IScheduledCommand
     {
         get
         {
-            var commandConfiguration = _commandConfigurationProvider.Get(Name) ??
+            var commandConfiguration = _commandConfigurationProvider.Get(Name).GetAwaiter().GetResult() ??
                                        _commandConfigurationFactory.CreateDefaultCommandConfiguration(Name);
                 
             return commandConfiguration;

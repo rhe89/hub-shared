@@ -1,13 +1,12 @@
 <Project Sdk="Microsoft.NET.Sdk">
 	<PropertyGroup>
 		<PackageId>Hub.Shared.GoogleApi</PackageId>
-		<Version>7.0.0</Version>
+		<Version>7.1.0</Version>
 		<Authors>rhe89</Authors>
 		<RepositoryUrl>https://github.com/rhe89/hub-shared</RepositoryUrl>
 		<TargetFramework>net6.0</TargetFramework>
 		<Dependencies>
 			<Group targetFramework="net6.0">
-				<PackageReference Include="Azure.Messaging.ServiceBus" Version="7.9.0" />
 				<PackageReference Include="Google.Apis.Drive.v3" Version="1.57.0.2746" />
 				<PackageReference Include="Google.Apis.Sheets.v4" Version="1.36.1.1443" />
 				<PackageReference Include="Microsoft.Extensions.Configuration.Abstractions" Version="6.0.0" />
@@ -17,7 +16,6 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-		<PackageReference Include="Azure.Messaging.ServiceBus" Version="7.9.0" />
 		<PackageReference Include="Google.Apis.Drive.v3" Version="1.57.0.2746" />
 		<PackageReference Include="Google.Apis.Sheets.v4" Version="1.36.1.1443" />
 		<PackageReference Include="Microsoft.Extensions.Configuration.Abstractions" Version="6.0.0" />

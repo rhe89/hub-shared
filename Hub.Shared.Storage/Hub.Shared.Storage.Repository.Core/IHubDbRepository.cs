@@ -9,42 +9,7 @@ namespace Hub.Shared.Storage.Repository.Core;
 public interface IHubDbRepository
 {
     [UsedImplicitly]
-    public IList<TDto> Get<TEntity, TDto>(Queryable<TEntity> queryable)
-        where TEntity : EntityBase
-        where TDto : DtoBase;
-
-    [UsedImplicitly]
     public Task<IList<TDto>> GetAsync<TEntity, TDto>(Queryable<TEntity> queryable)
-        where TEntity : EntityBase
-        where TDto : DtoBase;
-
-    [UsedImplicitly]
-    public TDto First<TEntity, TDto>(Queryable<TEntity> queryable)
-        where TEntity : EntityBase
-        where TDto : DtoBase;
-
-    [UsedImplicitly]
-    public Task<TDto> FirstAsync<TEntity, TDto>(Queryable<TEntity> queryable)
-        where TEntity : EntityBase
-        where TDto : DtoBase;
-
-    [UsedImplicitly]
-    public TDto Single<TEntity, TDto>(Queryable<TEntity> queryable)
-        where TEntity : EntityBase
-        where TDto : DtoBase;
-
-    [UsedImplicitly]
-    public Task<TDto> SingleAsync<TEntity, TDto>(Queryable<TEntity> queryable)
-        where TEntity : EntityBase
-        where TDto : DtoBase;
-
-    [UsedImplicitly]
-    public TDto FirstOrDefault<TEntity, TDto>(Queryable<TEntity> queryable)
-        where TEntity : EntityBase
-        where TDto : DtoBase;
-
-    [UsedImplicitly]
-    public Task<TDto> FirstOrDefaultAsync<TEntity, TDto>(Queryable<TEntity> queryable)
         where TEntity : EntityBase
         where TDto : DtoBase;
 

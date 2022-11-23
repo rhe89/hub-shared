@@ -3,6 +3,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
 using Hub.Shared.Storage.Repository.Core;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -22,16 +23,31 @@ public class CacheableHubDbRepository<TDbContext> : HubDbRepository<TDbContext>,
         _memoryCache = new MemoryCache(new MemoryCacheOptions());
     }
     
-    protected override IQueryable<TEntity> GetQueryable<TEntity>(TDbContext dbContext, Queryable<TEntity> queryable)
+    public new async Task<IList<TDto>> GetAsync<TEntity, TDto>(Queryable<TEntity> queryable)
+        where TEntity : EntityBase
+        where TDto : DtoBase
     {
-        if (_memoryCache.TryGetValue(typeof(TEntity).Name, out IQueryable<TEntity> entities))
+        var cachedDbQueyrable = await _memoryCache.GetOrCreate(typeof(TEntity).Name, async _ =>
         {
-            return entities;
-        }
-        
-        return base.GetQueryable(dbContext, queryable);
-    }
+            using var scope = ServiceScopeFactory.CreateScope();
+            await using var dbContext = scope.ServiceProvider.GetRequiredService<TDbContext>();
 
+            IQueryable<TEntity> dbQueryable = dbContext
+                .Set<TEntity>();
+        
+            foreach (var include in queryable.Includes)
+            {
+                dbQueryable = dbQueryable.Include(include);
+            }
+
+            return dbQueryable.ToList();
+        });
+
+        var filtered = GetQueryable(queryable, cachedDbQueyrable.AsQueryable().Where(queryable.Where));
+
+        return Project<TEntity, TDto>(filtered);
+    }
+    
     private void InvalidateCache<TEntity>()
     {
         InvalidateCache(typeof(TEntity).Name);

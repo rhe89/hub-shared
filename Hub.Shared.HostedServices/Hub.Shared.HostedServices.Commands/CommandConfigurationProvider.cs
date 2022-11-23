@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using Hub.Shared.Storage.Repository.Core;
 using JetBrains.Annotations;
@@ -8,7 +9,7 @@ namespace Hub.Shared.HostedServices.Commands;
 public interface ICommandConfigurationProvider
 {
     [UsedImplicitly]
-    CommandConfigurationDto Get(string name);
+    Task<CommandConfigurationDto> Get(string name);
         
     [UsedImplicitly]
     Task<IList<CommandConfigurationDto>> GetCommandConfigurations();
@@ -23,11 +24,11 @@ public class CommandConfigurationProvider : ICommandConfigurationProvider
         _dbRepository = dbRepository;
     }
         
-    public CommandConfigurationDto Get(string name)
+    public async Task<CommandConfigurationDto> Get(string name)
     {
-        var commandConfiguration = _dbRepository.FirstOrDefault<CommandConfiguration, CommandConfigurationDto>(GetQueryable(new CommandConfigurationQuery { Name = name }));
+        var commandConfiguration = await _dbRepository.GetAsync<CommandConfiguration, CommandConfigurationDto>(GetQueryable(new CommandConfigurationQuery { Name = name }));
 
-        return commandConfiguration;
+        return commandConfiguration.FirstOrDefault();
     }
 
     public async Task<IList<CommandConfigurationDto>> GetCommandConfigurations()
@@ -42,8 +43,9 @@ public class CommandConfigurationProvider : ICommandConfigurationProvider
     {
         return new Queryable<CommandConfiguration>
         {
-            Query = commandConfigurationQuery,
-            Where = commandConfiguration => string.IsNullOrEmpty(commandConfigurationQuery.Name) || commandConfiguration.Name == commandConfigurationQuery.Name
+            Where = commandConfiguration => string.IsNullOrEmpty(commandConfigurationQuery.Name) || commandConfiguration.Name == commandConfigurationQuery.Name,
+            Take = commandConfigurationQuery.Take,
+            Skip = commandConfigurationQuery.Skip
         };
     }
 }

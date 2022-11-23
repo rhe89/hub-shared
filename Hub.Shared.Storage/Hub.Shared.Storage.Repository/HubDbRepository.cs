@@ -29,18 +29,6 @@ public class HubDbRepository<TDbContext> : IHubDbRepository
         _removeQueue = new Queue<EntityBase>();
     }
 
-    public IList<TDto> Get<TEntity, TDto>(Queryable<TEntity> queryable)
-        where TEntity : EntityBase
-        where TDto : DtoBase
-    {
-        using var scope = ServiceScopeFactory.CreateScope();
-        using var dbContext = scope.ServiceProvider.GetRequiredService<TDbContext>();
-
-        var quyerable = GetQueryable(dbContext, queryable);
-
-        return Project<TEntity, TDto>(quyerable);
-    }
-
     public async Task<IList<TDto>> GetAsync<TEntity, TDto>(Queryable<TEntity> queryable)
         where TEntity : EntityBase
         where TDto : DtoBase
@@ -48,108 +36,31 @@ public class HubDbRepository<TDbContext> : IHubDbRepository
         using var scope = ServiceScopeFactory.CreateScope();
         await using var dbContext = scope.ServiceProvider.GetRequiredService<TDbContext>();
 
-        var quyerable = GetQueryable(dbContext, queryable);
-
-        return await ProjectAsync<TEntity, TDto>(quyerable);
-    }
-
-    public TDto First<TEntity, TDto>(Queryable<TEntity> queryable)
-        where TEntity : EntityBase
-        where TDto : DtoBase
-    {
-        using var scope = ServiceScopeFactory.CreateScope();
-        using var dbContext = scope.ServiceProvider.GetRequiredService<TDbContext>();
-
-        var entity = GetQueryable(dbContext, queryable).First();
-
-        return Map<TEntity, TDto>(entity);
-    }
-
-    public async Task<TDto> FirstAsync<TEntity, TDto>(Queryable<TEntity> queryable)
-        where TEntity : EntityBase
-        where TDto : DtoBase
-    {
-        using var scope = ServiceScopeFactory.CreateScope();
-        await using var dbContext = scope.ServiceProvider.GetRequiredService<TDbContext>();
-
-        var entity = await GetQueryable(dbContext, queryable).FirstAsync();
-
-        return Map<TEntity, TDto>(entity);
-    }
-
-    public TDto Single<TEntity, TDto>(Queryable<TEntity> queryable)
-        where TEntity : EntityBase
-        where TDto : DtoBase
-    {
-        using var scope = ServiceScopeFactory.CreateScope();
-        using var dbContext = scope.ServiceProvider.GetRequiredService<TDbContext>();
-
-        var entity = GetQueryable(dbContext, queryable).Single();
-
-        return Map<TEntity, TDto>(entity);
-    }
-
-    public async Task<TDto> SingleAsync<TEntity, TDto>(Queryable<TEntity> queryable)
-        where TEntity : EntityBase
-        where TDto : DtoBase
-    {
-        using var scope = ServiceScopeFactory.CreateScope();
-        await using var dbContext = scope.ServiceProvider.GetRequiredService<TDbContext>();
-
-        var entity = await GetQueryable(dbContext, queryable).SingleAsync();
-
-        return Map<TEntity, TDto>(entity);
-    }
-
-    public TDto FirstOrDefault<TEntity, TDto>(Queryable<TEntity> queryable)
-        where TEntity : EntityBase
-        where TDto : DtoBase
-    {
-        using var scope = ServiceScopeFactory.CreateScope();
-        using var dbContext = scope.ServiceProvider.GetRequiredService<TDbContext>();
-
-        var entity = GetQueryable(dbContext, queryable)?.FirstOrDefault();
-
-        return Map<TEntity, TDto>(entity);
-    }
-
-    public async Task<TDto> FirstOrDefaultAsync<TEntity, TDto>(Queryable<TEntity> queryable)
-        where TEntity : EntityBase
-        where TDto : DtoBase
-    {
-        using var scope = ServiceScopeFactory.CreateScope();
-        await using var dbContext = scope.ServiceProvider.GetRequiredService<TDbContext>();
-
-        var entity = await GetQueryable(dbContext, queryable).FirstOrDefaultAsync();
-
-        return Map<TEntity, TDto>(entity);
-    }
-
-    protected virtual IQueryable<TEntity> GetQueryable<TEntity>(
-        TDbContext dbContext,
-        Queryable<TEntity> queryable) 
-        where TEntity : EntityBase
-    {
-        var dbSet = dbContext.Set<TEntity>();
-
+        IQueryable<TEntity> dbQueryable = dbContext
+            .Set<TEntity>()
+            .Where(queryable.Where);
+        
         foreach (var include in queryable.Includes)
         {
-            dbSet.Include(include);
+            dbQueryable = dbQueryable.Include(include);
         }
 
-        var dbQueryable = dbSet.Where(queryable.Where);
+        var filtered = GetQueryable(queryable, dbQueryable);
 
+        return await ProjectAsync<TEntity, TDto>(filtered);
+    }
+
+    protected IQueryable<TEntity> GetQueryable<TEntity>(Queryable<TEntity> queryable, IQueryable<TEntity> dbQueryable) where TEntity : EntityBase
+    {
         if (queryable.OrderBy != null)
         {
-            dbQueryable = dbSet
-                .Where(queryable.Where)
+            dbQueryable = dbQueryable
                 .OrderBy(queryable.OrderBy);
         }
         else if (queryable.OrderByDescending != null)
         {
-            var orderedDbQueryable = dbSet
-                .Where(queryable.Where)
-                .OrderBy(queryable.OrderByDescending);
+            var orderedDbQueryable = dbQueryable
+                .OrderByDescending(queryable.OrderByDescending);
 
             if (queryable.ThenOrderByDescending != null)
             {
@@ -159,16 +70,19 @@ public class HubDbRepository<TDbContext> : IHubDbRepository
             dbQueryable = orderedDbQueryable;
         }
 
-        
-        if (queryable.Query?.Take == null)
+        if (queryable.Take != null)
         {
-            return dbQueryable;
+            dbQueryable = dbQueryable
+                .Take(queryable.Take.Value);
         }
-        
-        return 
-            dbQueryable
-            .Skip(queryable.Query.Skip)
-            .Take(queryable.Query.Take.Value);
+
+        if (queryable.Skip != null)
+        {
+            dbQueryable = dbQueryable
+                .Skip(queryable.Skip.Value);
+        }
+
+        return dbQueryable;
     }
 
     public void QueueAdd<TEntity, TDto>(TDto tDto)

@@ -15,5 +15,5 @@ public abstract class Query
     public int? Take { get; set; }
 
     [DataMember]
-    public int Skip { get; set; }
+    public int? Skip { get; set; }
 }

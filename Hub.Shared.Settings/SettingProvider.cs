@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using Hub.Shared.Storage.Repository.Core;
 using JetBrains.Annotations;
@@ -13,11 +14,6 @@ public interface ISettingProvider
 
     [UsedImplicitly]
     Task<SettingDto> GetSetting(string key);
-    
-    [UsedImplicitly]
-    T GetSettingValue<T>(string key);
-    
-    
 }
     
 [UsedImplicitly]
@@ -39,7 +35,7 @@ public class SettingProvider : ISettingProvider
     
     public async Task<SettingDto> GetSetting(string key)
     {
-        var setting = await _dbRepository.SingleAsync<Setting, SettingDto>(GetQueryable(new SettingQuery { Key = key }));
+        var setting = (await _dbRepository.GetAsync<Setting, SettingDto>(GetQueryable(new SettingQuery { Key = key }))).Single();
             
         if (setting == null)
         {
@@ -48,30 +44,14 @@ public class SettingProvider : ISettingProvider
 
         return setting;
     }
-        
-    public T GetSettingValue<T>(string key)
-    {
-        var setting = _dbRepository.Single<Setting, SettingDto>(GetQueryable(new SettingQuery { Key = key }));
-            
-        if (setting == null)
-        {
-            throw new ArgumentException($"Invalid settings key: {key}");
-        }
-
-        var value = setting.Value;
-
-        var t = typeof(T);
-        t = Nullable.GetUnderlyingType(t) ?? t;
-
-        return value == null ? default : (T)Convert.ChangeType(value, t);
-    }
-    
+      
     private static Queryable<Setting> GetQueryable(SettingQuery settingQuery)
     {
         return new Queryable<Setting>
         {
-            Query = settingQuery,
-            Where = setting => string.IsNullOrEmpty(settingQuery.Key) || setting.Key == settingQuery.Key
+            Where = setting => string.IsNullOrEmpty(settingQuery.Key) || setting.Key == settingQuery.Key,
+            Take = settingQuery.Take,
+            Skip = settingQuery.Skip
         };
     }
 }

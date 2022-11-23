@@ -17,8 +17,8 @@ public static class ServiceCollectionExtensions
         serviceCollection.AddDbContext<TDbContext>(options =>
             options.UseSqlServer(configuration.GetValue<string>(connectionStringKey)));
             
-        serviceCollection.AddTransient<IHubDbRepository, HubDbRepository<TDbContext>>();
-        serviceCollection.AddTransient<ICacheableHubDbRepository, CacheableHubDbRepository<TDbContext>>();
+        serviceCollection.TryAddSingleton<IHubDbRepository, HubDbRepository<TDbContext>>();
+        serviceCollection.TryAddSingleton<ICacheableHubDbRepository, CacheableHubDbRepository<TDbContext>>();
         serviceCollection.TryAddSingleton<ICommandConfigurationProvider, CommandConfigurationProvider>();
         serviceCollection.TryAddSingleton<ICommandConfigurationFactory, CommandConfigurationFactory>();
         serviceCollection.AddMemoryCache();
