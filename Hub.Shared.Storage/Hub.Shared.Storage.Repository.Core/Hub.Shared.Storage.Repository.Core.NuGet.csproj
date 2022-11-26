@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
 	<PropertyGroup>
 		<PackageId>Hub.Shared.Storage.Repository.Core</PackageId>
-		<Version>7.1.2</Version>
+		<Version>7.1.3</Version>
 		<Authors>rhe89</Authors>
 		<RepositoryUrl>https://github.com/rhe89/hub-shared</RepositoryUrl>
 		<TargetFramework>net6.0</TargetFramework>
