@@ -18,12 +18,10 @@ public static class QueueNames
     public static readonly string UpdateScheduledTransactions = "updaterecurringtransactions";
     public static readonly string UpdateAccountBalancesForNewMonth = "updateaccountbalancesfornewmonth";
     public static readonly string UpdateSbankenTransactions = "updatesbankentransactions";
-    public static readonly string ImportTransactionsCsv = "importtransactionscsv";
+    public static readonly string UpdateBulderBankTransactions = "updatebulderbanktransactions";
     public static readonly string CategorizeTransactions = "categorizetransactions";
     public static readonly string CalculateCreditCardPayments = "calculatecreditcardpayments";
-    public static readonly string ScheduledTransactionsUpdated = "recurringtransactionsupdated";
 
     public static readonly string BankingAccountsUpdated = "bankingaccountsupdated";
     public static readonly string BankingTransactionsUpdated = "bankingtransactionsupdated";
-    public static readonly string BankingAccountBalanceHistoryUpdated = "bankingaccountbalancehistoryupdated";
 }
