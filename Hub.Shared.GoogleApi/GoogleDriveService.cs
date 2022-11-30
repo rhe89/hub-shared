@@ -11,7 +11,7 @@ namespace Hub.Shared.GoogleApi;
 
 public static class GoogleDriveService
 {
-    public static Task<FileList> ListFiles(IConfiguration configuration)
+    public static Task<FileList> ListFiles(string folderName, IConfiguration configuration)
     {
         var credential = CredentialProvider.GetServiceAccountCredential(configuration, new[] { DriveService.Scope.Drive });
 
@@ -23,7 +23,7 @@ public static class GoogleDriveService
 
         var listRequest = service.Files.List();
 
-        listRequest.Q = $"'{configuration.GetValue<string>("TransactionsImportFolderId")}' in parents";
+        listRequest.Q = $"'{folderName}' in parents";
 
         return listRequest.ExecuteAsync();
     }
@@ -52,7 +52,7 @@ public static class GoogleDriveService
         });
 
         var request = service.Files.Get(fileId);
-        
+
         request.MediaDownloader.ProgressChanged +=
             progress =>
             {
@@ -79,7 +79,7 @@ public static class GoogleDriveService
         var stream = new MemoryStream();
 
         await request.DownloadAsync(stream);
-
+        
         stream.Position = 0;
         return stream;
     }
