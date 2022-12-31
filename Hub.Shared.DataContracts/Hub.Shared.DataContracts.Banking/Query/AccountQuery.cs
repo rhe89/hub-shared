@@ -21,6 +21,10 @@ public class AccountQuery : Storage.Repository.Core.Query
     
     [DataMember]
     [CanBeNull] 
+    public string BankName { get; set; }
+    
+    [DataMember]
+    [CanBeNull] 
     public string AccountName { get; set; }
     
     [DataMember]

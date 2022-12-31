@@ -8,15 +8,15 @@ namespace Hub.Shared.DataContracts.Banking.Dto;
 
 public class ScheduledTransactionDto : DtoBase
 {
+    [DataMember]
+    public long AccountId { get; set; }
+    
     [DataMember] 
     public long? TransactionSubCategoryId { get; set; }
     
     [DataMember]
     public string Description { get; set; }
-    
-    [DataMember]
-    public string AccountType { get; set; }
-        
+
     [DataMember]
     public decimal Amount { get; set; }
     
@@ -35,6 +35,9 @@ public class ScheduledTransactionDto : DtoBase
     [DataMember]
     [Ignore]
     public TransactionSubCategoryDto TransactionSubCategory { get; set; }
+    
+    [DataMember]
+    public AccountDto Account { get; set; }
 }
 
 public enum Occurrence

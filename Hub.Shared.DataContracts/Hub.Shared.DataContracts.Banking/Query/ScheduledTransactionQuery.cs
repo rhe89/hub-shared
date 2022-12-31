@@ -9,6 +9,10 @@ public class ScheduledTransactionQuery : Storage.Repository.Core.Query
 {
     [DataMember] 
     [CanBeNull]
+    public long? AccountId { get; set; }
+    
+    [DataMember] 
+    [CanBeNull]
     public decimal[] AmountRange { get; set; }
     
     [DataMember]

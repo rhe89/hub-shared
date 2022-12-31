@@ -23,6 +23,7 @@ public static class GoogleDriveService
 
         var listRequest = service.Files.List();
 
+        listRequest.PageSize = 1000;
         listRequest.Q = $"'{folderName}' in parents";
 
         return listRequest.ExecuteAsync();

@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
 	<PropertyGroup>
 		<PackageId>Hub.Shared.Web.BlazorServer</PackageId>
-		<Version>7.1.4</Version>
+		<Version>7.2</Version>
 		<Authors>rhe89</Authors>
 		<RepositoryUrl>https://github.com/rhe89/hub-shared</RepositoryUrl>
 		<TargetFramework>net6.0</TargetFramework>
@@ -10,8 +10,8 @@
 				<FrameworkReference Include="Microsoft.AspNetCore.App" Version="2.2.8" />
 				<PackageReference Include="JetBrains.Annotations" Version="2021.3.0" />
 				<PackageReference Include="Microsoft.ApplicationInsights.AspNetCore" Version="2.20.0" />
-				<PackageReference Include="Hub.Shared.AppConfiguration" Version="7.1.4" />
-				<PackageReference Include="Hub.Shared.Web.Http" Version="7.1.4" />
+				<PackageReference Include="Hub.Shared.AppConfiguration" Version="7.2" />
+				<PackageReference Include="Hub.Shared.Web.Http" Version="7.2" />
 			</Group>
 		</Dependencies>
 	</PropertyGroup>
@@ -20,7 +20,7 @@
 		<FrameworkReference Include="Microsoft.AspNetCore.App" Version="2.2.8" />
 		<PackageReference Include="JetBrains.Annotations" Version="2021.3.0" />
 		<PackageReference Include="Microsoft.ApplicationInsights.AspNetCore" Version="2.20.0" />
-		<PackageReference Include="Hub.Shared.AppConfiguration" Version="7.1.4" />
-		<PackageReference Include="Hub.Shared.Web.Http" Version="7.1.4" />
+		<PackageReference Include="Hub.Shared.AppConfiguration" Version="7.2" />
+		<PackageReference Include="Hub.Shared.Web.Http" Version="7.2" />
 	</ItemGroup>
 </Project>

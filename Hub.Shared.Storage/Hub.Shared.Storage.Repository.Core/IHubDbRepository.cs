@@ -14,6 +14,10 @@ public interface IHubDbRepository
         where TDto : DtoBase;
 
     [UsedImplicitly]
+    public Task<IList<TEntity>> GetAsync<TEntity>()
+        where TEntity : EntityBase;
+
+    [UsedImplicitly]
     void QueueAdd<TEntity, TDto>(TDto tDto)
         where TEntity : EntityBase
         where TDto : DtoBase;

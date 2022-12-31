@@ -28,4 +28,17 @@ public static class ServiceBusHostBuilder
                 serviceCollection.AddSingleton<ITelemetryInitializer>(new CloudRoleNameInitializer(Environment.GetEnvironmentVariable("CLOUD_ROLE_NAME")));
             });
     }
+    
+    [UsedImplicitly]
+    public static IHostBuilder CreateHostBuilder(string [] args)
+    {
+        return Host.CreateDefaultBuilder(args)
+            .GetDefaultHostBuilder()
+            .ConfigureServices(serviceCollection =>
+            {
+                serviceCollection.TryAddTransient<IQueueProcessor, QueueProcessor>();
+                serviceCollection.AddApplicationInsightsTelemetryWorkerService();
+                serviceCollection.AddSingleton<ITelemetryInitializer>(new CloudRoleNameInitializer(Environment.GetEnvironmentVariable("CLOUD_ROLE_NAME")));
+            });
+    }
 }

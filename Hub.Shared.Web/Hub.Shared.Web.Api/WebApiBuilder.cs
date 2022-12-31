@@ -27,14 +27,29 @@ public static class WebApiBuilder
         builder.Configuration.AddDefaultConfiguration();
         
         builder.Services.AddApplicationInsightsTelemetry(new ApplicationInsightsServiceOptions { ConnectionString = builder.Configuration.GetValue<string>("AI_CONNECTION_STRING") });
+        builder.Services.AddDatabase<TDbContext>(builder.Configuration, connectionStringKey);
 
-        AddServices<TDbContext>(builder.Services, builder.Configuration, connectionStringKey);
+        AddServices(builder.Services, builder.Configuration);
+
+        return builder;
+    }
+    
+    public static WebApplicationBuilder CreateWebApplicationBuilder(string[] args)
+    {
+        var builder = WebApplication.CreateBuilder(args);
+
+        builder.Services.AddControllers();
+        builder.Logging.AddDefaultLoggingProviders();
+        builder.Configuration.AddDefaultConfiguration();
+        
+        builder.Services.AddApplicationInsightsTelemetry(new ApplicationInsightsServiceOptions { ConnectionString = builder.Configuration.GetValue<string>("AI_CONNECTION_STRING") });
+
+        AddServices(builder.Services, builder.Configuration);
 
         return builder;
     }
 
-    private static void AddServices<TDbContext>(IServiceCollection serviceCollection, IConfiguration configuration, string connectionStringKey)
-        where TDbContext : HubDbContext
+    private static void AddServices(IServiceCollection serviceCollection, IConfiguration configuration)
     {
         var entryAssembly = Assembly.GetEntryAssembly();
 
@@ -53,7 +68,6 @@ public static class WebApiBuilder
         
         serviceCollection.AddSingleton<ITelemetryInitializer>(new CloudRoleNameInitializer(Environment.GetEnvironmentVariable("CLOUD_ROLE_NAME")));
 
-        serviceCollection.AddDatabase<TDbContext>(configuration, connectionStringKey);
     }
 
     [UsedImplicitly]

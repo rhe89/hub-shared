@@ -55,12 +55,4 @@ public class TransactionQuery : Storage.Repository.Core.Query
     [CanBeNull]
     public string Source { get; set; }
     
-    [DataMember]
-    [CanBeNull] 
-    public int? Month { get; set; }
-    
-    [DataMember]
-    [CanBeNull] 
-    public int? Year { get; set; }
-    
 }

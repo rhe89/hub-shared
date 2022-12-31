@@ -53,6 +53,14 @@ public class HubDbRepository<TDbContext> : IHubDbRepository
         return await ProjectAsync<TEntity, TDto>(filtered);
     }
 
+    public async Task<IList<TEntity>> GetAsync<TEntity>() where TEntity : EntityBase
+    {
+        using var scope = ServiceScopeFactory.CreateScope();
+        await using var dbContext = scope.ServiceProvider.GetRequiredService<TDbContext>();
+
+        return dbContext.Set<TEntity>().ToList();
+    }
+
     protected IQueryable<TEntity> GetQueryable<TEntity>(Queryable<TEntity> queryable, IQueryable<TEntity> dbQueryable) where TEntity : EntityBase
     {
         if (queryable.OrderBy != null)
