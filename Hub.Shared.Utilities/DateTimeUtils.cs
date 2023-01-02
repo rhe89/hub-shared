@@ -1,3 +1,4 @@
+using System;
 using JetBrains.Annotations;
 
 namespace Hub.Shared.Utilities;
