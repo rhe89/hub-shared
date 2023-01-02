@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
 	<PropertyGroup>
 		<PackageId>Hub.Shared.DataContracts.Spreadsheet</PackageId>
-		<Version>7.2</Version>
+		<Version>7.3</Version>
 		<Authors>rhe89</Authors>
 		<RepositoryUrl>https://github.com/rhe89/hub-shared</RepositoryUrl>
 		<TargetFramework>net6.0</TargetFramework>
@@ -10,6 +10,9 @@
 			</Group>
 		</Dependencies>
 	</PropertyGroup>
+
+	<ItemGroup>
+	</ItemGroup>
 
 	<ItemGroup>
 	</ItemGroup>

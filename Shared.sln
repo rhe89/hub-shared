@@ -47,6 +47,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Hub.Shared.GoogleApi", "Hub
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Hub.Shared.DataContracts.Spreadsheet", "Hub.Shared.DataContracts\Hub.Shared.DataContracts.Spreadsheet\Hub.Shared.DataContracts.Spreadsheet.csproj", "{921CBCF9-14B1-4581-A307-361880598CCD}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Hub.Shared.Utilities", "Hub.Shared.Utilities\Hub.Shared.Utilities.csproj", "{C6D2DB80-23B6-45F8-9D73-09E1F410B1B4}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -125,6 +127,10 @@ Global
 		{921CBCF9-14B1-4581-A307-361880598CCD}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{921CBCF9-14B1-4581-A307-361880598CCD}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{921CBCF9-14B1-4581-A307-361880598CCD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C6D2DB80-23B6-45F8-9D73-09E1F410B1B4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C6D2DB80-23B6-45F8-9D73-09E1F410B1B4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C6D2DB80-23B6-45F8-9D73-09E1F410B1B4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C6D2DB80-23B6-45F8-9D73-09E1F410B1B4}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{78DC9B62-21DC-4511-AC01-63DAFF5D6A2C} = {B328846E-B016-4808-9D8E-F7D986C53CD6}
@@ -149,5 +155,6 @@ Global
 		{761E6E66-EA86-4552-860B-4CCE5057D641} = {03B13645-89A1-43E0-823B-F98A297C1D34}
 		{30D8407F-C5AF-4F35-B5B9-6B2D8382C42E} = {03B13645-89A1-43E0-823B-F98A297C1D34}
 		{921CBCF9-14B1-4581-A307-361880598CCD} = {63819640-1C71-4457-B028-06FCC895DB3F}
+		{C6D2DB80-23B6-45F8-9D73-09E1F410B1B4} = {03B13645-89A1-43E0-823B-F98A297C1D34}
 	EndGlobalSection
 EndGlobal

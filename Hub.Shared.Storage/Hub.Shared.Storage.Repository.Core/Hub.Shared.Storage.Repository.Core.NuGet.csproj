@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
 	<PropertyGroup>
 		<PackageId>Hub.Shared.Storage.Repository.Core</PackageId>
-		<Version>7.2</Version>
+		<Version>7.3</Version>
 		<Authors>rhe89</Authors>
 		<RepositoryUrl>https://github.com/rhe89/hub-shared</RepositoryUrl>
 		<TargetFramework>net6.0</TargetFramework>
@@ -16,5 +16,8 @@
 	<ItemGroup>
 		<PackageReference Include="JetBrains.Annotations" Version="2021.3.0" />
 		<PackageReference Include="Microsoft.EntityFrameworkCore" Version="6.0.2" />
+	</ItemGroup>
+
+	<ItemGroup>
 	</ItemGroup>
 </Project>

@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
 	<PropertyGroup>
 		<PackageId>Hub.Shared.HostedServices.Core</PackageId>
-		<Version>7.2</Version>
+		<Version>7.3</Version>
 		<Authors>rhe89</Authors>
 		<RepositoryUrl>https://github.com/rhe89/hub-shared</RepositoryUrl>
 		<TargetFramework>net6.0</TargetFramework>
@@ -11,7 +11,7 @@
 				<PackageReference Include="Microsoft.ApplicationInsights" Version="2.20.0" />
 				<PackageReference Include="Microsoft.Extensions.Hosting.Abstractions" Version="6.0.0" />
 				<PackageReference Include="Microsoft.Extensions.Configuration.Binder" Version="6.0.0" />
-				<PackageReference Include="Hub.Shared.HostedServices.Commands" Version="7.2" />
+				<PackageReference Include="Hub.Shared.HostedServices.Commands" Version="7.3" />
 			</Group>
 		</Dependencies>
 	</PropertyGroup>
@@ -21,6 +21,9 @@
 		<PackageReference Include="Microsoft.ApplicationInsights" Version="2.20.0" />
 		<PackageReference Include="Microsoft.Extensions.Hosting.Abstractions" Version="6.0.0" />
 		<PackageReference Include="Microsoft.Extensions.Configuration.Binder" Version="6.0.0" />
-		<PackageReference Include="Hub.Shared.HostedServices.Commands" Version="7.2" />
+		<PackageReference Include="Hub.Shared.HostedServices.Commands" Version="7.3" />
+	</ItemGroup>
+
+	<ItemGroup>
 	</ItemGroup>
 </Project>

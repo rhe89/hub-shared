@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
 	<PropertyGroup>
 		<PackageId>Hub.Shared.Storage.Azure</PackageId>
-		<Version>7.2</Version>
+		<Version>7.3</Version>
 		<Authors>rhe89</Authors>
 		<RepositoryUrl>https://github.com/rhe89/hub-shared</RepositoryUrl>
 		<TargetFramework>net6.0</TargetFramework>
@@ -20,5 +20,8 @@
 		<PackageReference Include="Microsoft.Azure.Cosmos.Table" Version="1.0.8" />
 		<PackageReference Include="Microsoft.Azure.Storage.Common" Version="11.2.3" />
 		<PackageReference Include="Microsoft.Azure.Storage.File" Version="11.2.3" />
+	</ItemGroup>
+
+	<ItemGroup>
 	</ItemGroup>
 </Project>
