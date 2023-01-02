@@ -4,9 +4,9 @@ using JetBrains.Annotations;
 namespace Hub.Shared.DataContracts.Crypto.Query;
 
 [DataContract]
-public class ExchangeRateQuery : Storage.Repository.Core.Query
+public class WalletQuery : Storage.Repository.Core.Query
 {
     [DataMember]
     [CanBeNull]
-    public string Currency { get; init; }
+    public string Name { get; set; }
 }

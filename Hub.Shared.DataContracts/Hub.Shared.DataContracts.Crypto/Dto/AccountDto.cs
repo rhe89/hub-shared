@@ -1,4 +1,5 @@
-﻿using System.Runtime.Serialization;
+﻿using System;
+using System.Runtime.Serialization;
 using Hub.Shared.Storage.Repository.Core;
 
 namespace Hub.Shared.DataContracts.Crypto.Dto;
@@ -7,14 +8,26 @@ namespace Hub.Shared.DataContracts.Crypto.Dto;
 public class AccountDto : DtoBase
 {
     [DataMember]
-    public string Currency { get; set; }
+    public string Name { get; set; }
+    
+    [DataMember]
+    public long WalletId { get; set; }
+    
+    [DataMember]
+    public long CurrencyId { get; set; }
 
     [DataMember]
-    public decimal Balance { get; set; }
+    public WalletDto Wallet { get; set; }
     
     [DataMember]
-    public string Exchange { get; set; }
+    public CurrencyDto Currency { get; set; }
     
     [DataMember] 
-    public bool MergedAccount { get; set; }
+    public decimal Balance { get; set; }
+    
+    [DataMember] 
+    public DateTime? BalanceDate { get; set; }
+
+    [DataMember]
+    public bool NoBalanceForGivenPeriod { get; set; }
 }

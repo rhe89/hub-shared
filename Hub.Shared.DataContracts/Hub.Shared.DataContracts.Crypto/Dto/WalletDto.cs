@@ -4,11 +4,8 @@ using Hub.Shared.Storage.Repository.Core;
 namespace Hub.Shared.DataContracts.Crypto.Dto;
 
 [DataContract]
-public class AssetHistoryDto : DtoBase
+public class WalletDto : DtoBase
 {
     [DataMember]
-    public long AccountId { get; set; }
-
-    [DataMember]
-    public decimal Value { get; set; }
+    public string Name { get; set; }
 }
