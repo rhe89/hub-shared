@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk.Razor">
 
     <PropertyGroup>
         <TargetFramework>net6.0</TargetFramework>
@@ -8,10 +8,19 @@
         <FrameworkReference Include="Microsoft.AspNetCore.App" Version="2.2.8" />
         <PackageReference Include="JetBrains.Annotations" Version="2021.3.0" />
         <PackageReference Include="Microsoft.ApplicationInsights.AspNetCore" Version="2.20.0" />
+        <PackageReference Include="MudBlazor" Version="6.0.9" />
+        <PackageReference Include="Microsoft.AspNetCore.Components.Web" Version="6.0.8" />
     </ItemGroup>
 
     <ItemGroup>
         <ProjectReference Include="..\..\Hub.Shared.AppConfiguration\Hub.Shared.AppConfiguration.csproj" />
+        <ProjectReference Include="..\..\Hub.Shared.Storage\Hub.Shared.Storage.Repository.Core\Hub.Shared.Storage.Repository.Core.csproj" />
+        <ProjectReference Include="..\..\Hub.Shared.Utilities\Hub.Shared.Utilities.csproj" />
         <ProjectReference Include="..\Hub.Shared.Web.Http\Hub.Shared.Web.Http.csproj" />
     </ItemGroup>
+    
+    <ItemGroup>
+        <SupportedPlatform Include="browser" />
+    </ItemGroup>
+
 </Project>

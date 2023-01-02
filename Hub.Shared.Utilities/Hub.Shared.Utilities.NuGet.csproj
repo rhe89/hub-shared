@@ -1,6 +1,6 @@
 <Project Sdk="Microsoft.NET.Sdk">
 	<PropertyGroup>
-		<PackageId>Hub.Shared.Extensions</PackageId>
+		<PackageId>Hub.Shared.Utilities</PackageId>
 		<Version>7.3</Version>
 		<Authors>rhe89</Authors>
 		<RepositoryUrl>https://github.com/rhe89/hub-shared</RepositoryUrl>
@@ -8,14 +8,12 @@
 		<Dependencies>
 			<Group targetFramework="net6.0">
 				<PackageReference Include="JetBrains.Annotations" Version="2021.3.0" />
-				<PackageReference Include="System.ComponentModel.Annotations" Version="5.0.0" />
 			</Group>
 		</Dependencies>
 	</PropertyGroup>
 
 	<ItemGroup>
 		<PackageReference Include="JetBrains.Annotations" Version="2021.3.0" />
-		<PackageReference Include="System.ComponentModel.Annotations" Version="5.0.0" />
 	</ItemGroup>
 
 	<ItemGroup>
