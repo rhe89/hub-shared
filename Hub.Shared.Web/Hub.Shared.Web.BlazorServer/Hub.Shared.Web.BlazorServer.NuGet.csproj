@@ -1,10 +1,11 @@
 <Project Sdk="Microsoft.NET.Sdk.Razor">
 	<PropertyGroup>
 		<PackageId>Hub.Shared.Web.BlazorServer</PackageId>
-		<Version>7.3</Version>
+		<Version>7.4</Version>
 		<Authors>rhe89</Authors>
 		<RepositoryUrl>https://github.com/rhe89/hub-shared</RepositoryUrl>
 		<TargetFramework>net6.0</TargetFramework>
+		<IncludeRazorContentInPack>true</IncludeRazorContentInPack>
 		<Dependencies>
 			<Group targetFramework="net6.0">
 				<FrameworkReference Include="Microsoft.AspNetCore.App" Version="2.2.8" />
