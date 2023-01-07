@@ -45,13 +45,11 @@ public class SettingProvider : ISettingProvider
         return setting;
     }
       
-    private static Queryable<Setting> GetQueryable(SettingQuery settingQuery)
+    private static Queryable<Setting> GetQueryable(SettingQuery query)
     {
-        return new Queryable<Setting>
+        return new Queryable<Setting>(query)
         {
-            Where = setting => string.IsNullOrEmpty(settingQuery.Key) || setting.Key == settingQuery.Key,
-            Take = settingQuery.Take,
-            Skip = settingQuery.Skip
+            Where = setting => string.IsNullOrEmpty(query.Key) || setting.Key == query.Key
         };
     }
 }

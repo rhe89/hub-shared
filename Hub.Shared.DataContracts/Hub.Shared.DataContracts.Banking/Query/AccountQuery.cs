@@ -46,9 +46,6 @@ public class AccountQuery : Storage.Repository.Core.Query
     
     [DataMember]
     public bool IncludeDiscontinuedAccounts { get; set; }
-    
-    [DataMember]
-    public bool IncludeExternalAccounts { get; set; }
 
     [DataMember] 
     public bool IncludeSharedAccounts { get; set; }

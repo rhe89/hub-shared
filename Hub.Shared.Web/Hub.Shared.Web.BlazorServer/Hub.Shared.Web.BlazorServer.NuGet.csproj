@@ -1,22 +1,17 @@
-<Project Sdk="Microsoft.NET.Sdk.Razor">
+<Project Sdk="Microsoft.NET.Sdk">
 	<PropertyGroup>
 		<PackageId>Hub.Shared.Web.BlazorServer</PackageId>
-		<Version>7.4</Version>
+		<Version>7.2</Version>
 		<Authors>rhe89</Authors>
 		<RepositoryUrl>https://github.com/rhe89/hub-shared</RepositoryUrl>
 		<TargetFramework>net6.0</TargetFramework>
-		<IncludeRazorContentInPack>true</IncludeRazorContentInPack>
 		<Dependencies>
 			<Group targetFramework="net6.0">
 				<FrameworkReference Include="Microsoft.AspNetCore.App" Version="2.2.8" />
 				<PackageReference Include="JetBrains.Annotations" Version="2021.3.0" />
 				<PackageReference Include="Microsoft.ApplicationInsights.AspNetCore" Version="2.20.0" />
-				<PackageReference Include="MudBlazor" Version="6.0.9" />
-				<PackageReference Include="Microsoft.AspNetCore.Components.Web" Version="6.0.8" />
-				<PackageReference Include="Hub.Shared.AppConfiguration" Version="7.3" />
-				<PackageReference Include="Hub.Shared.Storage.Repository.Core" Version="7.3" />
-				<PackageReference Include="Hub.Shared.Utilities" Version="7.3" />
-				<PackageReference Include="Hub.Shared.Web.Http" Version="7.3" />
+				<PackageReference Include="Hub.Shared.AppConfiguration" Version="7.2" />
+				<PackageReference Include="Hub.Shared.Web.Http" Version="7.2" />
 			</Group>
 		</Dependencies>
 	</PropertyGroup>
@@ -25,15 +20,7 @@
 		<FrameworkReference Include="Microsoft.AspNetCore.App" Version="2.2.8" />
 		<PackageReference Include="JetBrains.Annotations" Version="2021.3.0" />
 		<PackageReference Include="Microsoft.ApplicationInsights.AspNetCore" Version="2.20.0" />
-		<PackageReference Include="MudBlazor" Version="6.0.9" />
-		<PackageReference Include="Microsoft.AspNetCore.Components.Web" Version="6.0.8" />
-		<PackageReference Include="Hub.Shared.AppConfiguration" Version="7.3" />
-		<PackageReference Include="Hub.Shared.Storage.Repository.Core" Version="7.3" />
-		<PackageReference Include="Hub.Shared.Utilities" Version="7.3" />
-		<PackageReference Include="Hub.Shared.Web.Http" Version="7.3" />
-	</ItemGroup>
-
-	<ItemGroup>
-		<SupportedPlatform Include="browser" />
+		<PackageReference Include="Hub.Shared.AppConfiguration" Version="7.2" />
+		<PackageReference Include="Hub.Shared.Web.Http" Version="7.2" />
 	</ItemGroup>
 </Project>

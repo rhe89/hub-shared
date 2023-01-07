@@ -39,13 +39,11 @@ public class CommandConfigurationProvider : ICommandConfigurationProvider
         return commandConfigurations;
     }
     
-    private static Queryable<CommandConfiguration> GetQueryable(CommandConfigurationQuery commandConfigurationQuery)
+    private static Queryable<CommandConfiguration> GetQueryable(CommandConfigurationQuery query)
     {
-        return new Queryable<CommandConfiguration>
+        return new Queryable<CommandConfiguration>(query)
         {
-            Where = commandConfiguration => string.IsNullOrEmpty(commandConfigurationQuery.Name) || commandConfiguration.Name == commandConfigurationQuery.Name,
-            Take = commandConfigurationQuery.Take,
-            Skip = commandConfigurationQuery.Skip
+            Where = entity => string.IsNullOrEmpty(query.Name) || entity.Name == query.Name
         };
     }
 }
