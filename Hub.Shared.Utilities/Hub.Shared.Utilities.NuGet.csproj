@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
 	<PropertyGroup>
 		<PackageId>Hub.Shared.Utilities</PackageId>
-		<Version>7.3</Version>
+		<Version>7.4</Version>
 		<Authors>rhe89</Authors>
 		<RepositoryUrl>https://github.com/rhe89/hub-shared</RepositoryUrl>
 		<TargetFramework>net6.0</TargetFramework>
